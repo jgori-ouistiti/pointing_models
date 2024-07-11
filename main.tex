@@ -1,0 +1,420 @@
+% !TEX root = main.tex
+
+\documentclass[12pt,a4paper]{article}
+% \documentclass[sigconf]{acmart} % proceedings
+% \setcopyright{acmlicensed}
+
+% =============== Authorversion
+% \documentclass[manuscript,screen, authorversion]{acmart} % authorversion
+% \setcopyright{cc}
+
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+
+%% complete the rights form.\
+% \copyrightyear{2024}
+% \acmYear{2024}
+% \acmConference[CHI '24]{Proceedings of the CHI Conference on Human Factors in Computing Systems}{May 11--16, 2024}{Honolulu, HI, USA}
+% \acmBooktitle{Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI '24), May 11--16, 2024, Honolulu, HI, USA}
+% \acmDOI{10.1145/3613904.3642637}
+% \acmISBN{979-8-4007-0330-0/24/05}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[all]{foreign}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{colortbl}
+% \usepackage[left=3cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+%%%%%%%%%%%%%%%%%%%%%
+\usepackage[commandnameprefix = always]{changes}
+\usepackage{here}
+\usepackage{comment}
+\usepackage{xspace}
+
+
+
+\title{Pointing models for users operating under different speed accuracy strategies}
+\author{Julien Gori}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Custom commands
+\newcommand{\mmt}{\ensuremath{\overline{\text{MT}}}\xspace}
+\newcommand{\ide}{\ensuremath{{\text{ID}_e}}\xspace}
+
+\DeclareMathOperator*{\SumInt}{%
+\mathchoice%
+  {\ooalign{$\displaystyle\sum$\cr\hidewidth$\displaystyle\int$\hidewidth\cr}}
+  {\ooalign{\raisebox{.14\height}{\scalebox{.7}{$\textstyle\sum$}}\cr\hidewidth$\textstyle\int$\hidewidth\cr}}
+  {\ooalign{\raisebox{.2\height}{\scalebox{.6}{$\scriptstyle\sum$}}\cr$\scriptstyle\int$\cr}}
+  {\ooalign{\raisebox{.2\height}{\scalebox{.6}{$\scriptstyle\sum$}}\cr$\scriptstyle\int$\cr}}
+}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction\label{sec:introduction}}
+Fitts' law predicts the time it takes one to select a target with an input device \eg with a desktop mouse~\cite{card1978}. Classically, pointing time, also called movement time MT is modeled with Fitts' law~\cite{fitts1954, soukoreff2004, gori2018tochi}
+\begin{align}
+	\text{MT} & = a + b \log_2 (1 + \text{D}/\text{W}), \label{eq:fitts} \\
+	          & = a + b\,\text{ID}
+\end{align}
+where D and W are geometric parameters (size and distance of the target), ID is the index of difficulty, and $a$ and $b$ are the estimated parameters of the linear model. Fitts' law plays an important role in HCI because pointing is a ubiquitous interaction, namely when evaluating input techniques~\cite{soukoreff2004} and when designing interfaces~\cite{cockburn2007}.
+
+
+Movement modeling has advanced greatly since Fitts' seminal work~\cite{fitts1954} and the introduction of Fitts' law in HCI~\cite{card1978}. While Fitts' law only describes \emph{endpoints}, motor control models now propose description of entire \emph{trajectories} produced during pointing tasks~\cite{gori2020, gori2023, todorov2002,saveriano2023, fisher2021}.
+While Fitts' law only describes \emph{means} of movement times, several models now describe \emph{distribution} of movement times using asymetric distributions~\cite{chapuis2007, jude2016, gori2019,li2024,zhao2022, nieuwenhuizen2016}.
+
+
+In comparison, models of pointing when users operate under different speed accuracy strategies have rarely been investigated.
+Such models are useful when one needs to describe how users point with various incentives \ie favoring accuracy or speed, for example in contexts where safety matters critically~\cite{guiard2011b}.
+One notable exception is the Weighted Homographic (WHo) model of Guiard and Rioul~\cite{guiard2015}. The WHo model was recently used as a low level control module in hierarchical models~\cite{jokinen2021, langerak2022}, where a high level controller decides on the pointing strategy --- the controller learns to be more cautious in contexts where the cost to recover from errors is higher.
+
+
+However, the WHo model is not the appropriate tool to describe average user performance, since it is a model of \textit{ultimate} performance: it does not describe the entire distribution of data, but instead, it describes the best average precision and speed one can obtain. In Guiard and Rioul's work, the WHo model is fitted only on the best 10 mean block measures, out of 400! Hence, works that use the WHo model use an overly optimistic model of movement of mean movement time instead of a realistic model that describes distributions of movement time.
+
+
+The goal of this work is to suggest and compare simple candidate models for distribution of movement times that incorporate user strategies. We first describe how the index of difficulty and movement time are \textit{jointly} distributed for various user strategies. As expected, both index of difficulty and movement time increase when the strategy favors accuracy, and correlation between both measures is substantial. We then present three candidate models that generate pairs of correlated indexes of difficulty and movement time for a target user accuracy. We find out that our model based on Gaussian copulas has the best performance.
+
+
+\paragraph{Notations} $\mathcal{N}(\mu, \Sigma)$ refers to the (multivariate) Gaussian distribution with mean $\mu$ and covariance matrix $\Sigma$, $\mathcal{E}(\lambda)$ refers to the exponential distribution with mean $\lambda$, $\mathcal{U}[a,b]$ refers to the uniform distribution on $[a,b]$.
+
+\section{Background}
+
+\begin{itemize}
+	\item le gaussian assumption est pas forcément populaire. Trouver des papiers qui l'utilisent? Le seul truc qu'on puisse dire c'est qu'OLS est utilisé est OLS est optimal que quand les résidus sont gaussiens. Aussi le t-test pour la régression suppose soit large sample size, soit normalité des résidus = normalité des distributions temporelles.
+	\item Voire pour utiliser WHo pour numériser la stratégie
+\end{itemize}
+
+
+\subsection{Participant strategies and the effective index of difficulty}
+Fitts' law experiments are usually conducted to investigate/evaluate the speed accuracy tradeoff. To do so, the experimenter manipulates accuracy by modifying W and observes speed of the response by measuring MT in \autoref{eq:fitts}. However, it is well known that this manipulation is imperfect: users underutilize \textit{easy} (low ID) targets and over-utilize \textit{hard} (high ID) targets~\cite{guiard2011,zhai2004nominal}.
+A solution, due to Crossman and popularized in HCI by Mackenzie~\cite{gori2018tochi} is to compute an effective index of difficulty \ide  as a \textit{post-hoc} adjustment of difficulty as a function of the effectively measured standard deviation of endpoints $\sigma$
+
+\begin{align}
+	\text{MT} & = a + b\,\text{ID}_e                                                   \\
+	          & = a + b\,\log_2 \left(1 + \frac{D}{4.133\sigma}\right). \label{eq:ide}
+\end{align}
+
+Several researchers, beginning with Mackenzie~\cite{mackenzie2008} have investigated how people perform Fitts' task when instructed to emphasize either speed or accuracy. As expected, participants are able to modify their strategies, as reflected by changes in \ide for the same nominal ID level. For example in Mackenzie's experiment, on average participants erred up to 20\% in the speed condition, but erred close to 0\% in the accuracy condition. Guiard~\cite{guiard2011} later performed a similar experiment, but without explicit width (participants had to aim towards a line) with 5 instructions (Ultra Fast, Fast, Balanced, Accurate, Ultra Accurate). Other similar experiments include [Ufuk, Wolfgang, Shota].
+
+
+
+\subsection{Classical modeling: the Gaussian assumption}
+Fitts' law is classically understood to be a law of averages of minimum movement times~\cite{gori2017two}, fitted with linear regression / ordinary least squares. The implicit assumption is that movement time is Gaussian distributed~\cite{soukoreff2004}:
+\begin{align}
+	\text{MT}  & \sim \mathcal{N}(\beta \mathbf{x}, s^2),\label{eq:gaussian_model} \\
+	\beta      & = [a,b],                                                          \\
+	\mathbf{x} & = [1, \text{ID}]^t,                                               \\
+\end{align}
+where $a$ and $b$ are the parameters of Fitts' law \autoref{eq:fitts}, and $s$ is the standard deviation of MT.
+This model, while popular, is known to be poor in particular when the experiment is not a controlled one, as shown by the ``Fitts in the wild'' study by Chapuis\etal{} ~\cite{chapuis2007}, but even in controlled experiments there is ample evidence that movement time distributions are asymmetric, with long right tails~\cite{gori2018these,jude2016,nieuwenhuizen2016}.
+
+
+% \subsection{Modeling trajectories: Optimal control models of movement}
+% Optimal control models from control theory adapted to human movements were introduced by Todorov~\cite{todorov2002}, and have since been popular in disciplines that model human movements --- although they have been introduced only recently in HCI~\cite{fischer2022,klar2023}.
+% To define an optimal control problem, one first defines the so-called dynamic of the system \ie a model of how the state $x(t)$ of the system behaves when unsolicited and when responding to a control signal $u(t)$
+% \begin{align}
+% 	\dot{x}(t) = f(x(t),u(t)).
+% \end{align}
+% When modeling human movements, this equation describes how the limbs react to the control signal, in the face of their stiffness, damping and inertia.
+% Then, one defines a cost function $\mathcal{J}_T$ over some horizon $T$
+% \begin{align}
+% 	\mathcal{J}_T = g(\lbrace{x(t)\rbrace}_{0}^T, \lbrace{u(t)\rbrace}_{0}^T).
+% \end{align}
+% The goal of an optimal control problem is to determine the control signal $u(t)$ that minimizes $\mathcal{J}_T$
+% \begin{align}
+% 	u^*(t) = \text{argmin}_{u(t)} g(\lbrace{x(t)\rbrace}_{0}^T, \lbrace{u(t)\rbrace}_{0}^T) \text{ such that } \dot{x}(t) = f(x(t),u(t)).
+% \end{align}
+
+% The functions $f$ and $g$ can be virtually anything. Dynamics can be non linear~\cite{guigon2007}, the state may not be observable~\cite{todorov2002}, the planning horizon may be finite, infinite, or receding~\cite{fischer2022,klar2023}. Usually, $f$ also includes a stochastic (random) process. However, solving the optimal control problem for arbitrary $f$ and $g$ is in general intractable. In practice, one can make assumptions that simplify the computation of the solution, see \autoref{sub:lqr}.
+
+
+
+
+
+\subsection{The Exponentially Modified Gaussian noise model}
+It has been shown that the marginal distribution of MTs for a given ID/\ide level is distributed according to an asymmetric, positive (right) skewed~\cite{gori2018these,gori2019,zhao2022, jude2016,nieuwenhuizen2016, li2024,chapuis2007} distribution where the standard deviation increases with the mean value~\cite{wagenmakers2007, gori2018these, zhao2022}.
+While several distributions may be possible, including Gamma, Gumbel and Lognormal distributions, we follow Gori and colleagues~\cite{gori2018these,gori2019, li2014}, and Zhao \etal~\cite{zhao2022} who considered an Exponentially Modified Gaussian (EMG) noise model as MT distribution: it satisfies all the mentioned properties, has parameters that are easy to interpret, has shown good performance (including when modeling steering data~\cite{wang2021}), and there exist tools to aid in parameter estimation~\cite{li2024,emgregs}.
+
+The EMG model can be interpreted as an extension of the Gaussian model \autoref{eq:gaussian_model}, where an \textit{exponential} random variable $E$ is added to the \textit{Gaussian} $G$:
+\begin{align}
+	\text{MT} & = G + E, \label{eq:emg}                \\
+	G         & \sim \mathcal{N}(\beta \mathbf{x}, s), \\
+	E         & \sim \mathcal{E}(\lambda \mathbf{x}),
+\end{align}
+where $\lambda = [\lambda_0, \lambda_1]$ represents the asymmetric component of noise.
+Depending on the parameter values, the EMG distribution can behave like a Gaussian ($s >> \lambda \mathbf{x}$), like an exponential ($s << \lambda \mathbf{x}$) or in between~\cite{gori2019}.
+
+
+
+
+\subsection{The WHo model}
+The Who model by Guiard and Rioul~\cite{guiard2015} is an axiomatic model that conforms to the following 5 axioms:
+\begin{enumerate}
+	\item[a1] There is a minimum movement time MT$_0$ achievable
+	\item[a2] If we define relative precision as $y = \sigma/D$ with $\sigma$ the standard deviation of endpoints, then there is a minimum relative precision $y_0$ achievable.
+	\item[a3] The function $f$ that links MT to $y$, $y=f(\text{MT})$ is decreasing and convex
+	\item[a4] For a given participant effort $k$, there is an operation such that $MT \odot y = k$
+	\item[a5] Effort invested is never total
+\end{enumerate}
+The WHo model
+\begin{align}
+	(y-y_0)^{1-\alpha} (\text{MT}-\text{MT}_0)^{\alpha} = k
+\end{align}
+satisfies a(1) -- a(4), and is fit on the convex hull of the scatterplot in the (MT, $y$) space to satisfy a(5).
+The WHo model is \textit{not} a description of distribution of movement times, instead it characterizes the best aggregate samples (axioms 2 and 5).
+Guiard and Rioul never described what the distribution of movement times could look like within their WHo model.
+
+
+\subsection{Gaussian copulas}
+(Bivariate)Copulas are a statistical tool that describe the dependence between (two) random variables. Concretely, a multivariate joint distribution (\eg weight and height of humans) can be written in terms of univariate marginal distribution functions (width, height) and a copula which describes the dependence structure between the variables (how width correlates with height).
+The marginal distributions of width and heights of humans are roughly Gaussian, but sampling from these marginals is not satisfactory, since
+
+
+By using a positive correlated copula : by using a positively correlated copula, one can make sure to sample the variables in a way where the probability of river flooding does increase with maximum river level.
+
+
+In a Gaussian copula, the dependency between random variables is assumed Gaussian.
+For Gaussian copulas, the dependence structure is that of a Gaussian multivariate which is entirely dictated by the associated covariance matrix.
+
+
+\subsection{Hierarchical modeling}
+
+
+\section{Modeling the effect of strategy on endpoints \label{sec:strategy_endpoints}}
+We first investigate the effect of participant strategy on movement time and \ide, using the Guiard-Olafsdottir (GO) dataset~\cite{guiard2011}.
+
+
+\subsection{Summary of the paradigm used to produce the GO dataset}
+The pointing task used to produce the GO dataset is not a typical Fitts task since it has no predefined width. It is thus a pointing task without nominal accuracy, where participants aim towards a point in space while self-regulating their accuracy, in line with experimenter instructions. These instructions go from speed emphasis to precision emphasis in 5 steps (speed emphasis, speed, balanced, precision, precision emphasis). In speed emphasis, the participant is instructed to go as fast as possible while disregarding accuracy but to make sure that on average the endpoints are centered on the target \ie large under and overshoots are admitted, as long as they are about as equally probable. In precision emphasis, the participant is instructed to hit the (1 pixel) target, without caring for movement time. In the balanced condition, participants are instructed to adopt a \textit{natural} strategy \ie the one they would have adopted without explicit instructions. For the speed and precision instructions, the participants should behave in between the balanced and emphasis conditions.
+
+
+While in such a paradigm an ID can not be defined a priori, the standard deviation of the resulting endpoints can be computed, which means an \ide can be computed a posteriori. Previous work has shown that data produced this way is in line with data from a classical Fitts' law~\cite{guiard2011, guiard2011b, guiard2015,gori2020}, in particular, the mean movement time \mmt correlates strongly with \ide.
+
+
+
+
+\subsection{The GO dataset}
+A summary of the GO dataset obtained by plotting \mmt against \ide for all participants, clustered by strategy, is shown \autoref{fig:go_ide}.
+Participants are able to produce movements with a wide range of \ide, from 1 to 9 bit, depending on the strategy.
+The different strategies are quite distinct from each other, which implies that participants were able to correctly self-regulate their strategies, and that this self-regulation was quite consistent across different participants.
+
+We find that \mmt increases with \ide as expected. This is true both between strategies, where it is clear that emphasizing accuracy leads to larger value of \ide and \mmt, but also within a particular strategy as indicated by the orientation of the $95\%$ prediction ellipses\footnote{The covariance matrix of a Gaussian bivariate is the rightmost term of \autoref{eq:gaussian_ide_mt} where $\rho$ is the correlation between the two components. The angle of the prediction ellipsis is given by $\frac{1}{2} \arctan \left( \frac{2\rho \sigma_i\sigma_t}{\sigma_i^2 - \sigma_t^2} \right) $.} that result from a bivariate Gaussian fit to each strategy.
+
+
+\subsection{A bivariate Gaussian model for \mmt and \ide per strategy}
+Since the data points form correlated cluster, we model the joint increase of \mmt and \ide with a bivariate Gaussian model, for each of the five strategies of the GO dataset. We chose the bivariate model because it is simple, easy to interpret, expresses the dependence between \mmt and \ide via correlation, and is expected to fit reasonably well. The fit for each strategy is displayed by drawing the associated $95\%$ prediction ellipsis in \autoref{fig:go_ide}.
+
+\begin{align}
+	\begin{pmatrix}
+		\ide \\
+		\mmt
+	\end{pmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
+			                                      \mu_i \\
+			                                      \mu_t
+		                                      \end{bmatrix}, \begin{bmatrix}
+			                                                     \sigma^2_i             & \rho \sigma_i \sigma_t \\
+			                                                     \rho \sigma_i \sigma_t & \sigma_t^2
+		                                                     \end{bmatrix} \right). \label{eq:gaussian_ide_mt}
+\end{align}
+It is quite clear that when the strategy emphasizes precision, the mean of the Gaussian vector increases, as well as the size of the prediction ellipsis;however, its orientation stays relatively constant, suggesting that the correlation between the \ide and \mmt may also be.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\columnwidth]{img/fitts_ide_go_with_ellipse.pdf}
+	\caption{The effective Fitts' law fitted on data from the GO dataset. Data is pooled for all participants, and separated by strategies: from emphasis on speed to emphasis on accuracy. Each point corresponds to a block aggregate. A bivariate Gaussian fit, computed for all points of the same strategy, is also displayed through the associated $95\%$ prediction ellipsis.}
+	\label{fig:go_ide}
+\end{figure}
+
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=\columnwidth]{img/mean_cov.pdf}
+% 	\caption{MT against \ide for the GO dataset for each strategy (from left, max emphasis on speed, to right, max emphasis on accuracy). The 95\% confidence ellipsis corresponding to the Gaussian fit is represented in red}
+% 	\label{fig:meancov}
+% \end{figure}
+
+\subsection{A bivariate Gaussian model for \mmt and \ide for different strategies}
+In the GO dataset, strategy is an ordinal variable: we can order the strategies but can not quantify the \textit{distance} between two strategies. In the interest of a more useful quantitative model, we'd like to consider strategy as a numerical variable instead. Considering the five instructions cover the full range of available strategies, a naïve approach is to map the five strategies to equally spaced points on [-1,1], where the balanced strategy maps to 0, and 1 (resp. -1) maps to speed emphasis (resp. precision emphasis).
+
+We then fitted a linear model on the mean and covariance components (\autoref{eq:gaussian_ide_mt}) previously identified against the ``numerical strategies''. The fits are displayed \autoref{fig:meancov_strat}; the full fit summaries can be found in the supplementary materials.
+We observe that
+\begin{itemize}
+	\item The linear increase of the mean with numerical strategy is clear,
+	\item The increase of $\sigma_i$ and $\sigma_t$ with numerical strategy can also reasonably be described by a linear model, although evidence is less strong than for the mean, especially for $\sigma_i$,
+	\item the correlation between \mmt and \ide remains relatively constant across strategies, with a mean value of $\rho = 0.36$.
+\end{itemize}
+
+These results suggest a simple model, where the mean and standard deviations of \ide and \mmt increase linearly with strategy, and where \ide and \mmt remain moderately correlated($\rho = 0.36$) throughout strategies in the GO dataset.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\columnwidth]{img/mean_cov_strat.pdf}
+	\caption{The parameters of the mean and covariance of the bivariate Gaussian model defined in \autoref{eq:gaussian_ide_mt} plotted against the five numerical strategies. The associated linear fit is displayed above each parameter, together with a measure of goodness of fit.}
+	\label{fig:meancov_strat}
+\end{figure}
+
+\section{Modeling variability of the EMG parameters at the population level \label{sec:emg}}
+In this section, we use an existing dataset by Jude Guinness and Poor~\cite{jude2016} (JGP) to model variability of the parameter values of the EMG model fitted to pointing data at the population level.
+The JGP dataset was produced with the well-known 2D multi-directional tapping task~\cite{soukoreff2004}, using the FittsStudy software~\cite{wobbrock2011}. The experiment was replicated 6 times (on three days, twice a day).
+
+
+We fitted the EMG model to data from the JGP dataset pooled by participant using maximum likelihood estimation, with \texttt{emgregs}~\cite{emgregs}, a Python library for inference (and simulation) of EMG models.
+We first confirmed the expected result that the EMG model fits much better than the Gaussian model, with the lowest difference in AIC of more than 250\footnote{Typically, a difference in AIC of 10 is considered good support to reject a candidate model, so consistent AIC differences of more than 250 gives plenty of reason here to reject the Gaussian model.}. EMG fits and AIC differences with the Gaussian model for each participant can be found in the supplementary materials.
+
+
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=\columnwidth]{img/emg_jgp.pdf}
+%     \caption{The EMG model fit to data from the JGP dataset. Each panel is data from a participant (first three participants removed due to them having different number of trials). For each participant, we adjusted the Gaussian model \autoref{eq:gaussian_model} and compared to the EMG model with AIC.}
+%     \label{fig:emg_jgp}
+% \end{figure}
+
+\subsection{Population variability}
+We then described how the estimated parameters of the EMG distribution vary across the population. The EMG distribution used \autoref{eq:emg} has five parameters: $\beta = [\beta_0, \beta_1]$, the two parameters of the linear fit \autoref{eq:gaussian_model}, $\sigma$, the symmetric noise component and $\lambda = [\lambda_0, \lambda_1]$, the two asymmetric noise components. As in the previous section, we could jointly describe the probability distribution of these five parameters, the problem is that this requires describing the marginal distributions as well as their dependences, which signifies an increase in parameters. For example, a multivariate Gaussian would need $ 5 + 15 = 20$ parameters to be estimated, for which there are too few participants in the JGP dataset.
+We therefore made the following assumptions to limit the overall number of parameters to estimate:
+\begin{itemize}
+	\item we assume $\sigma$ is independent of the other parameters, because the interpretation of $\sigma$ in the EMG distribution is as producing noise accounting for modeling errors and random departures.
+	\item We assume that $\beta_0$ and $\beta_1$ are dependent. Two reasons why $\beta_0$ may correlate with $\beta_1$ are: 1) some data points may have the effect of tilting the linear fit (\eg a few data points of high \ide and low MT may drag the slope down, but considering the lower ID data remains unchanged, the fit will pivot around low ID values, which mechanically increases the intercept) 2) an overall ``slow'' participant may likely have larger intercept and larger slope. However, we assume $\beta$ to be independent of other parameters: the best performing data is unrelated to the variability of the data, mostly produced by $\lambda$.
+	\item We assume that $\lambda_0$ and $\lambda_1$ are correlated, by lack of better knowledge.
+\end{itemize}
+
+The estimated EMG parameters are represented \autoref{fig:emg_fits}. The left panel shows the two $\beta$ parameters. We notice a negative correlation (increasing the slope is associated with decreasing the intercept), in line with the ``tilting'' explanation. A bivariate Gaussian fit, represented by a 95\% prediction interval, seems reasonable. The middle left panel shows a histogram of $\sigma$. A reasonable model here seems to be a uniform distribution. The middle right panel shows that $\lambda_0$ and $\lambda_1$ do not seem to correlate nor can they be modeled reasonably by a Gaussian bivariate. Furthermore, $\lambda_0$ frequently is identified with value 0. For completeness, we also investigate the distribution of $\lambda_1$, which can be well fit by a Gaussian. As a result, we adopt the following population model for the EMG parameters:
+\begin{align}
+	\beta     & \sim \mathcal{N}\left( \begin{bmatrix}
+			                                   0.08 \\ 0.21
+		                                   \end{bmatrix}, \begin{bmatrix}
+			                                                  0.003 & -0.001 \\ -0.001 & 0.001
+		                                                  \end{bmatrix} \right) \\
+	\sigma    & \sim \mathcal{U}[0.04, 0.09]                                          \\
+	\lambda_0 & = 0.05                                                                \\
+	\lambda_1 & \sim \mathcal{N}(0.1, 0.02)                                           \\
+\end{align}
+
+
+\begin{figure}[htbp]
+	\centering
+	\makebox[\textwidth]{%
+		\includegraphics[width=1.4\textwidth]{img/emg_fits_pop.pdf}
+	}
+	\caption{Parameters of the EMG fits as defined \autoref{eq:emg} on the JGP dataset. Left: $\beta$ fit with a bivariate Gaussian. Middle left: histogram of $\sigma$. Middle right: bivariate Gaussian fit to $\lambda_0$ and $\lambda_1$. Right: Density plot (normalized histogram), with kernel density estimate (KDE, black) and Gaussian (red) fits.}
+	\label{fig:emg_fits}
+\end{figure}
+
+
+\section{Combining EMG and effect of strategy: candidate models}
+In \autoref{sec:strategy_endpoints} we showed how to relate a strategy parameter to $p(\ide, \mmt)$, the joint distribution of \ide and \mmt. In \autoref{sec:emg}, we described $p(\text{MT}| \ide)$, the conditional distribution of MT knowing \ide, via the EMG model at the population level. Our challenge is to describe a procedure to \textit{jointly} sample \ide and MT such that both aforementioned results remain valid.
+We propose several procedures.
+
+\paragraph{Sampling from \ide} The first idea is to sample \ide from a Gaussian distribution, and to plug it directly in the EMG. The reason this will work is that the EMG distribution naturally correlates \ide with the mean MT see \autoref{proof:result1}. The sampling scheme is then quite simple:
+\begin{enumerate}
+	\item Sample $x$ from the marginal \ide distribution
+	      \begin{align}
+		      x \sim \mathcal{N}(a + bs, (c+ds)^2),
+	      \end{align}
+	      where $a$, $b$, $c$ and $d$ are chosen by the modeler \eg estimated from a dataset as in \autoref{fig:meancov_strat}.
+	\item Sample $y|x$ from the $EMG(\beta x, \sigma^2 \lambda x)$ distribution where $\beta$, $\sigma$, $\lambda$ are chosen by the modeler \eg estimated from a dataset as in \autoref{fig:emg_fits}.
+
+\end{enumerate}
+
+\paragraph{Jointly sampling \ide and the mean MT} The second idea is to directly sample from the jointly gaussian model \autoref{eq:gaussian_ide_mt}. This guarantees that the values of \ide and the mean of MT are distributed as indicated \autoref{fig:meancov}. The $\beta$ parameter remains unchanged since it should remain invariant~\cite{gori2018tochi,gori2017two}, but $\lambda$ is adapted so that the inferred mean of the EMG does not change with regards to the sampled $\mu(\text{MT})$. The sampling scheme is
+
+\begin{enumerate}
+	\item Sample $(\mu(x),y)$ from the joint distribution \autoref{eq:gaussian_ide_mt}
+	\item Sample $y|x$ from the EMG$(\beta x, \sigma, \lambda x)$ distribution where \begin{align}
+		      \lambda_1 = (\mu(\text{MT}) - \lambda_0 - \beta_0 - \beta_1 x)/x
+	      \end{align}
+\end{enumerate}
+
+\paragraph{Gaussian copulas}
+to do:
+\begin{itemize}
+	\item make a proper library with the code for gen data --> fix copulas with copulas.py
+	\item generate three figures with datasets and diagnostics
+	\item multivariate kolmogorov smirnov test to compare empirical cdfs between two datasets \url{https://cran.r-project.org/web/packages/fasano.franceschini.test/fasano.franceschini.test.pdf}
+	\item test on throughput --> take a known dataset, compute throughput and estimate standard dev with bootstrap. Do the same with throughput on generated data.
+\end{itemize}
+
+\paragraph{Hierarchical model}  For a hierarchical model, on can further sample $\beta$, $\sigma$ and $\lambda$ from distributions, according to \autoref{fig:emg_fits}:
+\begin{align}
+	\beta     & \sim \mathcal{N}(\mu, \Sigma)                    \\
+	\sigma    & \sim \mathcal{U}(u_{\text{min}}, u_{\text{max}}) \\
+	\lambda_0 & = 0.05                                           \\
+	\lambda_1 & \sim \mathcal{N}(0.1, 0.02)
+\end{align}
+
+
+
+
+
+\section{Extra}
+
+\subsection{Deciding on the strategy with $\beta$ and the WHo model}
+
+
+\subsection{Modeling participant strategy with the Linear Quadratic Regulator (LQR) \label{sub:lqr}}
+
+**likley remove because there is no stopping point operationalized in the LQR/LQG.**
+
+One of the simplest optimal control setting is the so-called Linear Quadratic Regulator (LQR). The LQR assumes that the dynamics are linear
+\begin{align}
+	\dot{x}(t) = f(x(t),u(t)) = Ax(t) + Bu(t),
+\end{align}
+where $A$ and $B$ are two matrices of proper dimension, and the cost function is a quadratic function\footnote{We use here a loose notation for the summation for simplicity, since we have not specified whether time is continuous or discrete. Solutions of the problem will usually depend on the horizon (duration of $T$, which can be $\infty$), and whether signals are continuous or discrete time. We refer the interested reader to the supplementary materials for more information.},
+\begin{align}
+	\mathcal{J}_T = \SumInt_T x(t)^tQx(t) + u(t)^tRu(t),
+\end{align}
+where $Q$ and $R$ are positive semi-definite matrices of proper dimension. With these assumptions, it becomes possible to find a closed-form solution  is that one can compute the $u(t)$ that minimizes an arbitrary but \textit{quadratic} cost function of the state and command
+\begin{align}
+	\mathcal{J} = \SumInt_T x^tQx + u^tRu,
+\end{align}
+where $R$ and $Q$ are two matrices that indicate costs relative to the value of the state $x(t)$ and the value of the control signal $u(t)$.
+This model can be made more complex to better fit human behavior:
+
+
+\appendix
+
+\section{Proof of Result 1 \label{proof:result1}}
+In general, and denoting the speed-accuracy strategy as $s$, the sampling scheme is
+\begin{align}
+	\text{ID}_e & \sim \mathcal{N}(a + b\,s, (c + d\,s)^2),
+\end{align}
+where $a$, $b$, $c$ and $d$ are parameters determined in \autoref{fig:meancov_strat}.
+In general, the mean $\mu(\text{EMG}(\beta, \sigma, \lambda))$ and variance $\text{Var}(\text{EMG}(\beta, \sigma, \lambda))$ of an EMG distribution with parameters $(\beta, \sigma, \lambda)$ is given by
+
+\begin{align}
+	\mu(\text{EMG}(\beta, \sigma, \lambda))        & =  \beta + \lambda     \\
+	\text{Var}(\text{EMG}(\beta, \sigma, \lambda)) & = \sigma^2 + \lambda^2
+\end{align}
+
+With $y$ the movement time and $x$ the effective index of difficulty \ide, we have
+\begin{align}
+	\mathbb{E}_x[\mu(y|x)] & = \mathbb{E}_x[\beta_0 + \beta_1 x + \lambda_0 + \lambda_1 x] = \beta_0 + \lambda_0 + (\beta_1 + \lambda_1)\mathbb{E}[x] \\
+	                       & = \beta_0 + \lambda_0 + (\beta_1 + \lambda_1)a + (\beta_1 + \lambda_1)bs                                                 \\
+	                       & = a' + b' s,
+\end{align}
+which shows the mean value of MT to scale linearly with $s$. For the variance of MT, we can perform a similar computation and see it remains a second order polynomial in $s$
+\begin{align}
+	\mathbb{E}_x[\text{Var}[y|x]] & = \mathbb{E}_x[\sigma^2 + (\lambda x)^2] = \sigma^2 + \mathbb{E}_x[(\lambda_0 + \lambda_1 x)^2]                \\
+	                              & = \sigma^2 + \lambda_0^2 + 2\lambda_0 \lambda_1 \mathbb{E}_x[x] + \lambda_1^2 \mathbb{E}[x^2]                  \\
+	                              & = \sigma^2 + \lambda_0^2 + 2\lambda_0\lambda_1 (a + b s) + \lambda_1^2 \left[ \text{Var}(x) + \mu(x)^2 \right] \\
+	                              & = \sigma^2 + \lambda_0^2 + 2\lambda_0 \lambda_1(a + bs) + \lambda_1^2 \left[(c + ds)^2 + (a+bs)^2\right]       \\
+	                              & = p_0 + p_1s + p_2s^2
+\end{align}
+
+
+
+\bibliographystyle{plain}
+\bibliography{hierarchical_model}
+
+\end{document}

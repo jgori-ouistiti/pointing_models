@@ -1,0 +1,202 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\title{Supplementary materials for: Pointing models for users operating under
+different speed accuracy strategies }
+\author{Anonymous authors}
+\begin{document}
+\maketitle
+
+\section{Linear fits for the Gaussian bivariate fit per strategy for the GO dataset}
+\subsection{$\mu_i = \text{const} + x_1\,\text{strategy}$}
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.989    \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.985    \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 260.7    \\
+        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.000517 \\
+        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 1.9113   \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & 0.1775   \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -0.6036  \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &          \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &          \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 4.7274        & 0.095            & 49.594     & 0.000               & 4.424           & 5.031           \\
+        \textbf{x1}    & 2.1766        & 0.135            & 16.146     & 0.001               & 1.748           & 2.606           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 2.571 \\
+        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.374 \\
+        \textbf{Skew:}          & -0.004 & \textbf{  Prob(JB):          } & 0.829 \\
+        \textbf{Kurtosis:}      & 1.660  & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+
+\subsection{$\mu_t = \text{const} + x_1\,\text{strategy}$}
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.953   \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.937   \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 60.91   \\
+        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.00438 \\
+        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 4.2886  \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -4.577  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -5.358  \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 1.2822        & 0.059            & 21.640     & 0.000               & 1.094           & 1.471           \\
+        \textbf{x1}    & 0.6540        & 0.084            & 7.804      & 0.004               & 0.387           & 0.921           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 1.877 \\
+        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.365 \\
+        \textbf{Skew:}          & -0.012 & \textbf{  Prob(JB):          } & 0.833 \\
+        \textbf{Kurtosis:}      & 1.676  & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+\subsection{$\sigma_i = \text{const} + x_1\,\text{strategy}$}
+
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.527  \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.370  \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 3.344  \\
+        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.165  \\
+        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 1.2574 \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & 1.485  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & 0.7040 \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &        \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &        \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 1.0330        & 0.109            & 9.509      & 0.002               & 0.687           & 1.379           \\
+        \textbf{x1}    & 0.2810        & 0.154            & 1.829      & 0.165               & -0.208          & 0.770           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 1.842 \\
+        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.794 \\
+        \textbf{Skew:}          & -0.369 & \textbf{  Prob(JB):          } & 0.672 \\
+        \textbf{Kurtosis:}      & 1.193  & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+\subsection{$\sigma_t = \text{const} + x_1\,\text{strategy}$}
+
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.879  \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.839  \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 21.85  \\
+        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.0185 \\
+        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 11.223 \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -18.45 \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -19.23 \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &        \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &        \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 0.3679        & 0.015            & 24.852     & 0.000               & 0.321           & 0.415           \\
+        \textbf{x1}    & 0.0979        & 0.021            & 4.675      & 0.018               & 0.031           & 0.165           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 2.705 \\
+        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.437 \\
+        \textbf{Skew:}          & -0.675 & \textbf{  Prob(JB):          } & 0.804 \\
+        \textbf{Kurtosis:}      & 2.476  & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+\subsection{$\rho = \text{const} + x_1\,\text{strategy}$}
+
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.023   \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & -0.303  \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 0.07043 \\
+        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.808   \\
+        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 4.6223  \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -5.245  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -6.026  \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 0.3573        & 0.055            & 6.446      & 0.008               & 0.181           & 0.534           \\
+        \textbf{x1}    & 0.0208        & 0.078            & 0.265      & 0.808               & -0.229          & 0.270           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 2.545 \\
+        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.357 \\
+        \textbf{Skew:}          & 0.137 & \textbf{  Prob(JB):          } & 0.837 \\
+        \textbf{Kurtosis:}      & 1.721 & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+\section{Extra figures}
+\subsection{The EMG and Gaussian models compared}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{img/emg_jgp.pdf}
+    \caption{The EMG model fit to data from the JGP dataset. Each panel is data from a participant (first three participants removed due to them having different number of trials). For each participant, we adjusted the Gaussian model, and compared to the EMG model with AIC.}
+
+\end{figure}
+
+
+\end{document}
