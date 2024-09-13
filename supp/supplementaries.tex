@@ -3,60 +3,105 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[section]{placeins}
+
+
 \title{Supplementary materials for: Pointing models for users operating under
 different speed accuracy strategies }
 \author{Anonymous authors}
+\date{}
 \begin{document}
 \maketitle
 
-\section{Linear fits for the Gaussian bivariate fit per strategy for the GO dataset}
+\section{Intraclass Correlation Coefficients (ICC) for the JGP dataset (Subsection 3.3)}
+\subsection{Pearson's $r$}
+\begin{center}
+    \begin{tabular}{lllrrrrrl}
+        \toprule
+          & Type  & Description             & ICC      & F        & df1 & df2 & pval     & CI95\%      \\
+        \midrule
+        0 & ICC1  & Single raters absolute  & 0.278121 & 2.541096 & 14  & 45  & 0.009083 & [0.04 0.59] \\
+        1 & ICC2  & Single random raters    & 0.284798 & 2.679707 & 14  & 42  & 0.006876 & [0.05 0.59] \\
+        2 & ICC3  & Single fixed raters     & 0.295738 & 2.679707 & 14  & 42  & 0.006876 & [0.05 0.61] \\
+        3 & ICC1k & Average raters absolute & 0.606469 & 2.541096 & 14  & 45  & 0.009083 & [0.15 0.85] \\
+        4 & ICC2k & Average random raters   & 0.614320 & 2.679707 & 14  & 42  & 0.006876 & [0.18 0.85] \\
+        5 & ICC3k & Average fixed raters    & 0.626825 & 2.679707 & 14  & 42  & 0.006876 & [0.18 0.86] \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsection{Spearman's $\rho$}
+\begin{center}
+    \begin{tabular}{lllrrrrrl}
+        \toprule
+          & Type  & Description             & ICC      & F        & df1 & df2 & pval     & CI95\%      \\
+        \midrule
+        0 & ICC1  & Single raters absolute  & 0.269582 & 2.476315 & 14  & 45  & 0.010850 & [0.03 0.58] \\
+        1 & ICC2  & Single random raters    & 0.272642 & 2.534710 & 14  & 42  & 0.010107 & [0.04 0.58] \\
+        2 & ICC3  & Single fixed raters     & 0.277288 & 2.534710 & 14  & 42  & 0.010107 & [0.04 0.59] \\
+        3 & ICC1k & Average raters absolute & 0.596174 & 2.476315 & 14  & 45  & 0.010850 & [0.12 0.85] \\
+        4 & ICC2k & Average random raters   & 0.599896 & 2.534710 & 14  & 42  & 0.010107 & [0.14 0.85] \\
+        5 & ICC3k & Average fixed raters    & 0.605478 & 2.534710 & 14  & 42  & 0.010107 & [0.13 0.85] \\
+        \bottomrule
+    \end{tabular}
+
+\end{center}
+
+
+\subsection{Kendall's $\tau$}
+\begin{center}
+    \begin{tabular}{lllrrrrrl}
+        \toprule
+          & Type  & Description             & ICC      & F        & df1 & df2 & pval     & CI95\%      \\
+        \midrule
+        0 & ICC1  & Single raters absolute  & 0.289989 & 2.633714 & 14  & 45  & 0.007048 & [0.05 0.6 ] \\
+        1 & ICC2  & Single random raters    & 0.291424 & 2.664110 & 14  & 42  & 0.007166 & [0.05 0.6 ] \\
+        2 & ICC3  & Single fixed raters     & 0.293799 & 2.664110 & 14  & 42  & 0.007166 & [0.05 0.6 ] \\
+        3 & ICC1k & Average raters absolute & 0.620308 & 2.633714 & 14  & 45  & 0.007048 & [0.18 0.86] \\
+        4 & ICC2k & Average random raters   & 0.621946 & 2.664110 & 14  & 42  & 0.007166 & [0.18 0.86] \\
+        5 & ICC3k & Average fixed raters    & 0.624640 & 2.664110 & 14  & 42  & 0.007166 & [0.18 0.86] \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\section{Association measures for the GO dataset (Subsection 4.3)}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{img/association_gop_agg_strategy.pdf}
+    \caption{<caption>}
+    \label{<label>}
+\end{figure}
+\begin{table}
+    \centering
+    \caption{}
+    \begin{tabular}{lrrr}
+        \toprule
+                 & r        & rho      & tau      \\
+        strategy &          &          &          \\
+        \midrule
+        1        & 0.027881 & 0.034877 & 0.019789 \\
+        2        & 0.111236 & 0.116360 & 0.085362 \\
+        3        & 0.266716 & 0.262616 & 0.193317 \\
+        4        & 0.093823 & 0.107219 & 0.077531 \\
+        5        & 0.217365 & 0.226004 & 0.173897 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\section{Linear fits for the Gaussian bivariate fit per strategy for the GO dataset (Subsection 4.5)}
 \subsection{$\mu_i = \text{const} + x_1\,\text{strategy}$}
 \begin{center}
     \begin{tabular}{lclc}
         \toprule
-        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.989    \\
-        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.985    \\
-        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 260.7    \\
-        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.000517 \\
-        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 1.9113   \\
-        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & 0.1775   \\
-        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -0.6036  \\
-        \textbf{Df Model:}         & 1                & \textbf{                     } &          \\
-        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &          \\
-        \bottomrule
-    \end{tabular}
-    \begin{tabular}{lcccccc}
-                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
-        \midrule
-        \textbf{const} & 4.7274        & 0.095            & 49.594     & 0.000               & 4.424           & 5.031           \\
-        \textbf{x1}    & 2.1766        & 0.135            & 16.146     & 0.001               & 1.748           & 2.606           \\
-        \bottomrule
-    \end{tabular}
-    \begin{tabular}{lclc}
-        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 2.571 \\
-        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.374 \\
-        \textbf{Skew:}          & -0.004 & \textbf{  Prob(JB):          } & 0.829 \\
-        \textbf{Kurtosis:}      & 1.660  & \textbf{  Cond. No.          } & 1.41  \\
-        \bottomrule
-    \end{tabular}
-    %\caption{OLS Regression Results}
-\end{center}
-
-Notes: \newline
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-
-
-\subsection{$\mu_t = \text{const} + x_1\,\text{strategy}$}
-\begin{center}
-    \begin{tabular}{lclc}
-        \toprule
-        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.953   \\
-        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.937   \\
-        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 60.91   \\
-        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.00438 \\
-        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 4.2886  \\
-        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -4.577  \\
-        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -5.358  \\
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.934   \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.912   \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 42.58   \\
+        \textbf{Date:}             & Tue, 10 Sep 2024 & \textbf{  Prob (F-statistic):} & 0.00731 \\
+        \textbf{Time:}             & 16:31:51         & \textbf{  Log-Likelihood:    } & 3.4797  \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -2.959  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -3.741  \\
         \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
         \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
         \bottomrule
@@ -64,15 +109,15 @@ Notes: \newline
     \begin{tabular}{lcccccc}
                        & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
         \midrule
-        \textbf{const} & 1.2822        & 0.059            & 21.640     & 0.000               & 1.094           & 1.471           \\
-        \textbf{x1}    & 0.6540        & 0.084            & 7.804      & 0.004               & 0.387           & 0.921           \\
+        \textbf{const} & 1.2957        & 0.070            & 18.602     & 0.000               & 1.074           & 1.517           \\
+        \textbf{x1}    & 0.6428        & 0.099            & 6.525      & 0.007               & 0.329           & 0.956           \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lclc}
-        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 1.877 \\
-        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.365 \\
-        \textbf{Skew:}          & -0.012 & \textbf{  Prob(JB):          } & 0.833 \\
-        \textbf{Kurtosis:}      & 1.676  & \textbf{  Cond. No.          } & 1.41  \\
+        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 1.778 \\
+        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.441 \\
+        \textbf{Skew:}          & 0.048 & \textbf{  Prob(JB):          } & 0.802 \\
+        \textbf{Kurtosis:}      & 1.548 & \textbf{  Cond. No.          } & 1.41  \\
         \bottomrule
     \end{tabular}
     %\caption{OLS Regression Results}
@@ -81,34 +126,72 @@ Notes: \newline
 Notes: \newline
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
-\subsection{$\sigma_i = \text{const} + x_1\,\text{strategy}$}
 
+
+\subsection{$\mu_t = \text{const} + x_1\,\text{strategy}$}
 \begin{center}
     \begin{tabular}{lclc}
         \toprule
-        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.527  \\
-        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.370  \\
-        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 3.344  \\
-        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.165  \\
-        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 1.2574 \\
-        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & 1.485  \\
-        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & 0.7040 \\
-        \textbf{Df Model:}         & 1                & \textbf{                     } &        \\
-        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &        \\
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.934   \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.912   \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 42.58   \\
+        \textbf{Date:}             & Tue, 10 Sep 2024 & \textbf{  Prob (F-statistic):} & 0.00731 \\
+        \textbf{Time:}             & 16:31:51         & \textbf{  Log-Likelihood:    } & 3.4797  \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -2.959  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -3.741  \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lcccccc}
                        & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
         \midrule
-        \textbf{const} & 1.0330        & 0.109            & 9.509      & 0.002               & 0.687           & 1.379           \\
-        \textbf{x1}    & 0.2810        & 0.154            & 1.829      & 0.165               & -0.208          & 0.770           \\
+        \textbf{const} & 1.2957        & 0.070            & 18.602     & 0.000               & 1.074           & 1.517           \\
+        \textbf{x1}    & 0.6428        & 0.099            & 6.525      & 0.007               & 0.329           & 0.956           \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lclc}
-        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 1.842 \\
-        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.794 \\
-        \textbf{Skew:}          & -0.369 & \textbf{  Prob(JB):          } & 0.672 \\
-        \textbf{Kurtosis:}      & 1.193  & \textbf{  Cond. No.          } & 1.41  \\
+        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 1.778 \\
+        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.441 \\
+        \textbf{Skew:}          & 0.048 & \textbf{  Prob(JB):          } & 0.802 \\
+        \textbf{Kurtosis:}      & 1.548 & \textbf{  Cond. No.          } & 1.41  \\
+        \bottomrule
+    \end{tabular}
+    %\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+
+\subsection{$\sigma_i = \text{const} + x_1\,\text{strategy}$}
+
+\begin{center}
+    \begin{tabular}{lclc}
+        \toprule
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.590   \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.453   \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 4.317   \\
+        \textbf{Date:}             & Tue, 10 Sep 2024 & \textbf{  Prob (F-statistic):} & 0.129   \\
+        \textbf{Time:}             & 16:31:51         & \textbf{  Log-Likelihood:    } & 1.6774  \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & 0.6452  \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -0.1360 \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lcccccc}
+                       & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
+        \midrule
+        \textbf{const} & 1.0564        & 0.100            & 10.576     & 0.002               & 0.739           & 1.374           \\
+        \textbf{x1}    & 0.2935        & 0.141            & 2.078      & 0.129               & -0.156          & 0.743           \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lclc}
+        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 1.799 \\
+        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.816 \\
+        \textbf{Skew:}          & -0.387 & \textbf{  Prob(JB):          } & 0.665 \\
+        \textbf{Kurtosis:}      & 1.178  & \textbf{  Cond. No.          } & 1.41  \\
         \bottomrule
     \end{tabular}
     %\caption{OLS Regression Results}
@@ -122,13 +205,13 @@ Notes: \newline
 \begin{center}
     \begin{tabular}{lclc}
         \toprule
-        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.879  \\
-        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.839  \\
-        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 21.85  \\
-        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.0185 \\
-        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 11.223 \\
-        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -18.45 \\
-        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -19.23 \\
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.681  \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.574  \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 6.396  \\
+        \textbf{Date:}             & Tue, 10 Sep 2024 & \textbf{  Prob (F-statistic):} & 0.0855 \\
+        \textbf{Time:}             & 16:31:52         & \textbf{  Log-Likelihood:    } & 9.2180 \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -14.44 \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -15.22 \\
         \textbf{Df Model:}         & 1                & \textbf{                     } &        \\
         \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &        \\
         \bottomrule
@@ -136,15 +219,15 @@ Notes: \newline
     \begin{tabular}{lcccccc}
                        & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
         \midrule
-        \textbf{const} & 0.3679        & 0.015            & 24.852     & 0.000               & 0.321           & 0.415           \\
-        \textbf{x1}    & 0.0979        & 0.021            & 4.675      & 0.018               & 0.031           & 0.165           \\
+        \textbf{const} & 0.3852        & 0.022            & 17.424     & 0.000               & 0.315           & 0.456           \\
+        \textbf{x1}    & 0.0791        & 0.031            & 2.529      & 0.085               & -0.020          & 0.179           \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lclc}
-        \textbf{Omnibus:}       & nan    & \textbf{  Durbin-Watson:     } & 2.705 \\
-        \textbf{Prob(Omnibus):} & nan    & \textbf{  Jarque-Bera (JB):  } & 0.437 \\
-        \textbf{Skew:}          & -0.675 & \textbf{  Prob(JB):          } & 0.804 \\
-        \textbf{Kurtosis:}      & 2.476  & \textbf{  Cond. No.          } & 1.41  \\
+        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 1.787 \\
+        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.759 \\
+        \textbf{Skew:}          & 0.358 & \textbf{  Prob(JB):          } & 0.684 \\
+        \textbf{Kurtosis:}      & 1.231 & \textbf{  Cond. No.          } & 1.41  \\
         \bottomrule
     \end{tabular}
     %\caption{OLS Regression Results}
@@ -158,29 +241,29 @@ Notes: \newline
 \begin{center}
     \begin{tabular}{lclc}
         \toprule
-        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.023   \\
-        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & -0.303  \\
-        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 0.07043 \\
-        \textbf{Date:}             & Wed, 26 Jun 2024 & \textbf{  Prob (F-statistic):} & 0.808   \\
-        \textbf{Time:}             & 15:51:57         & \textbf{  Log-Likelihood:    } & 4.6223  \\
-        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -5.245  \\
-        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -6.026  \\
-        \textbf{Df Model:}         & 1                & \textbf{                     } &         \\
-        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &         \\
+        \textbf{Dep. Variable:}    & y                & \textbf{  R-squared:         } & 0.565  \\
+        \textbf{Model:}            & OLS              & \textbf{  Adj. R-squared:    } & 0.420  \\
+        \textbf{Method:}           & Least Squares    & \textbf{  F-statistic:       } & 3.896  \\
+        \textbf{Date:}             & Tue, 10 Sep 2024 & \textbf{  Prob (F-statistic):} & 0.143  \\
+        \textbf{Time:}             & 16:31:52         & \textbf{  Log-Likelihood:    } & 3.0488 \\
+        \textbf{No. Observations:} & 5                & \textbf{  AIC:               } & -2.098 \\
+        \textbf{Df Residuals:}     & 3                & \textbf{  BIC:               } & -2.879 \\
+        \textbf{Df Model:}         & 1                & \textbf{                     } &        \\
+        \textbf{Covariance Type:}  & nonrobust        & \textbf{                     } &        \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lcccccc}
                        & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]} \\
         \midrule
-        \textbf{const} & 0.3573        & 0.055            & 6.446      & 0.008               & 0.181           & 0.534           \\
-        \textbf{x1}    & 0.0208        & 0.078            & 0.265      & 0.808               & -0.229          & 0.270           \\
+        \textbf{const} & 0.3447        & 0.076            & 4.539      & 0.020               & 0.103           & 0.586           \\
+        \textbf{x1}    & 0.2119        & 0.107            & 1.974      & 0.143               & -0.130          & 0.554           \\
         \bottomrule
     \end{tabular}
     \begin{tabular}{lclc}
-        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 2.545 \\
-        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.357 \\
-        \textbf{Skew:}          & 0.137 & \textbf{  Prob(JB):          } & 0.837 \\
-        \textbf{Kurtosis:}      & 1.721 & \textbf{  Cond. No.          } & 1.41  \\
+        \textbf{Omnibus:}       & nan   & \textbf{  Durbin-Watson:     } & 1.648 \\
+        \textbf{Prob(Omnibus):} & nan   & \textbf{  Jarque-Bera (JB):  } & 0.479 \\
+        \textbf{Skew:}          & 0.485 & \textbf{  Prob(JB):          } & 0.787 \\
+        \textbf{Kurtosis:}      & 1.833 & \textbf{  Cond. No.          } & 1.41  \\
         \bottomrule
     \end{tabular}
     %\caption{OLS Regression Results}
@@ -189,13 +272,98 @@ Notes: \newline
 Notes: \newline
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
-\section{Extra figures}
-\subsection{The EMG and Gaussian models compared}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\columnwidth]{img/emg_jgp.pdf}
-    \caption{The EMG model fit to data from the JGP dataset. Each panel is data from a participant (first three participants removed due to them having different number of trials). For each participant, we adjusted the Gaussian model, and compared to the EMG model with AIC.}
 
+\section{Values of the t-copula for the GO dataset, effect of strategy and participants}
+
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=1.3\textwidth]{img/tcop_values.pdf}
+    }
+    \caption{<caption>}
+    \label{<label>}
+\end{figure}
+
+\begin{table}
+    \caption{Mixed Linear Model Regression Results}
+    \label{}
+    \begin{center}
+        \begin{tabular}{llll}
+            \hline
+            Model:            & MixedLM & Dependent Variable: & rho1    \\
+            No. Observations: & 72      & Method:             & REML    \\
+            No. Groups:       & 15      & Scale:              & 0.0119  \\
+            Min. group size:  & 4       & Log-Likelihood:     & 46.7778 \\
+            Max. group size:  & 5       & Converged:          & Yes     \\
+            Mean group size:  & 4.8     &                     &         \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    \begin{center}
+        \begin{tabular}{lrrrrrr}
+            \hline
+                      & Coef.  & Std.Err. & z      & P$> |$z$|$ & [0.025 & 0.975] \\
+            \hline
+            Intercept & 0.773  & 0.026    & 30.251 & 0.000      & 0.723  & 0.823  \\
+            strategy  & -0.012 & 0.009    & -1.312 & 0.189      & -0.030 & 0.006  \\
+            Group Var & 0.002  & 0.018    &        &            &        &        \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+
+
+
+\section{Correction on $\beta_0$ instead of $\lambda_1$ for Model 3 (Subsection 6.1)}
+
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=1.3\textwidth]{img/method_consistency_correct_beta.pdf}
+    }
+    \caption{<caption>}
+    \label{<label>}
+\end{figure}
+
+\section{Replications of Figure 7 with different seeds (Subsection 6.1)}
+
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=1.3\textwidth]{img/method_consistency_seed777.pdf}
+    }
+    \caption{Seed = 777}
+    \label{<label>}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=1.3\textwidth]{img/method_consistency_seed999.pdf}
+    }
+    \caption{Seed = 999}
+    \label{<label>}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=1.3\textwidth]{img/method_consistency_seedNone.pdf}
+    }
+    \caption{Seed = None}
+    \label{<label>}
+\end{figure}
+
+\section{Participant internal consistency concerning strategies}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.48\textwidth]{img/fitts_gop_1.pdf}
+    \includegraphics[width=.48\textwidth]{img/fitts_gop_2.pdf} \\
+    \includegraphics[width=.48\textwidth]{img/fitts_gop_10.pdf}
+    \includegraphics[width=.48\textwidth]{img/fitts_gop_16.pdf}
+    \caption{<caption>}
+    \label{<label>}
 \end{figure}
 
 
