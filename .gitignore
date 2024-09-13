@@ -1,3 +1,5 @@
+main.tex
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -514,6 +516,7 @@ docs/
 
 # translation temp files
 po/*~
+
 
 # RStudio Connect folder
 rsconnect/
