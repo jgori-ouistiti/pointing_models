@@ -36,6 +36,21 @@ def compute_emg_regression_linear_expo_mean(x, y):
     raise RuntimeError("fit not successful")
 
 
+def compute_gaussian_regression_linear_expo_mean(x, y):
+    beta = [0, 0.1]
+    expo_mean = [0.5, 0.5]
+    bounds = [(-1, 1), (0, 1), (0, 1), (0, 5)]
+    attempts = 0
+    while attempts <= 5:
+        fit = fit_gaussian_arbitrary_variance_model(
+            beta, expo_mean, linear_expo_mean, x, y, bounds=bounds
+        )
+        if fit.success:
+            return fit.x, fit
+        attempts += 1
+    raise RuntimeError("fit not successful")
+
+
 def minus_ll_emg_arbitrary_variance_model(params, x, y, f_expo_mean):
     beta_params = params[:2]
     sigma_params = params[2]
@@ -51,6 +66,18 @@ def minus_ll_emg_arbitrary_variance_model(params, x, y, f_expo_mean):
     return -numpy.sum(ll)
 
 
+def minus_ll_gaussian_arbitrary_variance_model(params, x, y, f_expo_mean):
+    beta_params = params[:2]
+    expo_mean_params = params[2:]
+
+    ll = 0
+
+    expo_mean = f_expo_mean(x, expo_mean_params)
+    loc = beta_params[0] + beta_params[1] * x
+    ll = norm.logpdf(y, loc=loc, scale=expo_mean)
+    return -numpy.sum(ll)
+
+
 def fit_emg_arbitrary_variance_model(beta, sigma, expo_mean, f_expo_mean, x, y, bounds):
     x = numpy.asarray(x)
     y = numpy.asarray(y)
@@ -59,6 +86,20 @@ def fit_emg_arbitrary_variance_model(beta, sigma, expo_mean, f_expo_mean, x, y, 
     # return minimize(minus_ll_emg_arbitrary_variance_model, params, **minimizer_kwargs)
     return basinhopping(
         minus_ll_emg_arbitrary_variance_model,
+        params,
+        minimizer_kwargs=minimizer_kwargs,
+        niter=10,
+    )
+
+
+def fit_gaussian_arbitrary_variance_model(beta, expo_mean, f_expo_mean, x, y, bounds):
+    x = numpy.asarray(x)
+    y = numpy.asarray(y)
+    params = [*beta, *expo_mean]
+    minimizer_kwargs = dict(method="L-BFGS-B", args=(x, y, f_expo_mean), bounds=bounds)
+    # return minimize(minus_ll_emg_arbitrary_variance_model, params, **minimizer_kwargs)
+    return basinhopping(
+        minus_ll_gaussian_arbitrary_variance_model,
         params,
         minimizer_kwargs=minimizer_kwargs,
         niter=10,

@@ -44,9 +44,9 @@ ax.legend()
 ax.set_xlabel("Association measure")
 plt.tight_layout()
 plt.ion()
-fig.savefig("supp_source/association_gop_agg_strategy.pdf")
+# fig.savefig("supp_source/association_gop_agg_strategy.pdf")
 plt.show()
-
+exit()
 with open("gop_association_agg_repetition.pkl", "rb") as _file:
     df = pickle.load(_file)
 

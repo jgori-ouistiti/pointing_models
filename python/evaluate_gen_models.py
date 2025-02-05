@@ -1,4 +1,5 @@
-from simulate import gen_t_copula, gen_emg, gen_emg_control
+# from simulate import gen_t_copula, gen_emg, gen_emg_control
+from gen_joint_mtide.core.simulate import gen_t_copula, gen_emg, gen_emg_control
 import polars
 import matplotlib.pyplot as plt
 import seaborn
@@ -43,7 +44,10 @@ def compute_associations(df):
 
 
 def compute_ols_means(df):
-    df_mean = df["IDe", "MT"].groupby("IDe").mean()
+    try:
+        df_mean = df["IDe", "MT"].groupby("IDe").mean()
+    except AttributeError:
+        df_mean = df["IDe", "MT"].group_by("IDe").mean()
     X = sm.add_constant(df_mean["IDe"])
     model = sm.OLS(numpy.asarray(df_mean["MT"]), X)
     results = model.fit()
@@ -58,7 +62,10 @@ def compute_emg_regression(df):
 
 
 def compute_ISO_throughput(df):
-    df_mean = df.groupby(["IDe"]).mean()
+    try:
+        df_mean = df.groupby(["IDe"]).mean()
+    except AttributeError:
+        df_mean = df.group_by(["IDe"]).mean()
     df_mean = df_mean.with_columns((df_mean["IDe"] / df_mean["MT"]).alias("throughput"))
     ISO_throughput = df_mean["throughput"].mean()
     return ISO_throughput
@@ -85,8 +92,6 @@ if __name__ == "__main__":
     ## Exp Parameters
     block_levels = df["IDe"].unique()
     ntrials = int(len(df) / len(block_levels))
-    print(ntrials)
-    exit()
 
     # from R
     rho1 = 0.668024  # can be estimated by sin(pi/2 tau) where tau is kendall's tau
@@ -105,10 +110,15 @@ if __name__ == "__main__":
     )
 
     ### joint mmt, ide ====== model 3
-    df_mean = df["IDe", "MT"].groupby("IDe").mean()
+    try:
+        df_mean = df["IDe", "MT"].groupby("IDe").mean()
+    except AttributeError:
+        df_mean = df["IDe", "MT"].group_by("IDe").mean()
     fig, ax = plt.subplots(1, 1)
     ax.plot(numpy.asarray(df_mean["IDe"]), numpy.asarray(df_mean["MT"]), "o")
     mean, cov = multivariate_normal.fit(numpy.asarray(df_mean))
+
+    SEED = 1234
 
     #### ==== Gen phase =====
 
@@ -119,8 +129,9 @@ if __name__ == "__main__":
         mt_params,
         trials=ntrials,
         block_levels=block_levels,
+        cdf_block=True,
         rng=None,
-        seed=None,
+        seed=SEED,
     )
 
     x_2, y_2 = gen_emg(
@@ -130,7 +141,7 @@ if __name__ == "__main__":
         block_levels=block_levels,
         ntrials=ntrials,
         rng=None,
-        seed=None,
+        seed=SEED,
     )
 
     x_3, y_3 = gen_emg_control(
@@ -142,7 +153,7 @@ if __name__ == "__main__":
         block_levels=block_levels,
         ntrials=ntrials,
         rng=None,
-        seed=None,
+        seed=SEED,
     )
 
     ## ==== Eval phase ====
@@ -275,22 +286,26 @@ if __name__ == "__main__":
 
     # titles, legend
     axs[0].set_title(
-        rf"r = {vec_original[0]:.2f}, $\rho$ = {vec_original[1]:.2f}, $\tau$ = {vec_original[2]:.2f},"
+        "Ground Truth dataset\n"
+        + rf"r = {vec_original[0]:.2f}, $\rho$ = {vec_original[1]:.2f}, $\tau$ = {vec_original[2]:.2f},"
         + "\n"
         + rf"$\overline{{r}}$ = {original_ols_fit[1]:.2f}, ISO-TP = {tp_original:.2f}"
     )
     axs[1].set_title(
-        rf"r = {vec_gen_copula[0]:.2f}, $\rho$ = {vec_gen_copula[1]:.2f}, $\tau$ = {vec_gen_copula[2]:.2f},"
+        "Model 1 (copulas)\n"
+        + rf"r = {vec_gen_copula[0]:.2f}, $\rho$ = {vec_gen_copula[1]:.2f}, $\tau$ = {vec_gen_copula[2]:.2f},"
         + "\n"
         + rf"$\overline{{r}}$ = { gen_ols_fit_copula[1]:.2f}, ISO-TP = {tp_gen_copula:.2f}"
     )
     axs[2].set_title(
-        rf"r = {vec_gen_emg_1[0]:.2f}, $\rho$ = {vec_gen_emg_1[1]:.2f}, $\tau$ = {vec_gen_emg_1[2]:.2f},"
+        "Model 2 (EMG)\n"
+        + rf"r = {vec_gen_emg_1[0]:.2f}, $\rho$ = {vec_gen_emg_1[1]:.2f}, $\tau$ = {vec_gen_emg_1[2]:.2f},"
         + "\n"
         + rf"$\overline{{r}}$ = { gen_ols_fit_emg_1 [1]:.2f}, ISO-TP = {tp_gen_emg_1:.2f}"
     )
     axs[3].set_title(
-        rf"r = {vec_gen_emg_2[0]:.2f}, $\rho$ = {vec_gen_emg_2[1]:.2f}, $\tau$ = {vec_gen_emg_2[2]:.2f},"
+        "Model 3 (EMG with control)\n"
+        + rf"r = {vec_gen_emg_2[0]:.2f}, $\rho$ = {vec_gen_emg_2[1]:.2f}, $\tau$ = {vec_gen_emg_2[2]:.2f},"
         + "\n"
         + rf"$\overline{{r}}$ = { gen_ols_fit_emg_2 [1]:.2f}, ISO-TP = {tp_gen_emg_2:.2f}"
     )

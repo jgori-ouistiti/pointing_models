@@ -1,0 +1,499 @@
+Reviews:
+----------------------------------------------------------------
+
+1AC review (reviewer 4)
+
+  Expertise
+
+    Passing Knowledge
+
+  Originality (Round 1)
+
+    High originality
+
+  Significance (Round 1)
+
+    High significance
+
+  Research Quality (Round 1)
+
+    Low research quality
+
+  Recommendation (Round 1)
+
+    I can go with either Reject or Revise and Resubmit
+
+  1AC: The Meta-Review
+
+    This work proposes new models that leverage copulas for pointing when users
+                operate under different speed-accuracy strategies, but which take into
+                account less optimistic models compared to prior work. While this
+                approach has the potential to provide a significant contribution to
+                the HCI community using an interesting approach, reviewers felt that
+                the paper is difficult to understand and requires additional work to
+                evaluate and validate the proposed model. Unfortunately, given the
+                potential scope of work required to satisfy these issues, in
+                discussion it was decided that one round of revise and resubmit (R&R)
+                would likely not be enough. As a result, this paper will not be
+                considered in the R&R round.
+
+    To expand on the main issues discussed, all felt that the paper would benefit from
+                clearer explanations and inclusion of intermediate steps to guide the
+                reader in the body of the main paper itself. It is currently a short
+                paper, however reviewers felt it was too short to properly explain the
+                concepts and justifications and the inclusion of additional material
+                would have significantly helped. I appreciate this is a complex topic,
+                however all reviewers struggled to follow some of the topics and I
+                think it important as many of the community as possible understands
+                and appreciates this work. In order to evaluate and properly validate
+                the proposed models, reviewers felt that the paper needs additional
+                experiments and/or analysis that better reflect the situations that
+                these models would be most applicable.
+
+----------------------------------------------------------------
+
+2AC review (reviewer 2)
+
+  Expertise
+
+    Knowledgeable
+
+  Originality (Round 1)
+
+    High originality
+
+  Significance (Round 1)
+
+    Medium significance
+
+  Research Quality (Round 1)
+
+    Medium research quality
+
+  Contribution Compared to Length (Round 1)
+
+    The paper was too short to address its claimed contribution.
+
+  Figure Descriptions
+
+
+
+  Recommendation (Round 1)
+
+    I can go with either Reject or Revise and Resubmit
+
+  Review (Round 1)
+
+    Based on my understanding, this paper presents three contributions. 
+
+    1. The paper proves proposition 3.1, which states that, theoretically, any
+                conditional MT distribution will reach r^2 = 1 if the condition
+                expectation E[MT|ID_e] is linearly related to ID_e. This highlights
+                that researchers should use a method that associates the entire
+                distribution (not just mean values across ID_e levels). That's where
+                copula comes in.
+
+    2. The paper introduces copulas to model the dependence structure between MT and
+                ID. The benefit of using copulas is that one can specify any marginal
+                distributions for both MT and ID while controlling how they are
+                related.
+
+    3. The paper presents a construction of three models to simulate pointing data and
+                an evaluation of how well the model generates the data.
+
+    Overall, this paper is quite difficult to read. I have attempted to outline the
+                key contributions as I understand them, allowing other reviewers and
+                the authors to identify if I have misunderstood anything. Along the
+                same lines, I will also suggest several ways in which the authors can
+                improve the paper's readability. On the bright side, when I tried to
+                closely follow the arguments and proofs, I find the important elements
+                and evidence that support the above contributions are there. While I
+                am unsure of the CHI audience's acceptance of such work, the
+                contributions are at least well-scoped.
+
+    During the discussion phase, the reviewers found the revision may be quite
+                extensive. Revising such a paper is challenging, as even the expert
+                reviewers are struggling to fully grasp the ideas. Based on my initial
+                view and the result of the discussion, I recommend revising and
+                resubmitting or rejecting the paper.
+
+    Below, I present suggestions based on the three contributions, followed by other
+                important concerns.
+
+    = The Proof in Appendix B
+    I have carefully followed the proofs in Appendix B. In my understanding, they are
+                (mostly) correct. One minor error is that Equation 35 should be
+                -bE[Y]^2 instead of +bE[Y]^2. I assume it is a typo because the
+                conclusion (Section 36) is correct.
+
+    Another thing that I had trouble understanding is the linear standard deviation
+                stated in Equation 32, that is, Var[X|Y] = (c + dY)^2. This literally
+                means that the variance of MT given ID_e increases quadratically with
+                ID_e. What is the supporting evidence for this assumption? I further
+                wonder if this assumption is relevant to the proof at all. In my
+                understanding, the proof should end at Line 1020. There is no need to
+                discuss the extra term in r(X, Y) and later stuff further, which means
+                Equation 32 is not even necessary.
+
+    The proof is difficult to read, partially because the authors omit the
+                intermediate steps to derive one equation from another. I suggest the
+                authors add the rationale of the derivation. For example, in Equation
+                25, E[XY] = E[YE[X|Y]] … (law of total expectation). And the law of
+                expectation should be in another section of the Appendix for readers
+                to refer to. Similarly, for Equation 26-28.
+
+    The proof also uses phrases like "one notices from Equation 25 and 26…" "and some
+                further algebra shows…" Just present the equations and be clear about
+                what they mean. For example, the authors could provide COV(X, Y) =
+                E[XY]-E[X]E[Y] = E[YE[X|Y]] – E[E[X|Y]]E[Y] and COV(\overline{X}, Y)=…
+                to show how the "notice" makes sense. The point is that a reader will
+                likely spend significantly less time than the authors used to derive
+                the equations and may be less familiar with the discussed methods, so
+                it will be helpful to make their job easier.
+
+    = The Introduction and Application of Copula
+    The authors claim to introduce copulas to HCI, but the explanations in the
+                manuscript are too brief, and I had to consult other resources to
+                understand them. To improve this, perhaps the authors could include a
+                simple example that clearly demonstrates what copulas can achieve
+                compared to other methods. Additionally, I believe Model 1 has the
+                potential to do more than Models 2 and 3 because of the pros of using
+                copulas. I would like to see an example that illustrates this.
+
+    = The Evaluation of the Models
+    The model construction and evaluation seem mostly fine. One note is that the
+                authors claim between Line 706 and Line 707 that "all models produce
+                data that closely match the metrics…" How did the authors quantify the
+                data to be closely matched? Through absolute values? How close is
+                defined as close?
+
+    = Other Notes
+    * The paper claims "ID_e" can only be defined after the experiment has been
+                conducted. However, this completely ignores the related works that
+                model spatial endpoint distributions from Grossman and Balakrishnan
+                (https://doi.org/10.1145/1096737.1096741), Bi and Zhai
+                (https://doi.org/10.1145/2501988.2502058), to name a few. On the same
+                note, more than 1/4 of the existing references are from the same
+                group. This is somewhat questionable.
+
+    * The paper should explain more about EMG models. For example, I am not sure why
+                E[MT|ID_e] follows a simple condition mean where the exponential mean
+                is \lambda * x, as in Equation 11. The paper should explain this in a
+                self-contained manner. On the same note, I don't understand Equation
+                17.
+
+    * The paper only considers the dependence between ID_e and MT when manipulating W.
+                However, D could also influence the dependence, as indicated by
+                Grossman and Balakrishnan (https://doi.org/10.1145/1096737.1096741).
+                Why are they not considered?
+
+    * It is a bit strange to capture \overline{MT} and ID_e through a bivariate
+                Gaussian distribution. First, movement time data itself is one-
+                dimensional. Second, there is no clear evidence suggesting that it
+                could be a bivariate Gaussian. Instead, the variance could be constant
+                or skewed towards one side. Why not consider these alternative models?
+                Furthermore, the authors claim that in the "Speed emphasis" condition,
+                MT and ID seem to be uncorrelated. Have the authors used the correct
+                distribution for these? Was it because of the calculated ID_e having a
+                small range?
+
+    * The paper is not suitable for the short paper category. It should be classified
+                as a standard paper, as the appendix is essential for readers to fully
+                understand the content.
+
+    = Typos and Other Language Issues
+    * Remove the word "comprehensively" from the sentence "to model pointing data
+                comprehensively" in the abstract.
+    * Correct "In thuis work" in Line 86-87. 
+    * Change "iteration" to "replication" in Line 275.
+    * Line 400, "may also be" what?
+    * Line 515 should be Go datasets instead of JGP datasets. Similarly, for Line 521.
+    * Equation 15 should be "…0.29S)" instead of "0.39"? Also, shouldn't the Equation
+                be N(mu, sigma^2) instead of sigma?
+
+----------------------------------------------------------------
+
+reviewer review (reviewer 1)
+
+  Expertise
+
+    Expert
+
+  Originality (Round 1)
+
+    High originality
+
+  Significance (Round 1)
+
+    Medium significance
+
+  Research Quality (Round 1)
+
+    Low research quality
+
+  Contribution Compared to Length (Round 1)
+
+    The paper length was commensurate with its contribution.
+
+  Figure Descriptions
+
+    The figure descriptions are adequate and follow the accessibility guidelines.
+
+  Recommendation (Round 1)
+
+    I recommend Reject
+
+  Review (Round 1)
+
+    In previous studies on target pointing tasks, traditionally, movement time (MT) is
+                point-estimated using Fitts’ law, or more recently, Bayesian
+                hierarchical models have been used to estimate the distribution of MT
+                based on individual differences and target condition differences [40].
+                Alternatively, some studies have used reinforcement learning to
+                simulate the behavior of real arms
+                [https://dl.acm.org/doi/10.1145/3577016,
+                https://dl.acm.org/doi/10.1145/3613904.3642131] or cursors
+                [https://dl.acm.org/doi/10.1145/3411764.3445514], which give MT or
+                velocity as byproduct outcomes of these simulations. Previous studies
+                have also shown that users can prioritize speed or accuracy, and that
+                MT obtained under any of these strategies conforms to Fitts’ law [39].
+                However, there is no model that considers these strategies in advance
+                to estimate the distribution of MT. The authors tried to achieve this
+                by introducing copulas as a new statistical technique. By analyzing
+                existing datasets, they claimed to have successfully modeled the mean
+                and standard deviation of MT, the mean and standard deviation of the
+                effective task difficulty ID_e, and the throughput (TP) of Fitts’ law.
+
+    Main issue of not self-contained paper, and my decision
+    I read this paper multiple times but struggled to understand it. The possible
+                reason is that the paper is not self-contained. While it is somewhat
+                acceptable for a conference paper to omit details or to say “refer to
+                Chapter 1 of a textbook [XYZ]”, the way the authors described how they
+                used copulas for data processing is overly simple. It is difficult to
+                understand whether these procedures are appropriate. The authors may
+                have made an important contribution, but they are not effectively
+                conveying it to readers. This prevented me from judging the paper’s
+                significance and validity adequately.
+
+    Moreover, as I will explain later, analyzing existing datasets is insufficient to
+                judge whether the proposed data analysis method is appropriate. I
+                believe the authors need to conduct new experiments. For these
+                reasons, I conclude that significant revisions to the paper with
+                running new experiments are necessary for acceptance. But it is
+                challenging to make a final decision after just one revision, and a
+                fresh review of the newly submitted manuscript would be required. Thus
+                my current decision is that I cannot agree to include this paper to
+                the CHI 2025 proceedings. I hope my review will help the authors in
+                revising this paper in the future.
+
+    ## Experiment
+    I would like to point out that analyzing the existing datasets does not fully
+                achieve the authors’ initial goals. The experiment of JGP dataset did
+                not ask participants to operate with shifting their speed-accuracy
+                tradeoff. The GO dataset had targets with W=1 pixel, which is unlike
+                typical tasks in the HCI field and extremely unrealistic situation
+                that rarely occurs in our PC tasks. Considering that W affects W_e
+                [39] (and thus affects ID_e) and that W influences MT, it is
+                reasonable to think that the GO dataset records performance in a
+                highly limited condition. Why did the authors not conduct new user
+                experiments to verify the validity of their proposed data analysis
+                method?
+
+    So, the reanalysis of existing datasets described in this paper should be regarded
+                as a pilot analysis for hypothesis verification. As it stands, this
+                paper is a work-in-progress and does not present the thorough research
+                results expected at CHI Papers venue. Because I would like the authors
+                to run new experiments, I do not recommend a Revise and Resubmit
+                decision for this paper. But if the ACs decide to allow it, I would
+                encourage the authors to conduct new user experiments during the
+                revision period and include the results in the revised manuscript. For
+                example, even conducting an experiment with 10 participants using
+                three values of D, three values of W, and three strategies (speed-
+                emphasis, balanced, accuracy-emphasis) could provide valuable
+                insights.
+
+    ## Unclear whether the research goals were achieved
+    Regarding the final outcomes, it is unclear whether the initial concerns on prior
+                studies were resolved. I understood the initial problems claimed by
+                the authors as follows:
+    •       Using ID in Fitts’ law can estimate MT with high accuracy, but because
+                users do not necessarily adhere strictly to the given accuracy
+                (defined by target width W), it does not capture the speed-accuracy
+                strategy.
+    •       By using the endpoint variance, W_e can captures the speed-accuracy
+                strategy, and researchers obtain the adjusted task difficulty ID_e.
+                However, this requires using data obtained after the experiment (line
+                129).
+    •       There is no model that can estimate MT distribution by introducing such a
+                speed-accuracy strategy before the experiment.
+    However, the proposed model introduces numerous constant values, which were
+                determined experimentally. If these numerical values are necessary,
+                would not an experiment be required as before? If so, then the initial
+                goal has not been achieved. Alternatively, if the authors are aware
+                that numerous constant values are necessary, the initial goal setting
+                is mismatched, and the authors need to explain the research objectives
+                in more detail.
+
+    Or perhaps I am misunderstanding, and as in the study by Do et al.
+                [https://dl.acm.org/doi/10.1145/3411764.3445514] (see Table 1), is it
+                sufficient in the proposed method to simply introduce parameter values
+                reported in prior studies?
+
+    ## Validity of mapping strategy to numerical values
+    Traditionally, as the authors explained, it was not possible to introduce the
+                speed-accuracy strategy into the MT estimation model beforehand.
+                Instead, it was necessary to determine ID_e based on data obtained
+                after the experiment and fit MT=a+b×ID_e. I believe the reason the
+                authors’ proposed method could introduce the speed-accuracy strategy
+                into the model is that they mapped the speed-accuracy strategy to
+                numerical values between [-1, +1].
+
+    However, if this approach is acceptable, could not we estimate MT using a simpler
+                model (though a point estimate) without employing a complex method
+                like the authors’? For example, how about a model like MT=a+b×ID+c×S,
+                where S is the strategy (taking values from -1 to +1 as in Figure 4)?
+                In other words, a model where MT decreases when S takes values like -1
+                or -0.5 under speed emphasis. Alternatively, considering that the
+                effective movement amplitude hardly changes even if the speed-accuracy
+                strategy changes, how about using a model like
+                MT=a+b×log2(D/(W−c×S)+1), which affects only the target size term in
+                Fitts’ law?
+
+    If mapping the speed-accuracy strategy to numerical values addresses the authors’
+                initial problem in this way, it would be a higher priority to verify
+                just that effect. The current paper introduces unnecessarily complex
+                analysis methods, and it is unclear what specifically solved the
+                problem of not being able to introduce the speed-accuracy strategy
+                into the MT estimation model beforehand (whether it was the numerical
+                mapping of the speed-accuracy strategy, the introduction of copulas,
+                or other factors).
+
+    Also, users unconsciously shift their bias toward speed or accuracy
+                [https://dl.acm.org/doi/10.1145/3373625.3416999]; is the proposed
+                method applicable to such a situation where S values cannot be
+                predetermined? This is precisely a situation where the speed-accuracy
+                strategy can only be obtained a posteriori. If the authors’ method
+                allows for estimating MT and ID_e even without prior instructions
+                regarding strategy, I would like them to emphasize that more.
+
+    ## Processing time
+    As mentioned earlier, I assume that the authors’ research goal might also be
+                achievable using reinforcement learning proposed in previous studies.
+                However, in reinforcement learning, for example, Do et al.’s method
+                took six days of processing time. Could the advantage of the authors’
+                method be that processing time is shorter, or that estimation can be
+                done with almost no time lag similar to Fitts’ law analysis? If so, I
+                would like the authors to emphasize that.
+
+
+    Finally, please ensure there are no undefined variables. I had to read the paper
+                while guessing what they meant, and I could not read it smoothly. For
+                example, regarding σ_i and σ_t in Equation 13, I guessed that i refers
+                to the “ID_e” component and t refers to the “MT” component. Later, in
+                line 763, it finally states “ID_e dimension (μ_i,σ_i)” and “MT
+                dimension (μ_t,σ_t)”, which gave me some confidence in this guess.
+                However, it is the authors’ responsibility to explain everything.
+
+----------------------------------------------------------------
+
+reviewer review (reviewer 3)
+
+  Expertise
+
+    Knowledgeable
+
+  Originality (Round 1)
+
+    Medium originality
+
+  Significance (Round 1)
+
+    Low significance
+
+  Research Quality (Round 1)
+
+    Low research quality
+
+  Contribution Compared to Length (Round 1)
+
+    The paper length was commensurate with its contribution.
+
+  Figure Descriptions
+
+    The figure descriptions are adequate and follow the accessibility guidelines.
+
+  Recommendation (Round 1)
+
+    I recommend Reject
+
+  Review (Round 1)
+
+    This work proposed three models for pointing tasks, focusing on accounting for
+                different speed-accuracy. The idea of this research is novel, however,
+                I found these models are not well derived or evaluated. The writing of
+                this paper is often unclear and lacks necessary clarifications, making
+                it difficult for readers to follow.
+
+    Pros: 
+    (1) The motivation for this research is well-developed and clearly explained.
+    (2) The perspective on using copulas is valuable.
+    (3) Great math proofs.
+    (4) The supplementary materials are comprehensive and benefit understanding of the
+                main paper.
+
+    Cons:
+    (1)  Insufficient clarity: The paper should provide enough information for readers
+                to follow the arguments independently.
+      (a) For example, on page 2, some notations are defined; however, G and E on page
+                5 are not explained. Readers may not follow if they forgot the
+                notations from previous work.
+      (b) In Section 3, details about the dataset used are unclear. While it is a
+                "well-known" dataset, information about the number of unique ID_es and
+                total trials is necessary to give readers an overall impression of the
+                analysis.
+
+    (2) Lack of rigor and clarity in model derivation:
+      (a) Please explain why the log-likelihood is normalized by dividing by the
+                maximum log-likelihood across all potential copulas.
+      (b) In Section 4, the statement "The previous section investigated the nature of
+                the dependence between ID_e and MT for a given strategy" requires
+                clarification. Please summarize the findings in Section 3 and clarify
+                "nature" before making this claim to enhance clarity.
+      (c) In Figure 2, it is clear that rotGumbel performs best. However, in Figure 5
+                (left panel), the results are not straightforward: for p1 and p2, t
+                seems best, while for p3, t-EV is better. Please clarify the criteria
+                used to select the best strategy—specifically, whether it is the mean
+                value of the normalized log-likelihood across all participants.
+      (d) In Section 4.4, why is the bivariate Gaussian model chosen? You mention it
+                fits reasonably well based on the visual appearance of the clusters,
+                but this is not rigorous. Was a normality test conducted to assess the
+                fit?
+      (e)  Page 11, lines 524-525 states that "for many cases, the t-copula actually
+                reduces to a Gaussian copula." This raises a question: why not compare
+                directly with the Gaussian copula, given that your results suggest it
+                reduces to this in most cases, as seen in Figures 2 and 5?
+
+    (3) The evaluation of the model is not clear. Since the model is derived using two
+                datasets, it is important to address potential bias. Comparisons using
+                the same dataset could lead to misleading conclusions. It is essential
+                to compare the model against another publicly available dataset or to
+                collect new data through a user study to validate the proposed models.
+
+    At this point, I recommend rejecting this paper as it is not ready for
+                publication. However, I am open to discussion and would consider
+                recommending a revise and resubmit if other reviewers see potential
+                for publication following substantial revisions.
+
+
+    Minor comments:
+    - Page 2, lines 69-70: "obtian(the" – there is a missing space.
+    - Page 2, lines 86-87: "thuis" – please correct this typo.
+    - Figure 3: The legend covers the distribution.
+    - Figures 4, 6, and 7: These do not fit properly on the page.
+
+----------------------------------------------------------------
+
+
+
+Comments to Authors (if any):
+

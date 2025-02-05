@@ -1,8 +1,9 @@
-import polars
+import polars, pandas
 import numpy
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 import seaborn
+import statsmodels.api as sm
 from scipy.stats import multivariate_normal, pearsonr, kendalltau, spearmanr
 import pickle
 from emg_arbitrary_variance import compute_emg_regression_linear_expo_mean
@@ -12,26 +13,68 @@ plt.style.use("fivethirtyeight")
 
 
 ### Controls
-FIG_OUTPUT = True
+FIG_OUTPUT = False
 
 ### Unpacking data
 
 
-df = polars.read_csv("fitts_csv_GOP.csv", has_header=True, ignore_errors=True)
-# remove P9 strange data
-df = df.filter(polars.col("Participant") != 9)
+# df = polars.read_csv("fitts_csv_GOP.csv", has_header=True, ignore_errors=True)
+# df = df.filter(polars.col("Participant") != 9)
+
+df = pandas.read_csv("fitts_csv_GOP.csv")
+df = df[df["Participant"] != 9]
+
+
+def remove_outliers(group, column):
+    mean = group[column].mean()
+    std = group[column].std()
+    return group[numpy.abs(group[column] - mean) <= 2.5 * std]
+
+
+filtered_df = (
+    df.groupby(["IDe"]).apply(remove_outliers, column="MT").reset_index(drop=True)
+)
+# 5937 - 5858 = 79 points removed
+
+fig, axs = plt.subplots(2, 5, sharex=True, sharey=True)
+x_min = 100
+x_max = -100
+y_min = 100
+y_max = 100
+for i in range(1, 6):
+    df_strat = df[df["strategy"] == i]
+    df_filtered_strat = filtered_df[filtered_df["strategy"] == i]
+    ax = seaborn.scatterplot(df_strat, x="IDe", y="MT", ax=axs[0, i - 1])
+    ax = seaborn.scatterplot(df_filtered_strat, x="IDe", y="MT", ax=axs[1, i - 1])
+    # x_min = min(x_min, ax.get_xlim()[0])
+    # x_max = min(x_max, ax.get_xlim()[1])
+    # y_min = min(y_min, ax.get_ylim()[0])
+    # y_max = min(y_max, ax.get_ylim()[1])
+
+# for ax in axs:
+#     ax.set_xlim([x_min, x_max])
+#     ax.set_
+plt.ion()
+plt.show()
+
+df = polars.DataFrame(filtered_df)
 
 participants = df["Participant"].unique()
 strategies = df["strategy"].unique()
 repetitions = df["repetition"].unique()
 
-
+k = 0
 for np, p in enumerate(participants):
     df_part = df.filter(polars.col("Participant") == p)
     df_part.write_csv(f"exchange/gop_part/{np}.csv")
     for ns, s in enumerate(strategies):
-        df_repet = df_part.filter(polars.col("repetition") == s)
-        df_repet.write_csv(f"exchange/gop/{np}_{ns}.csv")
+        df_strat = df_part.filter(polars.col("strategy") == s)
+        df_strat.write_csv(f"exchange/gop_part_strat/{np}_{ns}.csv")
+        for nr, r in enumerate(repetitions):
+            df_repet = df_strat.filter(polars.col("repetition") == r)
+            df_repet.write_csv(f"exchange/gop_part_strat_repet/{np}_{ns}_{nr}.csv")
+            k += 1
+
 
 colors = [
     "#008fd5",
@@ -97,8 +140,8 @@ for participant in participants:
 
             x, y = df_block["IDe"], df_block["MT"]
             try:
-                print("yes")
                 params, fit = compute_emg_regression_linear_expo_mean(x, y)
+
             except RuntimeError:
                 params = [numpy.nan for i in range(5)]
 
@@ -149,7 +192,7 @@ emg = polars.DataFrame(
 with open("gop_emg_params_all_p_s_r.pkl", "wb") as _file:
     pickle.dump(emg, _file)
 
-exit()
+
 association_rows = []
 fig, axs = plt.subplots(1, 5)
 for participant in participants:
@@ -218,10 +261,21 @@ association = polars.DataFrame(
     schema=["Participant", "strategy", "r", "rho", "tau"],
 )
 plt.show()
-with open("gop_association_agg_repetition.pkl", "wb") as _file:
+
+fig, axs = plt.subplots(1, 3)
+seaborn.histplot(association, x="r", hue="strategy", ax=axs[0], label="Pearson r")
+seaborn.histplot(
+    association, x="rho", hue="strategy", ax=axs[1], label=r"Spearman $\rho$"
+)
+seaborn.histplot(
+    association, x="tau", hue="strategy", ax=axs[2], label=r"Kendall $\tau$"
+)
+plt.tight_layout()
+plt.ion()
+# plt.savefig("img/association_gop.pdf")
+with open("gop_association_agg_strategy.pkl", "wb") as _file:
     pickle.dump(association, _file)
 ### Plot effective ID plots
-
 cm = 2.54
 
 
@@ -258,6 +312,7 @@ def custom_fit(df, strategy, ax, **kwargs):
 seaborn.scatterplot(df, x="IDe", y="MT", hue="strategy", palette="colorblind")
 plt.tight_layout()
 
+
 if FIG_OUTPUT:
     fig.savefig("img/fitts_ide.pdf")
 plt.show()
@@ -267,11 +322,12 @@ plt.close(fig)
 blocks = df["IDe"].unique()
 strategies = df["strategy"].unique()
 
-rows = []
+
+rows_all = []
 for b in blocks:
     df_block = df.filter(polars.col("IDe") == b)
     df_block["strategy"].unique()[0]
-    rows.append(
+    rows_all.append(
         [
             df_block["strategy"].unique()[0],
             numpy.mean(numpy.asarray(df_block["IDe"])),
@@ -280,9 +336,9 @@ for b in blocks:
     )
 
 
-df_mean = polars.DataFrame(rows, schema=["strategy", "IDe", "MT"])
+df_mean = polars.DataFrame(rows_all, schema=["strategy", "IDe", "MT"])
 
-colorblind_palette = seaborn.color_palette("colorblind")
+colorblind_palette = seaborn.color_palette(palette="colorblind")
 
 fig, ax = plt.subplots(1, 1)
 figs, axs = plt.subplots(1, 5)
@@ -322,9 +378,19 @@ fig.tight_layout()
 if FIG_OUTPUT:
     fig.savefig("img/fitts_ide_go_with_ellipse.pdf")
 plt.show()
-exit()
 
 ## here
+
+df = pandas.DataFrame(
+    {
+        "mu_i": mx,
+        "mu_t": my,
+        "sigma_i": vx,
+        "sigma_t": vy,
+        "rho": rho,
+        "strategy": [-1, -0.5, 0, 0.5, 1],
+    }
+)
 
 fig2, axs_s = plt.subplots(1, 5)
 
@@ -340,19 +406,28 @@ strat = 2 * strat / (numpy.max(strat) - numpy.min(strat))
 fontdict = {
     "fontsize": 14,
 }
-seaborn.regplot(x=strat, y=mx, ax=axs_s[0])
-_x = sm.add_constant(strat)
-model = sm.OLS(mx, _x).fit()
-print(model.summary().as_latex())
+seaborn.scatterplot(x=strat, y=mx, ax=axs_s[0], s=50)
+import statsmodels.formula.api as smf
+
+model = smf.ols(formula="mu_i~1", data=df)  # AIC = 21
+model = smf.ols(formula="mu_i~strategy", data=df)  # AIC = 0.62
+model = model.fit()
+print(model.summary())
+axs_s[0].plot(strat, [model.params[0] + model.params[1] * s for s in strat], "-")
 axs_s[0].set_title(
     f"{model.params[0]:.2f} + {model.params[1]:.2f}strat, r² = {model.rsquared:.2f}",
     fontdict=fontdict,
 )
 axs_s[0].set_ylabel(r"$\mu_i$")
 
-seaborn.regplot(x=strat, y=my, ax=axs_s[1])
-model = sm.OLS(my, _x).fit()
-print(model.summary().as_latex())
+seaborn.scatterplot(x=strat, y=my, ax=axs_s[1], s=50)
+
+model = smf.ols(formula="mu_t~1", data=df)  # AIC = 8.5
+model = smf.ols(formula="mu_t~strategy", data=df)  # AIC = -4
+model = model.fit()
+
+print(model.summary())
+axs_s[1].plot(strat, [model.params[0] + model.params[1] * s for s in strat], "-")
 
 axs_s[1].set_title(
     f"{model.params[0]:.2f} + {model.params[1]:.2f}strat, r² = {model.rsquared:.2f}",
@@ -362,20 +437,28 @@ axs_s[1].set_title(
 axs_s[1].set_ylabel(r"$\mu_t$")
 
 
-seaborn.regplot(x=strat, y=vx, ax=axs_s[2])
-model = sm.OLS(vx, _x).fit()
-print(model.summary().as_latex())
+seaborn.scatterplot(x=strat, y=vx, ax=axs_s[2], s=50)
+model = smf.ols(formula="sigma_i~strategy", data=df)  # AIC = 1
+model = smf.ols(formula="sigma_i~1", data=df)  # AIC = 3
+model = model.fit()
+exit()
+
+print(model.summary())
+axs_s[2].plot(strat, [model.params[0] for s in strat], "-")
 
 axs_s[2].set_title(
-    f"{model.params[0]:.2f} + {model.params[1]:.2f}strat, r² = {model.rsquared:.2f}",
+    f"{model.params[0]:.2f}",
     fontdict=fontdict,
 )
 axs_s[2].set_ylabel(r"$\sigma_i$")
 axs_s[2].set_xlabel("Strategy (numerical)")
 
-seaborn.regplot(x=strat, y=vy, ax=axs_s[3])
-model = sm.OLS(vy, _x).fit()
-print(model.summary().as_latex())
+seaborn.scatterplot(x=strat, y=vy, ax=axs_s[3], s=50)
+model = smf.ols(formula="sigma_t~1", data=df)  # AIC = -10
+model = smf.ols(formula="sigma_t~strategy", data=df)  # AIC = -17
+model = model.fit()
+print(model.summary())
+axs_s[3].plot(strat, [model.params[0] + model.params[1] * s for s in strat], "-")
 
 axs_s[3].set_title(
     f"{model.params[0]:.2f} + {model.params[1]:.2f}strat, r² = {model.rsquared:.2f}",
@@ -384,25 +467,29 @@ axs_s[3].set_title(
 axs_s[3].set_ylabel(r"$\sigma_t$")
 
 
-seaborn.regplot(x=strat, y=rho, ax=axs_s[4])
-model = sm.OLS(rho, _x).fit()
-print(model.summary().as_latex())
+seaborn.scatterplot(x=strat, y=rho, ax=axs_s[4], s=50)
+model = smf.ols(formula="rho~strategy", data=df)  # AIC = -3
+model = smf.ols(formula="rho~1", data=df)  # AIC = -1
+model = model.fit()
+print(model.summary())
+axs_s[4].plot(strat, [model.params[0] for s in strat], "-")
 
 axs_s[4].set_title(
-    f"{model.params[0]:.2f} + {model.params[1]:.2f}strat, r² = {model.rsquared:.2f}",
+    f"{model.params[0]:.2f}",
     fontdict=fontdict,
 )
 axs_s[4].set_ylabel("r")
-
+plt.ion()
+plt.show()
+plt.tight_layout()
+exit()
 fig.tight_layout()
 if FIG_OUTPUT:
     fig.savefig("img/mean_cov.pdf")
 fig2.tight_layout()
 if FIG_OUTPUT:
     fig2.savefig("img/mean_cov_strat.pdf")
-plt.ion()
-plt.show()
-exit()
+
 
 # This works quite well, and we can see the ellipse evolve over strategies. We now have as coarse model:
 

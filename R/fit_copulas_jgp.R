@@ -96,12 +96,21 @@ copula_fits = function(data){
   cop_model = rotCopula(huslerReissCopula())
   m = pobs(as.matrix(cbind(data$id,data$mt)))
   rotHR_fit <- fitCopula(cop_model, m, method = 'ml')
-  return(list(clayton_fit, gumbel_fit, galambos_fit, HR_fit, tev_fit, t_fit, rotgumbel_fit, rotgalambos_fit, rotHR_fit))
+  
+  
+  cop_model = normalCopula()
+  m = pobs(as.matrix(cbind(data$id,data$mt)))
+  normal_fit = fitCopula(cop_model, m, method = 'ml')
+
+  
+
+
+  return(list(normal_fit, clayton_fit, gumbel_fit, galambos_fit, HR_fit, tev_fit, t_fit, rotgumbel_fit, rotgalambos_fit, rotHR_fit))
 }
 
 
-loglik_df <- as.data.frame(matrix(ncol = 15*6, nrow = 9))
-loglik_part_df = data.frame(P = rep(NA, 15*6), I = rep(NA, 15*6), ll = rep(NA, 15*6), copula = rep(NA, 15*6), params = rep(NA, 15*6))
+loglik_df <- as.data.frame(matrix(ncol = 15*4, nrow = 11))
+loglik_part_df = data.frame(P = rep(NA, 15*4), I = rep(NA, 15*4), ll = rep(0, 15*4), copula = rep(NA, 15*4), params1 = rep(NA, 15*4), params2 = rep(NA, 15*4))
 files <- list.files(path="../python/exchange/jgp",  full.names=TRUE, recursive=FALSE)
 df_index = 1
 for (x in files){
@@ -115,9 +124,12 @@ for (x in files){
   last_terms <- unlist(strsplit(last_part, "_"))
   var1 <- as.integer(last_terms[1])
   var2 <- as.integer(gsub("\\.csv", "", last_terms[2]))
-  col_index = (var1)*6 + var2 +1
+  col_index = (var1)*4 + var2 +1
   
-  row_index = 1
+  row_index = 2
+  loglik_df[1, col_index] = 0
+  loglik_part_df[df_index,] = c(var1, var2, 0, "Independent", NA, NA)
+  df_index = df_index +1
   for (fit in fits){
     print('-------')
     print(row_index)
@@ -130,6 +142,10 @@ for (x in files){
       } else {
       copname = attributes(fit@copula)$class[1]
       copparams = attributes(fit@copula)$parameters}
+      if (length(copparams) == 1)
+        {
+        copparams = c(copparams, NA)
+      }
    
     loglik_part_df[df_index,] = c(var1, var2, fit@loglik, copname, copparams)
     row_index = row_index + 1

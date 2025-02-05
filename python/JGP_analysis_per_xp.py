@@ -17,6 +17,8 @@ import emg_arbitrary_variance as emg_av
 
 plt.style.use("fivethirtyeight")
 
+df = polars.read_csv("JGP_per_xp.csv", has_header=True, ignore_errors=True)
+
 GEN = False
 
 if GEN:
@@ -80,7 +82,7 @@ if GEN:
             ax.plot(x, [fit_av.x[0] + fit_av.x[1] * _x for _x in x], "r-")
 
             ax.set_title(
-                rf"{participant},{iteration}: $\Delta$ AIC (OLS-EMG): {ols_aic- emg_aic:.1f}. r = {vec[0]:.2f}, $\rho$ = {vec[1]:.2f}, $\tau$ = {vec[2]:.2f}",
+                rf"P{participant},I{iteration}: $\mathcal{{R}}$ {numpy.exp(-emg_aic + ols_aic)/2:.1e}. r = {vec[0]:.2f}, $\rho$ = {vec[1]:.2f}, $\tau$ = {vec[2]:.2f}",
                 fontdict=fontdict,
             )
 
@@ -95,7 +97,78 @@ if GEN:
     with open("jgp_parameters.pkl", "wb") as _file:
         pickle.dump(parameters, _file)
 
+    Ds = df["A"].unique()
+    Ws = df["W"].unique()
+    association_dw = numpy.empty((len(participants), len(Ds), len(Ws), 3))
 
+    for np, participant in enumerate(participants):
+        df_part = df.filter(polars.col("participant") == participant)
+        for nd, _d in enumerate(Ds):
+            df_d = df_part.filter(polars.col("A") == _d)
+            for nw, _w in enumerate(Ws):
+                df_dw = df_d.filter(polars.col("W") == _w)
+
+                x = numpy.array(df_dw["IDe(2d)"])
+                y = numpy.array(df_dw["Duration"])
+
+                vec = [
+                    pearsonr(x, y).statistic,
+                    spearmanr(x, y).statistic,
+                    kendalltau(x, y).statistic,
+                ]
+            association_dw[np, nd, nw, :] = vec
+    with open("jgp_association_dw.pkl", "wb") as _file:
+        pickle.dump(association_dw, _file)
+
+
+with open("jgp_association_dw.pkl", "rb") as _file:
+    association_dw = pickle.load(_file)
+
+
+Darray = numpy.empty(shape=(association_dw.shape))
+Warray = numpy.empty(shape=(association_dw.shape))
+assarray = numpy.empty(shape=(association_dw.shape))
+Parray = numpy.empty(shape=(association_dw.shape))
+for nd, _d in enumerate([256, 512, 1024, 1408]):
+    Darray[:, nd, :, :] = _d
+for nw, _w in enumerate([64, 96, 128]):
+    Warray[:, :, nw, :] = _w
+ass_map = {0: "PearsonR", 1: "SpearmanR", 2: "KendallT"}
+for nass, ass in enumerate(ass_map.keys()):
+    assarray[:, :, :, nass] = ass
+for p in range(14):
+    Parray[p, :, :, :] = p
+
+_array = numpy.concatenate(
+    [
+        association_dw.reshape(-1, 1),
+        Parray.reshape(-1, 1),
+        Darray.reshape(-1, 1),
+        Warray.reshape(-1, 1),
+        assarray.reshape(-1, 1),
+    ],
+    axis=1,
+)
+df = pandas.DataFrame(_array, columns=["value", "P", "D", "W", "association"])
+df["association"] = df["association"].map(ass_map)
+
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+fig, axs = plt.subplots(1, 3)
+for nax, ax in enumerate(axs):
+    df_red = df[df["association"] == list(ass_map.values())[nax]]
+    seaborn.scatterplot(data=df_red, x="W", y="value", hue="D", ax=ax)
+    print("==============================")
+    print(df_red["association"].unique())
+    md = smf.mixedlm(formula="value ~ D*W", data=df_red, groups=df_red["P"])
+    mdf = md.fit()
+    print(mdf.summary().as_latex())
+
+
+plt.ion()
+plt.show()
+exit()
 with open("jgp_parameters.pkl", "rb") as _file:
     parameters = pickle.load(_file)
 
@@ -115,6 +188,9 @@ for np, p in enumerate(association):
         rows.append([np, ni, *i])
 
 df = pandas.DataFrame(rows, columns=["participant", "iteration", "r", "rho", "tau"])
+
+exit()
+
 
 r_icc = pingouin.intraclass_corr(
     data=df, raters="iteration", targets="participant", ratings="r"

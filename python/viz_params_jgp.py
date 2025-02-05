@@ -21,12 +21,13 @@ import numpy
 from matplotlib.colors import LinearSegmentedColormap
 
 
-fig, axs = plt.subplots(1, 2)
+fig, axs = plt.subplots(2, 11)
 
-df_tcop = df[df["copula"] == "tCopula"]
-seaborn.barplot(data=df_tcop, y="params", x="P", errorbar=("ci", 95), ax=axs[0])
-df_rgcop = df[df["copula"] == "rot gumbelCopula"]
-seaborn.barplot(data=df_rgcop, y="params", x="P", errorbar=("ci", 95), ax=axs[1])
+for nc, cop in enumerate(df["copula"].unique()):
+    df_cop = df[df["copula"] == cop]
+    seaborn.barplot(data=df_cop, y="params1", x="P", errorbar=("ci", 95), ax=axs[0, nc])
+    seaborn.barplot(data=df_cop, y="params2", x="P", errorbar=("ci", 95), ax=axs[1, nc])
+    axs[0, nc].set_ylabel(cop + "  params1")
 
 
 plt.ion()
