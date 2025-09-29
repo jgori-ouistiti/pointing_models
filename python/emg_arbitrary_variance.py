@@ -1,12 +1,6 @@
-from emgregs import emg_reg_heterosked
-import polars
 import numpy
 import matplotlib.pyplot as plt
-from scipy.stats import multivariate_normal
 import statsmodels.api as sm
-from matplotlib.patches import Ellipse
-import seaborn
-import pingouin
 
 
 plt.style.use("fivethirtyeight")
@@ -17,7 +11,6 @@ plt.style.use("fivethirtyeight")
 
 from scipy.stats import exponnorm, norm, expon
 from scipy.optimize import minimize, basinhopping
-import pandas
 
 
 def compute_emg_regression_linear_expo_mean(x, y):

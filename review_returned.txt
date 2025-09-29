@@ -1,0 +1,32 @@
+abstract:  - This starts with expectation management: From the abstract, I expected the paper to be about introducing copulas to HCI and using them to model the distribution of movement time in pointing tasks. While certainly true to some extent, in chapters 6-11 the focus shifts toward a collection of various methods (including copulas) and how they fit distributions to existing data sets, and a less definitive statement about how useful copulas are in this context compared to other methods. While the paper title fits very well, an abstract that emphasizes more that the paper is really about (fitting) various pointing models, and copulas are "just" one of them (line 93: "We also use copulas"), would make it clearer to the reader what to expect. 
+
+
+
+- Intro plus indicative des résultats qu'on présente
+	- The paper seems to pursue a purely statistical approach, with focus on a posteriori dependencies between measured movement times and effective IDs/accuracy. This definitely has value to the community, but should be further emphasised.
+	- To put it bluntly, the paper sometimes reads like a collection of results (and the contribution list in the introduction seems to reflect that) without a clear structure and conclusion
+	- 3.1 in intro
+		
+
+- justifications:
+	- pourquoi tous ces datasets? 1) il y a eu beaucoup de protocoles différents en IHM, on essaye de couvrir tout. 2) approche graduelle: d'abord classique, puis stratégique, puis combinaison. 3) les modèles de pointage en IHM sont appliqués pour plein d'inputs différents, pas seulement de la souris 4) cross-validation
+
+- discussion: 
+	1/ what do we learn about pointing
+	2/ what do we learn about all the statistical analyses: It is unclear which model fitting methods the authors suggest to apply when, and which benefits the use of copulas might offer to HCI (given the many low correlations, and that the best fit usually is observed with t-/Gaussian copulas, which mainly predict a correlation between MT and ID_e for medium values)
+	3/ A further discussion on the expected applicability of the proposed statistical methods (e.g. copulas) to other laws such as 2/3 Power Law, Schmidt's Law, or Steering Law would further strengthen the paper. + applicability in general (ease of use etc.)
+	
+- strip: - Why is the WHo model important? Why are its axioms important?
+	- after having read about the EMG model, I was wondering about the main takeaways, and why I am reading about the model in such detail - until I saw the EMG model applied later
+	- Yet another example is Section 6.3.1, where it feels like results are presented but then immediately discarded ("there are only four distinct ID_e levels, which we believe is insufficient to yield robust results", line 706).
+
+
+- Moreover, the "revisiting" previous results using yet another data set in Section 9.3 appears too sudden and not well-motivated. 
+
+- Generating data in Section 10 also feels like a sudden topic switch. 
+
+- The main flaws are the focus on effective ID, which makes models dependent on user data
+
+- The motivation of presenting another model for movement time when models for complete movement trajectories -- which consider biomechanical constraints and allow to analyse human movements in a much broader way than summary statistics -- already exist is unclear. 
+
+- No new user studies were performed.

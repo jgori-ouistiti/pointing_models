@@ -595,9 +595,6 @@
         \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}%
     \color@endgroup}}
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\@thefnmark}}}
-\RequirePackage{hyperxmp}
-\let\@footnotemark@nolink\@footnotemark
-\let\@footnotetext@nolink\@footnotetext
 \RequirePackage[bookmarksnumbered,unicode]{hyperref}
 \pdfstringdefDisableCommands{%
   \def\addtocounter#1#2{}%
@@ -662,6 +659,9 @@
     {\if@filesw
        \immediate\write\@auxout{\string\bibstyle{#1}}%
      \fi}}
+\RequirePackage{hyperxmp}
+\let\@footnotemark@nolink\@footnotemark
+\let\@footnotetext@nolink\@footnotetext
 \RequirePackage{graphicx}
 \RequirePackage[prologue]{xcolor}
 \definecolor[named]{ACMBlue}{cmyk}{1,0.1,0,0.1}
