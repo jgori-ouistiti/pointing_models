@@ -393,7 +393,7 @@ Copulas not only allow us to imply a dependence structure between weight and hei
 		\draw (cop.south) node[below]{(e)};
 
 	\end{tikzpicture}
-	\caption{How copulas couple two marginals. (a) represents the marginal distribution for MT, here an EMG model. (b) represents the marginal distribution for ID, here a Gaussian model. One can sample independently from MT and ID to obtain a joint (MT, ID) distribution as in (d), however, it does not reflect the fact that low ID movements are usually shorter. (c) is a Gaussian copula, which introduces a dependence where both low and high values have more chance of occurring together. This creates a joint distribution (e) where low (resp. high) values of ID are associated with low (resp. high) values of MT, as characteristic of empirical pointing data.}
+	\caption{How copulas couple two marginals. (a) represents the marginal distribution for MT, here an EMG model. (b) represents the marginal distribution for ID, here a Gaussian model. One can sample independently from MT and ID to obtain a joint (MT, ID) distribution as in (d), however, it does not reflect the fact that low ID movements have usually smaller durations. (c) is a Gaussian copula, which introduces a symmetric dependence between the variables. Using the Gaussian copula to associate the two marginals creates a joint distribution (e) where low (resp. high) values of ID are associated with low (resp. high) values of MT, as expected from a speed-accuracy tradeoff.}
 	\label{fig:copulas_explained}
 \end{figure}
 
@@ -430,7 +430,7 @@ When conditions are aggregated however a global trade-off consistent with the SA
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{tmp.pdf}
-	\caption{The difference between the local and global dependency structure. The blue ellipses, which represent 95\% confidence ellipses for data associated with one block, display an uncorrelated structure between MT and \ide, since they are oriented vertically. The yellow ellipsis, which represents the 95\% confidence ellipsis for the aggregated data shows that MT is correlated with \ide because it is slanted.}
+	\caption{The difference between the local and global dependency structure. The blue ellipses which represent 95\% confidence ellipses for data associated with one block, being oriented vertically, show no correlation between MT and \ide. The orange ellipsis, which represents the 95\% confidence ellipsis for the aggregated data, being oriented at an angle, shows that MT is correlated with \ide. This shows that data that is locally independent can still lead to dependencies when pooled across conditions. In this example, what causes the dependency is mostly the position of the means of the blue ellipses.}
 	\label{fig:global_local_dep}
 \end{figure}
 
@@ -564,7 +564,7 @@ Together, these results show a contrast: while the SAT is weak at the local leve
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{img/model_evidence_ratio_jgp.pdf}
-	\caption{Model evidence ratios $\mathcal{R}$ for global copula fits across participants. The rotated Gumbel copula consistently outperformed other candidates.}
+	\caption{Model evidence ratios $\mathcal{R}$ for global copula fits across participants. The rotated Gumbel copula and Galambos copulas consistently outperformed other candidates.}
 	\label{fig:copulas_jgp}
 \end{figure}
 
@@ -634,7 +634,7 @@ Overall, the additional effects of D and especially W beyond ID, while they can 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{img/ide_id_jpg.pdf}
-	\caption{The relationship between \ide and ID depending on W values (left) and D values (left). The filled circles represent the observed \ide values for prescribed ID levels for varying W or D values, while the lines represent the linear model fits for varying W or D values.}
+	\caption{The relationship between \ide and ID depending on W values (left) and D values (left). The filled circles represent the observed \ide values for prescribed ID levels for varying W or D values, while the lines represent the linear model fits for varying W or D values. This suggests small effects on slope and intercept of both W and D.}
 	\label{fig:ide_id_jpg}
 \end{figure}
 
@@ -791,7 +791,7 @@ The bivariate Gaussian fits for each strategy in the GO dataset are displayed in
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/fittslaw_guiard.pdf}
-	\caption{Fitts' law evaluated }
+	\caption{Fitts' law evaluated on the GO dataset. Each point summarizes data from one block, where color indicates participant strategy, the diamonds represent average movement time and \ide aggregated across all participants for each strategy. $r^2(\ide, \mmt)$ is very close to 1 when considering aggregates (orange), but is otherwise considerably lower.}
 	\label{fig:fittslaw_guiard}
 \end{figure}
 
@@ -826,7 +826,7 @@ We combined the five strategy-specific Gaussian fits into a single model by assi
 
 \begin{table}[htbp]
 	\centering
-	\caption{Comparison between models with or without a strategy main effect, for $\mu_i$, $\mu_t$, $\sigma_i$, $\sigma_t$, $\rho$. The table gives the AIC for each model fit; lower is better, differences of about 10 indicate substantial support for the lower AIC model. The AIC in bold signals this was identified as the best model, where in case of small AIC differences, the simpler model was selected.}
+	\caption{Comparison between models with or without a strategy main effect, for $\mu_i$, $\mu_t$, $\sigma_i$, $\sigma_t$, $\rho$. The table gives the AIC for each model fit; lower is better and differences of about 10 indicate substantial support for the lower AIC model. The AIC in bold signals this was identified as the best model. When the AIC difference was below 5, the simpler model was selected.}
 	\label{tab:aic_gop}
 	\begin{tabular}{c rr}
 	parameter of \autoref{eq:gaussian_ide_mt}	 & strategy model AIC & constant model AIC\\
@@ -878,7 +878,7 @@ Thus, the Gaussian model is compatible both with local Fitts' law (within a give
 	\makebox[\textwidth]{
 		\includegraphics[width=1.3\columnwidth]{img/mean_cov_strat.pdf}
 	}
-	\caption{The parameters of the mean and covariance of the bivariate Gaussian model defined in \autoref{eq:gaussian_ide_mt} plotted against the five numerical strategies. The associated linear fits and $r^2$ are displayed above each plot when applicable.}
+	\caption{The parameters of the mean and covariance of the bivariate Gaussian model defined in \autoref{eq:gaussian_ide_mt} plotted against the five numerical strategies. The associated linear fits that result from the model selection in \autoref{tab:aic_gop} are displayed above each plot.}
 	\label{fig:meancov_strat}
 	\Description{The parameters of the mean and covariance of the bivariate Gaussian model defined in \autoref{eq:gaussian_ide_mt} plotted against the five numerical strategies. The associated linear fits and $r^2$ are displayed above each plot.}
 
@@ -902,7 +902,7 @@ Finally, a pairplot of EMG parameter estimates (see Supplementary Materials) rev
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.6\textwidth]{img/violin_go_pooled_r.pdf}
-	\caption{Model comparisons for the pure strategy protocol. Each violin shows the distribution of AIC differences across participants, with individual values overlaid (black dots). Left: allowing variance to increase with difficulty (quadratic variance) is strongly favored over constant variance. Right: the EMG model is favored over the symmetric Gaussian (both with quadratic variance), indicating that skewness and long tails are characteristic of movement times under strategy manipulations.}
+	\caption{Model comparisons for the pure strategy protocol. Each violin shows the distribution of AIC differences across participants, with individual values overlaid (black dots). Left: allowing variance to increase with difficulty (quadratic variance) is strongly favored over constant variance. Right: the EMG model is favored over the symmetric Gaussian (both with quadratic variance), suggesting that skewness and long tails are characteristic of movement times under strategy manipulations.}
 	\label{fig:violin_go}
 \end{figure}
 
@@ -922,7 +922,7 @@ We also pooled strategies to assess the \textit{global} dependence structure at 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{img/ll_gop_per_strat.pdf}
-	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different strategies.}
+	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different strategies. Data is pooled over participants.}
 	\label{fig:r_cop_gop_s}
 	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
 \end{figure}
@@ -933,7 +933,7 @@ We also pooled strategies to assess the \textit{global} dependence structure at 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[width=\textwidth]{img/ll_gop_per_P.pdf}
-	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different participants.}
+	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different participants, pooled over strategies.}
 	\label{fig:ll_cop_gop_p}
 	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
 \end{figure}
@@ -981,7 +981,7 @@ We found that one unit of strategy augments the slope by approximately 73 ms/bit
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.5\textwidth, trim = {11cm 0 0 0}, clip]{img/fitts_yamanaka.pdf}
-	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on \mmt with \ide and strategy as predictor. The fitted model is \mmt = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
+	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on \mmt with \ide and strategy as predictor. The fitted model without noise is \mmt = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
 	\label{fig:fitts_yamanaka}
 \end{figure}
 
@@ -1039,7 +1039,7 @@ The model comparisons results, based on AIC, are given in \autoref{tab:aic_yaman
 
 \begin{table}[htbp]
 	\centering
-	\caption{Model comparison for $\mu_i$, $\mu_t$, $\sigma_i$, $\sigma_t$, $\rho$. The table gives the AIC for each model fit; lower is better, differences of 10 are meaningful. The AIC in bold signals this was identified as the best model as described in \autoref{tab:aic_gop}.}
+	\caption{Model comparison for $\mu_i$, $\mu_t$, $\sigma_i$, $\sigma_t$, $\rho$. The table gives the AIC for each model fit; model selection follows that described in \autoref{tab:aic_gop}.}
 	\label{tab:aic_yamanaka}
 	\begin{tabular}{c rrrr}
 	\autoref{eq:gaussian_ide_mt} parameters	& Full model AIC & ID model AIC& strategy model AIC& constant model AIC\\
@@ -1056,7 +1056,7 @@ The model comparisons results, based on AIC, are given in \autoref{tab:aic_yaman
 	\centering
 	\makebox[\textwidth]{%
 	\includegraphics[width=1.3\textwidth]{img/yamanaka_biv_strategy_fit.pdf}}
-	\caption{Model of the bivariate Gaussian model fitted to ID and strategy levels. The model parameters are visible in the title, as well as the goodness of fit when applicable ($r^2$).}
+	\caption{Parameters of the bivariate Gaussian model fitted to ID and strategy levels following \autoref{tab:aic_yamanaka}. The associated model parameter values obtained after fitting are displayed in the title.}
 	\label{fig:biv_strategy_fit_yamanaka}
 \end{figure}
 
@@ -1083,7 +1083,7 @@ In short, the results mirror those from the JGP dataset: \ide is primarily drive
 
 \begin{table}[htbp]
 \begin{center}
-	\caption{Estimation and comparison of the 4 models for \ide}
+	\caption{Comparison of four models for \ide and estimation of their parameters for the YKORM dataset.}
 	\label{tab:ide_id_yamanaka}
 	\begin{tabular}{lrrrrrr}
 	\hline
@@ -1109,7 +1109,7 @@ In short, the results mirror those from the JGP dataset: \ide is primarily drive
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/id_ide_yamanaka.pdf}
-	\caption{The simple additive model of \autoref{eq:ide_id_yamanaka_short} displayed on top of the YKORM data. The identity line ($\ide = \text{ID}$) is also plotted.}
+	\caption{The simple additive model of \autoref{eq:ide_id_yamanaka_short} displayed on top of the YKORM data, where each point represents \ide computed from a single block data. The identity line ($\ide = \text{ID}$) is also plotted; when above this line the \ide is larger than ID, signaling over-utilization of the target.}
 	\label{fig:id_ide_yamanaka}
 \end{figure}
 
@@ -1144,7 +1144,7 @@ The AIC differences (\autoref{fig:violin_yamanaka}) again show strong support fo
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/violin_yamanaka_pooled_dw.pdf}
-	\caption{Violin plots for the AIC differences when comparing variance and symmetry models. Refer to the caption of \autoref{fig:violin_go} for more details.}
+	\caption{Violin plots for the AIC differences when comparing variance and symmetry models. The findings are similar to those of \autoref{fig:violin_go}.}
 	\label{fig:violin_yamanaka}
 \end{figure}
 
@@ -1159,13 +1159,13 @@ Pooling across strategies, we obtained 72 datasets. The results (\autoref{fig:R_
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/R_yamanaka_DW.pdf}
-	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula for different (D, W) pairs of the YKORM dataset.}
+	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula for different (D, W) pairs of the YKORM dataset. Data is pooled over participants.}
 	\label{fig:R_yamanaka_DW}
 \end{figure}
 
 
 \paragraph{Effect of strategy}
-When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas largely dominated (\autoref{fig:R_yamanaka_SP}). Copula parameter estimates for the t-copula (\autoref{fig:rho_nu}) showed no systematic dependence on strategy. This complements the earlier results: strategy shifts the marginal distributions of MT and \ide, but does not alter the dependency structure between them.
+When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas largely dominated (\autoref{fig:R_yamanaka_SP}). Copula parameter estimates for the t-copula, available in the supplementary materials, showed no systematic dependence on strategy. This complements the earlier results: strategy shifts the marginal distributions of MT and \ide, but does not alter the dependency structure between them.
 
 
 
@@ -1178,12 +1178,6 @@ When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas large
 \end{figure}
 
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.8\textwidth]{img/rho_nu_SP_yamanaka.pdf}
-	\caption{Parameters of the t-copula for different strategies.}
-	\label{fig:rho_nu}
-\end{figure}
 
 
 \section{Synthesis of the three studies: copula fits and \ide model}
@@ -1233,10 +1227,8 @@ To further validate and generalize our findings, we analyzed the Pointing Dynami
 We only considered movements in the left-to-right direction. The first 20 trials for each condition were also removed in the version of the PDD dataset that is publicly available. After removing spatial outliers (endpoint position more than 2 standard deviations away from the mean per condition), we ended up with a dataset of 3744 movements. For some blocks in the ID=2 conditions, we found \ide levels below 1, which is abnormally low\footnote{Typically, \ide will be above ID for low levels of ID, since participants will use less than the available width of the target. Finding such low \ide values is thus very surprising and likely indicates a problem in the data or its processing.}. We thus removed these blocks and in the end we were left with 3160 movements across 87 different conditions. 
 
 \subsubsection{Model between \ide and D, W, ID}
-We fitted similar mixed-effect linear models as in the first study. Consistent with prior results, \ide was largely determined by ID and strategy, with D having only a weak secondary effect when decorrelated from ID. W remains strongly correlated with ID in this dataset, so its separate contribution is harder to estimate reliably. Importantly, the model reproduces the classic target under- and over-utilization phenomenon: positive intercepts and slopes slightly below 1 indicate under-utilization for small IDs and over-utilization for large IDs. This confirms that the simple linear model in \autoref{eq:model_ide_simple} captures the essential structure of 
-\ide across datasets. Parameter estimates are summarized in \autoref{tab:fit_pdd_ide_id}.
-
-
+We fitted similar mixed-effect linear models as in the first study, with parameter estimates summarized in \autoref{tab:fit_pdd_ide_id}.
+Importantly, the models reproduces the classic target under and over-utilization phenomenon: positive intercepts and slopes slightly below 1 indicate under-utilization for small IDs and over-utilization for large IDs. This confirms that the simple linear model in \autoref{eq:model_ide_simple} can also in this case explain \citeauthor{zhai2004nominal}'s observations. The shape x scale design used for the PDD dataset decorrelated D from ID; thus the data provides strong support for a small but significant effect of D. The likelihoods associated with each model highlight the importance of including W in the models, but estimated parameters that include W are however unreliable, since W and ID remain strongly correlated, so we will not further comment on them.
 
 \begin{table}
 	\caption{Mixed effect model fit results four \ide models. Each line (except the last, which displays the log-likelihood associated with each model) displays the estimated coefficient associated with the variable in the left column as well its associated p-value (in bold if p$<$0.05).}
@@ -1269,13 +1261,13 @@ For global dependencies (pooling across W conditions per participant), results a
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/R_DW_pdd.pdf}
-	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, for 8 different conditions (labeled by W value).}
+	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, for 8 different conditions (labeled by W value). Data is pooled over participants.}
 	\label{fig:R_DW_pdd}
 \end{figure}
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{img/model_evidence_ratio_pdd.pdf}
-	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, computed for each participant.}
+	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, computed for each participant. Data is pooled over D and W values.}
 	\label{fig:mer_pdd}
 \end{figure}
 
@@ -1408,7 +1400,7 @@ The results are shown in \autoref{fig:consistency}. Overall, differences between
 	\makebox[\textwidth]{
 		\includegraphics[width=1.3\columnwidth]{img/method_consistency.pdf}
 	}
-	\caption{Consistency as evaluated by the criterion of \autoref{subs:consistency}. The original dataset (left panel) is compared to data produced by Model 1 (middle left panel), Model 2 (middle right panel) and Model 3 (right panel).}
+	\caption{Consistency as evaluated by the criterion of \autoref{subs:consistency}. The original, ground truth dataset (left panel) is compared to data produced by Model 1 (middle left panel), Model 2 (middle right panel) and Model 3 (right panel). The scores considered for consistency are displayed on each panel.}
 	\label{fig:consistency}
 \end{figure}
 
