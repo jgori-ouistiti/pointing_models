@@ -493,6 +493,24 @@ different speed accuracy strategies  }
 %     \end{tabular}
 % \end{table}
 
+\section{$\rho$ values for the Gaussian copula (Section 6.5)}
+\begin{table}[htbp]
+	\centering
+	\caption{Mean $\rho$ values of the Gaussian copula and associated t-statistics and p-values for the one way Student's t-test.}
+	\begin{tabular}{lrrrrr}
+		\toprule
+		  Strategy & T-Statistic & P-Value & Mean & Count \\
+		\midrule
+		 1 (speed emph.) & 0.298 & 0.770 & 0.032 & 15 \\
+		 2 (speed)& 1.67 & 0.118 & 0.134 & 15 \\
+		 3 (balanced)& 6.91 & \textbf{\textless 0.001} & 0.321 & 15 \\
+		 4 (accuracy) & 1.30 & 0.214 & 0.117 & 15 \\
+		 5 (accuracy emph.)& 3.26 & \textbf{0.006} & 0.253 & 15 \\
+		\bottomrule
+		\end{tabular}
+	\label{tab:gauss_corr}
+\end{table}
+
 \section{Pairplot for the EMG parameters for the GOP dataset (section 7.5)}
 
 \begin{figure}[htbp]
