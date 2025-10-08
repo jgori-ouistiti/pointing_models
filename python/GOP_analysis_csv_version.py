@@ -370,7 +370,7 @@ for n, strat in enumerate(strategies):
     vy.append(numpy.sqrt(cov[1, 1]))
     rho.append(cov[1, 0] / numpy.sqrt(cov[0, 0] * cov[1, 1]))
 
-ax.set_xlabel("IDe (bit)")
+ax.set_xlabel(r"$\text{ID}_e$" + " (bit)")
 ax.set_ylabel(r"$\overline{\text{MT}}$ (s)")
 ax.legend()
 plt.ion()

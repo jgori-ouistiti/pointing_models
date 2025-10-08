@@ -37,7 +37,7 @@
 \usepackage{xspace}
 \usepackage{textgreek}
 \usepackage[section]{placeins}
-
+\usepackage{subcaption}
 % \title{Pointing Models for Users Operating Under Different Speed Accuracy Strategies}
 \title{Pointing Beyond Fitts: Strategy, Movement Time Distributions, Local-Global Tradeoffs, and Generative Models}
 \author{Julien Gori}
@@ -365,37 +365,87 @@ A simple, yet flawed, approach to generating realistic human data would be to tr
 Copulas not only allow us to imply a dependence structure between weight and height; but different copulas specify different forms of dependencies between weight and height.
 
 
-\autoref{fig:copulas_explained} illustrates how the Gaussian copula shapes a joint distribution: In (d), the two marginals (a) and (b) are independently combined. In (e), the two marginals are coupled with a Gaussian copula (c). For this illustration, we have used realistic marginal distributions for MT (a) and ID (b). Note that in both jointplots (d) and (e), the estimated marginals are identical, but notice how the joint distribution differ. In particular, the distribution obtained with the Gaussian copula has an increase in variance with ID levels that is characteristic of pointing data~\cite{gori2018these}.
+\autoref{fig:copulas_explained} illustrates how the Gaussian copula shapes a joint distribution: In (d), the two marginals (a) and (b) are independently combined. In (e), the two marginals are coupled with a Gaussian copula (c). For this illustration, we have used realistic marginal distributions for MT (a) and ID (b). Note that in both jointplots (d) and (e), the estimated marginals are identical, but notice how the datasets differ. In particular, we see that the dataset obtained with the Gaussian copula has variance that increases with ID levels, which is characteristic of pointing data~\cite{gori2018these}.
+
+
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\begin{tikzpicture}
+% 		\draw (0,0) node[name = 00]{\includegraphics[width=.3\textwidth]{img/copula_scheme_00.pdf}};
+% 		\draw (0,0) ++ (6,0) node[name = 01]{\includegraphics[width=.3\textwidth]{img/copula_scheme_01.pdf}};
+% 		\draw (01) ++ (6,0) node[name = copula]{\includegraphics[width=.4\textwidth]{img/copula_scheme_4.pdf}};
+% 		\draw (2, -8) node[name=indep]{\includegraphics[width=.4\textwidth]{img/copula_scheme_3.pdf}};
+% 		\draw (10, -8) node[name=cop]{\includegraphics[width=.4\textwidth]{img/copula_scheme_5.pdf}};
+% 		\draw[-latex] (00.south) -- (indep.north);
+% 		\draw[-latex] (01.south) -- (indep.north);
+
+% 		\draw (cop.north) ++ (0,1.5) node[circle, draw=black, name = func]{\phantom{x}};
+% 		\draw[-latex] (00.south) -- (func);
+% 		\draw[-latex] (01.south) -- (func);
+% 		\draw[-latex] (copula.south) -- (func);
+% 		\draw[-latex] (func) -- (cop);
+
+% 		\draw (00.north) node[above]{(a)};
+% 		\draw (01.north) node[above]{(b)};
+% 		\draw (copula.north) node[above]{(c)};
+% 		\draw (indep.south) node[below]{(d)};
+% 		\draw (cop.south) node[below]{(e)};
+
+% 	\end{tikzpicture}
+% 	\caption{How copulas couple two marginals. (a) represents the marginal distribution for MT, here an EMG model. (b) represents the marginal distribution for ID, here a Gaussian model. One can sample independently from MT and ID to obtain a joint (MT, ID) distribution as in (d), however, it does not reflect the fact that low ID movements have usually smaller durations. (c) is a Gaussian copula, which introduces a symmetric dependence between the variables. Using the Gaussian copula to associate the two marginals creates a joint distribution (e) where low (resp. high) values of ID are associated with low (resp. high) values of MT, as expected from a speed-accuracy tradeoff.}
+% 	\label{fig:copulas_explained}
+% \end{figure}
+
 
 
 
 \begin{figure}[htbp]
-	\centering
-	\begin{tikzpicture}
-		\draw (0,0) node[name = 00]{\includegraphics[width=.3\textwidth]{img/copula_scheme_00.pdf}};
-		\draw (0,0) ++ (6,0) node[name = 01]{\includegraphics[width=.3\textwidth]{img/copula_scheme_01.pdf}};
-		\draw (01) ++ (6,0) node[name = copula]{\includegraphics[width=.4\textwidth]{img/copula_scheme_4.pdf}};
-		\draw (2, -8) node[name=indep]{\includegraphics[width=.4\textwidth]{img/copula_scheme_3.pdf}};
-		\draw (10, -8) node[name=cop]{\includegraphics[width=.4\textwidth]{img/copula_scheme_5.pdf}};
-		\draw[-latex] (00.south) -- (indep.north);
-		\draw[-latex] (01.south) -- (indep.north);
+    \centering
 
-		\draw (cop.north) ++ (0,1.5) node[circle, draw=black, name = func]{\phantom{x}};
-		\draw[-latex] (00.south) -- (func);
-		\draw[-latex] (01.south) -- (func);
-		\draw[-latex] (copula.south) -- (func);
-		\draw[-latex] (func) -- (cop);
+    % First row
+    \begin{subfigure}[t]{0.29\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/copula_scheme_00.pdf}
+        \caption{Marginal distribution for an EMG distributed MT.}
+        \label{fig:a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.29\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/copula_scheme_01.pdf}
+        \caption{Marginal distribution for a Gaussian distributed ID.}
+        \label{fig:b}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.39\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/copula_scheme_4.pdf}
+        \caption{Kernel density estimate (KDE) of the Gaussian copula, which introduces a symmetric dependence between variables.}
+        \label{fig:c}
+    \end{subfigure}
 
-		\draw (00.north) node[above]{(a)};
-		\draw (01.north) node[above]{(b)};
-		\draw (copula.north) node[above]{(c)};
-		\draw (indep.south) node[below]{(d)};
-		\draw (cop.south) node[below]{(e)};
+    % Second row
+    \vskip\baselineskip
 
-	\end{tikzpicture}
-	\caption{How copulas couple two marginals. (a) represents the marginal distribution for MT, here an EMG model. (b) represents the marginal distribution for ID, here a Gaussian model. One can sample independently from MT and ID to obtain a joint (MT, ID) distribution as in (d), however, it does not reflect the fact that low ID movements have usually smaller durations. (c) is a Gaussian copula, which introduces a symmetric dependence between the variables. Using the Gaussian copula to associate the two marginals creates a joint distribution (e) where low (resp. high) values of ID are associated with low (resp. high) values of MT, as expected from a speed-accuracy tradeoff.}
-	\label{fig:copulas_explained}
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/copula_scheme_3.pdf}
+        \caption{Dataset obtained by independently sampling from the MT and ID marginals \ie the ID value with which MT is paired is independent from the value of MT. This does not reflect a speed-accuracy tradeoff \ie that small values of ID should be associated with small values of MT.}
+        \label{fig:d}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/copula_scheme_5.pdf}
+        \caption{Dataset obtained by sampling from the joint distribution for MT and ID after having been coupled with the Gaussian copula. While the marginals are the same between the two datasets, the structure of the dataset is very different, with small values of MT being associated with small values of ID in this dataset, as expected from a speed-accuracy tradeoff.}
+        \label{fig:e}
+    \end{subfigure}
+
+    \caption{How copulas can be used to specify a particular dependency structure in a dataset from given marginal distributions.}
+    \label{fig:copulas_explained}
 \end{figure}
+
 
 
 
@@ -427,12 +477,62 @@ When conditions are aggregated however a global trade-off consistent with the SA
 \autoref{fig:global_local_dep} illustrates this effect: locally, dependencies are weak, but globally, high values of MT align with high values of \ide. 
 
 
+
+
+
+
+
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{tmp.pdf}
+\begin{tikzpicture}[scale=1.2]
+
+    % Define the angle of the alignment line
+    \def\angle{20} % degrees
+	\def\Eangle{20} % degrees
+
+    % Draw the big background ellipse, rotated so that its major axis follows the line
+    \draw[fill=gray!10, draw=gray!70, thick, rotate=\angle]
+        (0,0) ellipse [x radius=4.5cm, y radius=1.5cm];
+
+    % Define spacing and small ellipse sizes
+    \def\spacing{1.5}
+    \def\ry{1.0}
+    \def\rx{0.3}
+
+    % Draw 5 small ellipses whose centers are along a 20° line,
+    % but each ellipse remains unrotated (aligned with x and y axes)
+    \foreach \i in {-2,-1,0,1,2}{
+        \pgfmathsetmacro{\x}{\i*\spacing*cos(\angle)}
+        \pgfmathsetmacro{\y}{\i*\spacing*sin(\angle)}
+		\pgfmathsetmacro{\currentRx}{(\i+3)/6 * \rx  + .5} % example
+        \pgfmathsetmacro{\currentRy}{(\i+3)/6 * \ry + .5}
+        \draw[fill=blue!15, draw=blue!80, thick]
+            (\x,\y) ellipse [x radius=\currentRx cm, y radius=\currentRy cm];
+    }
+	\draw[fill=blue!15, draw=blue!80, thick] (-4,2) ellipse [x radius=.4 cm, y radius=.1 cm] node[right = .5cm, color=blue!80]{local dependence};
+	\draw[fill=gray!10, draw=gray!70, thick] (-4,1.6) ellipse [x radius=.4 cm, y radius=.1 cm] node[right = .5cm, color=gray!70]{global dependence};
+    
+    % Optional: show the alignment axis
+    % \draw[dashed, gray!60] (-7,0) -- (7,0);
+    \draw[thick, gray!60, rotate=\Eangle] (-5.5,0) -- (5.5,0)
+        node[right, black]{};
+	\draw[thick, black, ->] (-5.5, -2.75) -- (-5.5, 2.5) node[rotate=90, pos=.9, above]{MT};
+	\draw[thick, black, ->] (-5.75, -2.5) -- (5.5, -2.5) node[below, pos=.9]{ID};
+
+\end{tikzpicture}
+
 	\caption{The difference between the local and global dependency structure. The blue ellipses which represent 95\% confidence ellipses for data associated with one block, being oriented vertically, show no correlation between MT and \ide. The orange ellipsis, which represents the 95\% confidence ellipsis for the aggregated data, being oriented at an angle, shows that MT is correlated with \ide. This shows that data that is locally independent can still lead to dependencies when pooled across conditions. In this example, what causes the dependency is mostly the position of the means of the blue ellipses.}
 	\label{fig:global_local_dep}
 \end{figure}
+
+
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.8\textwidth]{tmp.pdf}
+% 	\caption{The difference between the local and global dependency structure. The blue ellipses which represent 95\% confidence ellipses for data associated with one block, being oriented vertically, show no correlation between MT and \ide. The orange ellipsis, which represents the 95\% confidence ellipsis for the aggregated data, being oriented at an angle, shows that MT is correlated with \ide. This shows that data that is locally independent can still lead to dependencies when pooled across conditions. In this example, what causes the dependency is mostly the position of the means of the blue ellipses.}
+% 	\label{fig:global_local_dep}
+% \end{figure}
 
 To estimate these joint distributions, we consider two complementary approaches.
 
@@ -546,12 +646,32 @@ These findings suggest that the SAT is not strongly expressed at the local level
 % 	\label{fig:copula_fit_jgp_dwp}
 % \end{figure}
 
+
+
 \begin{figure}[htbp]
+	\begin{subfigure}[c]{.48\textwidth}
 	\centering
-	\includegraphics[width=.7\textwidth]{img/R_DW.pdf}
+	\includegraphics[width=\textwidth]{img/R_DW.pdf}
 	\caption{Model evidence ratios ($\mathcal{R}$) for pooled participant data across D$\times$W conditions. Except for the smallest target condition ($W=64$), the independent copula provided the best fit, indicating no consistent local dependency between MT and \ide. $\mathcal{R}=0.1$ means the model is about 10 times less likely than the best-fitting copula.}
 	\label{fig:copula_fit_jgp_dw}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{.48\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{img/model_evidence_ratio_jgp.pdf}
+	\caption{Model evidence ratios $\mathcal{R}$ for global copula fits across participants. The rotated Gumbel copula and Galambos copulas consistently outperformed other candidates.}
+	\label{fig:copulas_jgp}
+	\end{subfigure}
+	\caption{Copula comparisons for the JGP dataset.}
+	
 \end{figure}
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.5\textwidth]{img/R_DW.pdf}
+% 	\caption{Model evidence ratios ($\mathcal{R}$) for pooled participant data across D$\times$W conditions. Except for the smallest target condition ($W=64$), the independent copula provided the best fit, indicating no consistent local dependency between MT and \ide. $\mathcal{R}=0.1$ means the model is about 10 times less likely than the best-fitting copula.}
+% 	\label{fig:copula_fit_jgp_dw}
+% \end{figure}
 
 
 \subsubsection{Global dependency structure}
@@ -561,12 +681,12 @@ The rotated Gumbel copula consistently provided the best fit across participants
 
 Together, these results show a contrast: while the SAT is weak at the local level, it emerges clearly in the global distribution once conditions are aggregated.
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{img/model_evidence_ratio_jgp.pdf}
-	\caption{Model evidence ratios $\mathcal{R}$ for global copula fits across participants. The rotated Gumbel copula and Galambos copulas consistently outperformed other candidates.}
-	\label{fig:copulas_jgp}
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=\textwidth]{img/model_evidence_ratio_jgp.pdf}
+% 	\caption{Model evidence ratios $\mathcal{R}$ for global copula fits across participants. The rotated Gumbel copula and Galambos copulas consistently outperformed other candidates.}
+% 	\label{fig:copulas_jgp}
+% \end{figure}
 
 
 
@@ -634,13 +754,13 @@ Overall, the additional effects of D and especially W beyond ID, while they can 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{img/ide_id_jpg.pdf}
-	\caption{The relationship between \ide and ID depending on W values (left) and D values (left). The filled circles represent the observed \ide values for prescribed ID levels for varying W or D values, while the lines represent the linear model fits for varying W or D values. This suggests small effects on slope and intercept of both W and D.}
+	\caption{The relationship between \ide and ID depending on W values (left) and D values (right). The filled circles represent the observed \ide values for prescribed ID levels for varying W or D values, while the lines represent the linear model fits for varying W or D values. This suggests small effects on slope and intercept of both W and D.}
 	\label{fig:ide_id_jpg}
 \end{figure}
 
 
 \begin{table}
-	\caption{Mixed effect model fit results for four different models of \ide. Each line (except the last, which displays the log-likelihood associated with each model) displays the estimated coefficient associated with the variable in the left column as well its associated p-value (in bold if p<0.05). Each model is expressed in R-style formula syntax. Higher log-likelihood indicates better fit.}
+	\caption{Mixed effect model fit results for four different models of \ide, expressed in R-style formula syntax. The estimated coefficients are displayed associated with their p-value (in bold if p<0.05). The last line displays the log-likelihood of the model (higher indicates better fit).}
 	\label{tab:fit_jgp_ide_id}
 \begin{center}
 	\begin{tabular}{lrrrrrr}
@@ -788,11 +908,29 @@ which, in line with Proposition~\ref{prop}, ensures that, at the level of strate
 
 The bivariate Gaussian fits for each strategy in the GO dataset are displayed in \autoref{fig:go_ide}. Each ellipse shows the $95\%$ prediction region of a bivariate Gaussian fitted to (\ide,\mmt). The separation of ellipses reflects overall differences between strategies, while their orientation shows the local correlation between \ide and \mmt\footnote{The covariance matrix of a Gaussian bivariate is the rightmost term of \autoref{eq:gaussian_ide_mt} where $\rho$ is the correlation between the two components. The angle of the prediction ellipsis is given by $\frac{1}{2} \arctan \left( \frac{2\rho \sigma_i\sigma_t}{\sigma_i^2 - \sigma_t^2} \right) $.}. Strategies produce higher means and larger spreads with consistent positive correlation, whereas the \textit{speed emphasis} condition shows little to no correlation.%: when participants emphasize speed above anything else, accuracy actually becomes independent of local changes in speed, which is consistent with purely feedforward movements~\cite{gan1988, crossman1957}.
 
+
 \begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.8\textwidth]{img/fittslaw_guiard.pdf}
+   \centering
+   \begin{subfigure}[t]{0.47\textwidth}
+	   \includegraphics[width=\linewidth]{img/fittslaw_guiard.pdf}
 	\caption{Fitts' law evaluated on the GO dataset. Each point summarizes data from one block, where color indicates participant strategy, the diamonds represent average movement time and \ide aggregated across all participants for each strategy. $r^2(\ide, \mmt)$ is very close to 1 when considering aggregates (orange), but is otherwise considerably lower.}
 	\label{fig:fittslaw_guiard}
+   \end{subfigure}
+   \hfill
+   \begin{subfigure}[t]{0.505\textwidth}
+	   \includegraphics[width=\linewidth]{img/fitts_ide_go_with_ellipse.pdf}
+	\caption{Gaussian fits for each strategy in the GO dataset. Each ellipse shows the $95\%$ prediction region of a bivariate Gaussian fitted to (\ide,\mmt). The separation of ellipses reflects overall differences between strategies, while their orientation shows the local correlation between \ide and \mmt. Strategies oriented toward precision produce higher means and larger spreads with consistent positive correlation, whereas the \textit{speed emphasis} condition shows little to no correlation.}
+	\label{fig:go_ide}
+   \end{subfigure}
+  
+\caption{Fitts' law and the bivariate Gaussian model compared on the GO dataset.}
+\label{fig:main}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
 \end{figure}
 
 
@@ -801,9 +939,7 @@ The bivariate Gaussian fits for each strategy in the GO dataset are displayed in
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.7\columnwidth]{img/fitts_ide_go_with_ellipse.pdf}
-	\caption{Gaussian fits for each strategy in the GO dataset. Each ellipse shows the $95\%$ prediction region of a bivariate Gaussian fitted to (\ide,\mmt). The separation of ellipses reflects overall differences between strategies, while their orientation shows the local correlation between \ide and \mmt. Strategies oriented toward precision produce higher means and larger spreads with consistent positive correlation, whereas the \textit{speed emphasis} condition shows little to no correlation.}
-	\label{fig:go_ide}
+	
 \end{figure}
 
 
@@ -876,7 +1012,7 @@ Thus, the Gaussian model is compatible both with local Fitts' law (within a give
 \begin{figure}[htbp]
 	\centering
 	\makebox[\textwidth]{
-		\includegraphics[width=1.3\columnwidth]{img/mean_cov_strat.pdf}
+		\includegraphics[width=1.2\columnwidth]{img/mean_cov_strat.pdf}
 	}
 	\caption{The parameters of the mean and covariance of the bivariate Gaussian model defined in \autoref{eq:gaussian_ide_mt} plotted against the five numerical strategies. The associated linear fits that result from the model selection in \autoref{tab:aic_gop} are displayed above each plot.}
 	\label{fig:meancov_strat}
@@ -919,24 +1055,43 @@ For the Gaussian copula, the fitted correlation parameters were small but positi
 We also pooled strategies to assess the \textit{global} dependence structure at the participant level. As shown in \autoref{fig:ll_cop_gop_p}, the Gaussian and $t$-copulas provided the best fits for 10 of 15 participants, with an average correlation of $\rho \approx 0.71$. The $t$-copula degrees of freedom $\nu$ varied widely across participants, suggesting some heterogeneous tail behavior. For 4 of the remaining participants, the Galambos copula was selected, again with $\theta$ values close to 0 (independence).
 
 
+
+
 \begin{figure}[htbp]
-	\centering
-		\includegraphics[width=\textwidth]{img/ll_gop_per_strat.pdf}
+   \centering
+   \begin{subfigure}[t]{0.48\textwidth}
+	   \includegraphics[width=\linewidth, trim = {.5cm 0 2.5cm 0}, clip]{img/ll_gop_per_strat.pdf}
 	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different strategies. Data is pooled over participants.}
 	\label{fig:r_cop_gop_s}
-	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
-\end{figure}
-
-
-
-
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=\textwidth]{img/ll_gop_per_P.pdf}
+   \end{subfigure}
+   \hfill
+   \begin{subfigure}[t]{0.48\textwidth}
+	   \includegraphics[width=\linewidth,  trim = {0 0 3.5cm 0}, clip]{img/ll_gop_per_P.pdf}
 	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different participants, pooled over strategies.}
 	\label{fig:ll_cop_gop_p}
-	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
+   \end{subfigure}
+ 
+\caption{Copula comparisons for the GO dataset.}
 \end{figure}
+
+% \begin{figure}[htbp]
+% 	\centering
+% 		\includegraphics[width=\textwidth]{img/ll_gop_per_strat.pdf}
+% 	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different strategies. Data is pooled over participants.}
+% 	\label{fig:r_cop_gop_s}
+% 	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
+% \end{figure}
+
+
+
+
+% \begin{figure}[htbp]
+% 	\centering
+% 		\includegraphics[width=\textwidth]{img/ll_gop_per_P.pdf}
+% 	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula, for different participants, pooled over strategies.}
+% 	\label{fig:ll_cop_gop_p}
+% 	\Description{Log-likelihoods of the tested copulas, normalized for each row by the best fitting copula. Left panel: Comparison on the basis of participants, when data is aggregated over all strategies. Right panel: Comparison on the basis of strategies, when data is aggregated over all participants.}
+% \end{figure}
 
 
 \subsection{Interpretation of the second study}
@@ -978,12 +1133,30 @@ We first verified (see \autoref{fig:fitts_yamanaka}) that the YKORM data is cons
 %For both models, one unit of strategy augments the slope by approximately 75 ms/bit. 
 We found that one unit of strategy augments the slope by approximately 73 ms/bit. Since one unit of strategy separates the speed and accuracy conditions, this amounts to a change of about 35\,ms/bit between each consecutive condition, consistent with the study from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal} who found differences of about 30ms/bit in a similar study.
 
+
 \begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.5\textwidth, trim = {11cm 0 0 0}, clip]{img/fitts_yamanaka.pdf}
+   \centering
+   \begin{subfigure}[t]{0.43\textwidth}
+	  \includegraphics[width=\linewidth, trim = {11cm 0 0 0}, clip]{img/fitts_yamanaka.pdf}
 	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on \mmt with \ide and strategy as predictor. The fitted model without noise is \mmt = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
 	\label{fig:fitts_yamanaka}
+   \end{subfigure}
+   \hfill
+   \begin{subfigure}[t]{0.55\textwidth}
+	   \includegraphics[width=\linewidth]{img/yamanaka_ide_mmt.pdf}
+	\caption{95\% prediction ellipses of the bivariate Gaussian model fitted to the YKORM dataset. Each model is fit to (\mmt,\ide) data for a given strategy and ID level. The different colors of the points indicate different ID levels.}
+	\label{fig:yamanaka_ide_mmt}
+   \end{subfigure}
+\caption{The Fitts and the bivariate Gaussian model compared on the YKORM dataset.}
+\label{fig:main}
 \end{figure}
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.5\textwidth, trim = {11cm 0 0 0}, clip]{img/fitts_yamanaka.pdf}
+% 	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on \mmt with \ide and strategy as predictor. The fitted model without noise is \mmt = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
+% 	\label{fig:fitts_yamanaka}
+% \end{figure}
 
 % \begin{table}[htbp]
 % 	\caption{Fitts' law fitted on the YKORM dataset. Fitts' model was fitted on \mmt and not MT.}
@@ -1030,12 +1203,12 @@ The model comparisons results, based on AIC, are given in \autoref{tab:aic_yaman
 \autoref{fig:biv_strategy_fit_yamanaka} illustrates these fits, with parameter estimates and $r^2$ values reported in the panel titles.
 
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.6\textwidth]{img/yamanaka_ide_mmt.pdf}
-	\caption{95\% prediction ellipses of the bivariate Gaussian model fitted to the YKORM dataset. Each model is fit to (\mmt,\ide) data for a given strategy and ID level. The different colors of the points indicate different ID levels.}
-	\label{fig:yamanaka_ide_mmt}
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.6\textwidth]{img/yamanaka_ide_mmt.pdf}
+% 	\caption{95\% prediction ellipses of the bivariate Gaussian model fitted to the YKORM dataset. Each model is fit to (\mmt,\ide) data for a given strategy and ID level. The different colors of the points indicate different ID levels.}
+% 	\label{fig:yamanaka_ide_mmt}
+% \end{figure}
 
 \begin{table}[htbp]
 	\centering
@@ -1108,7 +1281,7 @@ In short, the results mirror those from the JGP dataset: \ide is primarily drive
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{img/id_ide_yamanaka.pdf}
+	\includegraphics[width=.6\textwidth]{img/id_ide_yamanaka.pdf}
 	\caption{The simple additive model of \autoref{eq:ide_id_yamanaka_short} displayed on top of the YKORM data, where each point represents \ide computed from a single block data. The identity line ($\ide = \text{ID}$) is also plotted; when above this line the \ide is larger than ID, signaling over-utilization of the target.}
 	\label{fig:id_ide_yamanaka}
 \end{figure}
@@ -1143,7 +1316,7 @@ The AIC differences (\autoref{fig:violin_yamanaka}) again show strong support fo
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{img/violin_yamanaka_pooled_dw.pdf}
+	\includegraphics[width=.6\textwidth]{img/violin_yamanaka_pooled_dw.pdf}
 	\caption{Violin plots for the AIC differences when comparing variance and symmetry models. The findings are similar to those of \autoref{fig:violin_go}.}
 	\label{fig:violin_yamanaka}
 \end{figure}
@@ -1158,7 +1331,7 @@ Pooling across strategies, we obtained 72 datasets. The results (\autoref{fig:R_
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{img/R_yamanaka_DW.pdf}
+	\includegraphics[width=.6\textwidth]{img/R_yamanaka_DW.pdf}
 	\caption{Model evidence ratio $\mathcal{R}$ of the tested copulas against the best copula for different (D, W) pairs of the YKORM dataset. Data is pooled over participants.}
 	\label{fig:R_yamanaka_DW}
 \end{figure}
@@ -1259,17 +1432,35 @@ For global dependencies (pooling across W conditions per participant), results a
 
 
 \begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.8\textwidth]{img/R_DW_pdd.pdf}
+   \centering
+   \begin{subfigure}[t]{0.48\textwidth}
+	   \includegraphics[width=\linewidth, trim = {0 0 2cm 0}, clip]{img/R_DW_pdd.pdf}
 	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, for 8 different conditions (labeled by W value). Data is pooled over participants.}
 	\label{fig:R_DW_pdd}
-\end{figure}
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.8\textwidth]{img/model_evidence_ratio_pdd.pdf}
+   \end{subfigure}
+   \hfill
+   \begin{subfigure}[t]{0.48\textwidth}
+	   \includegraphics[width=\linewidth, trim = {0 0 2cm 0}, clip]{img/model_evidence_ratio_pdd.pdf}
 	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, computed for each participant. Data is pooled over D and W values.}
 	\label{fig:mer_pdd}
+   \end{subfigure}
+\caption{Copula comparisons for the YKORM dataset.}
+\label{fig:main}
 \end{figure}
+
+
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.8\textwidth]{img/R_DW_pdd.pdf}
+% 	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, for 8 different conditions (labeled by W value). Data is pooled over participants.}
+% 	\label{fig:R_DW_pdd}
+% \end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[width=.8\textwidth]{img/model_evidence_ratio_pdd.pdf}
+% 	\caption{Model evidence ratio $\mathcal{R}$ for the PDD dataset, computed for each participant. Data is pooled over D and W values.}
+% 	\label{fig:mer_pdd}
+% \end{figure}
 
 % \begin{figure}[htbp]
 % 	\centering
@@ -1398,7 +1589,7 @@ The results are shown in \autoref{fig:consistency}. Overall, differences between
 \begin{figure}[htbp]
 	\centering
 	\makebox[\textwidth]{
-		\includegraphics[width=1.3\columnwidth]{img/method_consistency.pdf}
+		\includegraphics[width=1.2\columnwidth]{img/method_consistency.pdf}
 	}
 	\caption{Consistency as evaluated by the criterion of \autoref{subs:consistency}. The original, ground truth dataset (left panel) is compared to data produced by Model 1 (middle left panel), Model 2 (middle right panel) and Model 3 (right panel). The scores considered for consistency are displayed on each panel.}
 	\label{fig:consistency}
