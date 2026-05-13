@@ -13,7 +13,7 @@ different speed accuracy strategies  }
 \begin{document}
 \maketitle
 
-\section{Pairplot for the EMG parameters of the JGP dataset (section 6.2)}
+\section{Pairplot for the EMG parameters of the JGP dataset (section 5.2)}
 
 \begin{figure}[htbp]
     \centering
@@ -356,16 +356,10 @@ different speed accuracy strategies  }
 %     \end{center}
 %     \end{table}
 
-\section{Number of successful fits for the copula fits per (D,W) pair (Section 6.3)}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\textwidth]{img/number_of_successful_copula_fits_jgp_dw.pdf}
-    \caption{Number of successful fits for the copula fits per (D,W) pair. The number of unsuccessful fits is equally distributed over all conditions.}
-\end{figure}
 
 
-\section{Fits for ID$_e$ models as function of ID, W and D for the JGP dataset (section 6.4)}
+
+\section{Fits for ID$_e$ models as function of ID, W and D for the JGP dataset (section 5.4)}
 \begin{table}
 	\caption{Mixed Linear Model Regression Results for ID$_e$ on ID, W and D}
 	\label{tab:fit_jgp_ide_id_full}
@@ -493,7 +487,23 @@ different speed accuracy strategies  }
 %     \end{tabular}
 % \end{table}
 
-\section{$\rho$ values for the Gaussian copula (Section 6.5)}
+\section{Pairplot for the EMG parameters for the GOP dataset (section 6.3)}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/pairplot_gop.pdf}
+    \caption{Pairplot for the EMG parameters for the GOP dataset. See the label of Figure 1.}
+\end{figure}
+
+\section{Violinplot for the Galambos Copula, GO dataset (section 6.4)}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{img/galambos_params.pdf}
+    \caption{Parameter of the Galambos copula in the balanced condition in the GO dataset.}
+    \label{<label>}
+\end{figure}
+
+\section{$\rho$ values for the Gaussian copula (Section 6.4)}
 \begin{table}[htbp]
 	\centering
 	\caption{Mean $\rho$ values of the Gaussian copula and associated t-statistics and p-values for the one way Student's t-test.}
@@ -511,25 +521,12 @@ different speed accuracy strategies  }
 	\label{tab:gauss_corr}
 \end{table}
 
-\section{Pairplot for the EMG parameters for the GOP dataset (section 7.5)}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{img/pairplot_gop.pdf}
-    \caption{Pairplot for the EMG parameters for the GOP dataset. See the label of Figure 1.}
-\end{figure}
 
 
-\section{Violinplot for the Galambos Copula, GO dataset (section 7.6)}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\textwidth]{img/galambos_params.pdf}
-    \caption{Parameter of the Galambos copula in the balanced condition in the GO dataset.}
-    \label{<label>}
-\end{figure}
 
 
-\section{Parameters of the t-copula, GO dataset (section 7.6)}
+
+\section{Parameters of the t-copula, GO dataset (section 6.4)}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{img/t_cop_parameters.pdf}
@@ -719,16 +716,7 @@ different speed accuracy strategies  }
 % Notes: \newline
 % [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
-\section{Parameter values for the t-copula for the YKORM dataset (section 7.6)}
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.8\textwidth]{../img/rho_nu_SP_yamanaka.pdf}
-	\caption{Parameters of the t-copula for different strategies.}
-	\label{fig:rho_nu}
-\end{figure}
-
-
-\section{Parameter values for the Gaussian copula for the YORMK dataset (section 8.6)}
+\section{Parameter values for the Gaussian copula for the YORMK dataset (section 7.6) for different D and W values}
 
 \begin{figure}[htbp]
     \centering
@@ -737,27 +725,39 @@ different speed accuracy strategies  }
     \label{fig:rho_DW}
 \end{figure}
 
-\begin{table}[htbp]
-    \begin{center}
-        \caption{Effect of D and W on $\rho$. The statistical model evaluated is $\rho \sim$  W*D + (1$|$participants).}
-        \begin{tabular}{lrrrrrr}
-        \hline
-                  &  Coef. & Std.Err. &      z & P$> |$z$|$ & [0.025 & 0.975]  \\
-        \hline
-        Intercept &  0.413 &    0.123 &  3.372 &       0.001 &  0.173 &  0.653  \\
-        W         &  0.002 &    0.003 &  0.756 &       0.449 & -0.003 &  0.007  \\
-        D         & -0.000 &    0.000 & -0.033 &       0.974 & -0.000 &  0.000  \\
-        W:D       & -0.000 &    0.000 & -0.790 &       0.430 & -0.000 &  0.000  \\
-        Group Var &  0.040 &    0.125 &        &             &        &         \\
-        \hline
-        \end{tabular}
-        \end{center}
-        
-    \caption{<caption>}
-    \label{<label>}
-\end{table}
 
-\section{Parameter values for the Galambos copula (Section 8.4.2)}
+
+\section{Parameter values for the t-copula for the YKORM dataset (section 7.6) for different strategies}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\textwidth]{../img/rho_nu_SP_yamanaka.pdf}
+	\caption{Parameters of the t-copula for different strategies.}
+	\label{fig:rho_nu}
+\end{figure}
+
+
+
+% \begin{table}[htbp]
+%     \begin{center}
+%         \caption{Effect of D and W on $\rho$. The statistical model evaluated is $\rho \sim$  W*D + (1$|$participants).}
+%         \begin{tabular}{lrrrrrr}
+%         \hline
+%                   &  Coef. & Std.Err. &      z & P$> |$z$|$ & [0.025 & 0.975]  \\
+%         \hline
+%         Intercept &  0.413 &    0.123 &  3.372 &       0.001 &  0.173 &  0.653  \\
+%         W         &  0.002 &    0.003 &  0.756 &       0.449 & -0.003 &  0.007  \\
+%         D         & -0.000 &    0.000 & -0.033 &       0.974 & -0.000 &  0.000  \\
+%         W:D       & -0.000 &    0.000 & -0.790 &       0.430 & -0.000 &  0.000  \\
+%         Group Var &  0.040 &    0.125 &        &             &        &         \\
+%         \hline
+%         \end{tabular}
+%         \end{center}
+        
+%     \caption{<caption>}
+%     \label{<label>}
+% \end{table}
+
+\section{Parameter values for the Galambos copula (Section 8.4.3)}
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.5\textwidth]{../img/theta_w_pdd.pdf}
@@ -800,7 +800,7 @@ different speed accuracy strategies  }
 \end{figure}
 
 
-\section{Participant internal consistency concerning strategies (section 13.3)}
+\section{Participant internal consistency concerning strategies (section 12)}
 
 \begin{figure}[htbp]
     \centering
@@ -809,6 +809,15 @@ different speed accuracy strategies  }
     \includegraphics[width=.48\textwidth]{img/fitts_gop_10.pdf}
     \includegraphics[width=.48\textwidth]{img/fitts_gop_16.pdf}
     \caption{The internal consistency of 4 different participants of the GO dataset. Some participants, like the one in the bottom right panel are quite consistent within the same strategy, while some participants, like the one in the bottom left panel have a lot of overlap between strategies.}
+\end{figure}
+
+
+\section{Number of successful fits for the copula fits per (D,W) pair (Section C.2)}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{img/number_of_successful_copula_fits_jgp_dw.pdf}
+    \caption{Number of successful fits for the copula fits per (D,W) pair. The number of unsuccessful fits is equally distributed over all conditions.}
 \end{figure}
 
 

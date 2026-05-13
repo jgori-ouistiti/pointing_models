@@ -164,7 +164,14 @@ def eval_data_mean_mvgauss_df(df, numerical_strategies=[-1, -0.5, 0, 0.5, 1]):
     for n, strat in enumerate(strategies):
         tmp_df = df.filter(df["strategy"] == n)
 
-        meanx, meany = tmp_df.groupby(["IDe"]).mean().select(["IDe", "MT"])
+        if "polars" in str(type(tmp_df)):
+            meanx, meany = tmp_df.group_by(["IDe"]).mean().select(["IDe", "MT"])
+        elif "pandas" in str(type(tmp_df)):
+            meanx, meany = tmp_df.groupby(["IDe"]).mean().select(["IDe", "MT"])
+        else:
+            raise RuntimeError(
+                "wrong class object dataframe. Supply either polars or pandas df"
+            )
 
         # meanx = [numpy.mean(_x) for _x in x]
         # meany = [numpy.mean(_y) for _y in y]

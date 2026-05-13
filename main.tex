@@ -72,8 +72,8 @@
 
 \begin{abstract}
 Traditional Fitts' law captures average trends in pointing tasks but ignores variability, strategy effects, and complex dependencies between movement time (MT) and effective index of difficulty (\ide). 
-In this work, we adopt a probabilistic perspective to model the full distribution of MTs and \ide, and how this relationship depends on user strategy.
-We analyze data from four empirical studies using three different experimental protocols that manipulate task constraints and user strategy across different input modalities, examining how speed and accuracy are traded off locally (within conditions) and globally (across conditions). We find strong global dependencies but minimal local dependencies, suggesting movements within a condition are largely functionally equivalent.
+In this work, we instead adopt a \textit{probabilistic} perspective to model the \textit{joint distribution} of MTs and \ide, and how this relationship depends on \textit{user strategy}.
+We re-analyze data from four empirical studies that used three different experimental protocols that manipulated task constraints and user strategy across different input modalities, examining how speed and accuracy are traded off locally (within conditions) and globally (across conditions). We find strong global dependencies but much weaker local dependencies, suggesting movements within a condition are largely functionally equivalent.
 To capture behavioral distributions, we introduce a probabilistic \ide model, a bivariate Gaussian model linking \ide and mean movement time with strategy, as well as three models based on copulas and Exponentially Modified Gaussian (EMG) noise distributions that express the complete joint (\ide, MT) distribution, all of which are parametrized by user strategy. These three models are compared on their ability to faithfully reproduce summary statistics of the pointing datasets. This work offers a richer, distribution-and-strategy-based perspective on pointing performance. Code and parameters are provided for reproducibility and future research.
 \end{abstract}
 \maketitle
@@ -94,46 +94,50 @@ The dominant quantitative model of pointing, Fitts' law \cite{fitts1954,soukoref
 \end{align}
 Here, $\text{ID}=\log_2 (1+D/W)$ is the index of difficulty, and the parameters $a$ and $b$ are empirically estimated. 
 Fitts' law captures the speed-accuracy trade-off (SAT) in motor control: smaller targets, which require more precision, take longer to acquire. 
-It has been validated across devices, modalities, and populations, and remains a cornerstone of input evaluation and interface design \cite{card1978,soukoreff2004}.
-
+It has been validated across devices, modalities, and populations, and has been a cornerstone of input evaluation and interface design \cite{card1978,soukoreff2004}.
 Yet, Fitts' law provides only a partial account of the SAT. It predicts average performance but ignores trial-to-trial variability. In reality, MTs are not fixed values but they are spread across a distribution, and some attempts are unexpectedly fast and precise while others are slow and inaccurate. 
 
 
 
-Fitts' law also leaves no room for user strategy, where participants may favor speed or accuracy depending on instructions or personal preference \cite{zhai2004nominal,guiard2015}, which conflates intentional and unintentional variability, and as we will show, variability in MT and user strategy strongly influence observed responses: ignoring them oversimplifies pointing behavior and limits the predictive power of models.
+Fitts' law also leaves no room for user strategy, where participants may favor speed or accuracy depending on instructions, cost of errors~\cite{bertucco2015}, or personal preference \cite{zhai2004nominal,guiard2015}, which conflates intentional and unintentional variability. As we will show, variability in MT and user strategy strongly influence observed responses: ignoring them oversimplifies pointing behavior and limits the predictive power of models.
 To address these limitations, we adopt a \textit{probabilistic} perspective that treats both movement time and accuracy as random variables drawn from a joint distribution, conditioned on task and strategy.
-Rather than assuming that going faster always means being less accurate, or that smaller targets always lead to lower MTs, we examine how user strategies and task properties influence the relationship between the observed MTs and accuracy.
+Rather than assuming that going faster always means being less accurate, or that smaller targets always lead to lower MTs, we examine how user strategies and task properties influence the dependence between the observed MTs and accuracy.
 
 
-We examine the dependence between movement time and accuracy at two levels of analysis.  At the \emph{local} level, we study the relationship between MT and accuracy within individual task conditions (given $D$, $W$, and strategy). 
+
+In the first part of this work, we focus on describing the speed-accuracy tradeoff by characterizing how variability arises \textit{within} and \textit{across} D and W, and strategies. 
+We examine the dependence between movement time and accuracy at two levels of analysis: At the \emph{local} level, we study the relationship between MT and accuracy within individual task conditions (given $D$, $W$, and strategy). 
 At the \emph{global} level, we pool data across conditions. 
 This distinction is important, as we find that the SAT is often weak or absent when examined locally, but emerges clearly at the global level. 
 Understanding this contrast helps explain when trade-offs appear in experimental data and how they should be modeled.
+To model this dependence, we rely on the exponentially modified Gaussian (EMG) model and \textit{copulas}. EMG is a parametric model that was previously validated to model MT distributions~\cite{gori2019,gori2018these,li2024,zhao2022}, but without accounting for strategy. While the EMG model captures important aspects of the SAT, it also imposes the form of dependence a priori.
+Copulas, which describe the joint distribution of MT and accuracy without assuming a fixed pattern of dependence, offer more flexibility. 
+Together, these approaches let us compare different shapes and strengths of the SAT across experimental conditions.
+In a second part, we shift to a predictive perspective: using what we have learned about these dependencies, we build and compare three generative models of pointing.
+These models are evaluated on how well they can reproduce the key statistical features of real datasets.
+This dual approach reflects the distinction between explanatory modeling and prediction \cite{shmueli2010}.
 
-
-To model this dependence, we rely on the exponentially modified Gaussian (EMG) distribution, which is parametric model that was previously validated to model MT distributions~\cite{gori2019,gori2018these,li2024,zhao2022}, but without accounting for strategy. 
-The EMG model describes MT conditional on accuracy with a linear mean and a quadratic variance, thus imposing a specific dependency structure. 
-While the EMG model captures important aspects of the SAT, it imposes the form of dependence a priori.
-Thus, to allow for more flexibility, we also consider models based on \emph{copulas}, which describe the joint distribution of MT and accuracy without assuming a fixed pattern of dependence. 
-Together, these approaches let us compare descriptions of the SAT across experimental conditions.
 
 
 To ground these perspectives, we analyze pointing data collected under three experimental protocols that differ in how accuracy is defined: 
 (1) the classic \emph{Fitts} protocol, where accuracy is set by target width $W$; 
-(2) a \emph{pure strategy} protocol, where accuracy is determined by participants in line with experimenter instructions; and 
+(2) a \emph{pure strategy} protocol, where accuracy is self-determined by participants in line with experimenter instructions; and 
 (3) a combined \emph{Fitts-with-strategy} protocol that merges both task and strategy constraints. 
 Together, these protocols reveal how task properties and strategy interact to shape pointing performance.
+
+
+
 
 \paragraph{Contributions.} 
 This paper makes the following contributions:
 \begin{itemize}
-	\item A theoretical analysis that shows why Pearson correlation is not adapted to evaluate the fitness of models that predict the joint distribution between MT and accuracy.
+	\item A theoretical analysis that shows the limitations of using Pearson correlation to evaluate the fitness of models that predict the joint distribution between MT and accuracy.
 	\item New probabilistic models of pointing linking movement time to accuracy, building on EMG, copulas and a bivariate Gaussian model that capture the dependency between MT and accuracy in different ways. 
-	\item Empirical findings across three protocols, that show that the SAT is often weak locally but emerges globally, and that strategy systematically shifts these patterns. 
+	\item Empirical findings across three protocols, that show that the SAT is often weak locally but emerges globally.
 	\item Open resources: reusable model parameters and code for generating realistic pointing data, supporting replication and extension by the HCI community. The code used for this paper is available at the following \href{https://github.com/jgori-ouistiti/pointing_models}{\color{blue} repository}.
 \end{itemize}
 
-By moving beyond deterministic, strategy-agnostic models that describe average movement times, this work provides a richer account of the SAT in pointing and introduces tools that better reflect the variability and strategies observed in real interaction.
+By moving beyond deterministic, strategy-agnostic models that describe average movement times, this work provides a richer account of the SAT in pointing that better reflects the variability and strategies observed in real interaction.
 
 
 
@@ -185,8 +189,8 @@ In HCI, pointing is one of the fundamental elementary interactions of users with
 
 
 \subsection{Fitts' law extensions}
-Many studies have extended Fitts' law, and namely its applicability to novel paradigms such as 2D and 3D pointing, by proposing a novel index of difficulty.
-For instance, Accot and Zhai~\cite{accot2003} review several indices for bivariate pointing, with additional insights provided by~\cite{grossman2005b}, while Murata and Iwase~\cite{murata2001} extend the framework to trivariate pointing. 
+Many studies have extended Fitts' law, and namely its applicability to novel paradigms such as 2D and 3D pointing, by proposing a novel index of difficulty. One of the most used extension is the effective index of difficulty \ide presented next.
+Other examples include \citeauthor{accot2003}~\cite{accot2003}, who review several indices for bivariate pointing, with additional insights provided by~\cite{grossman2005b}, and \citeauthor{murata2001}~\cite{murata2001} who extend the framework to trivariate pointing. 
 These models however do not provide MT distributions and overlook the impact of user strategy on performance. 
 Another line of research focuses on modeling the spatial distribution of movement endpoints. Notable examples include the \textit{sum-of-Gaussians} models~\cite{bi2013, yamanaka2020, zhang2023}. While these models capture endpoint distributions, their treatment of movement time remains based on averages. Additionally, no sum-of-Gaussians model incorporates parameters that directly account for user strategy to our knowledge.
 
@@ -195,7 +199,7 @@ Another line of research focuses on modeling the spatial distribution of movemen
 
 
 \subsection{Pointing with different strategies}
-Most people will regularly over or under utilize the target width W~\cite{soukoreff2004}, creating, according to \citeauthor{zhai2004nominal} an additional subjective layer of speed-accuracy tradeoff~\cite{zhai2004nominal}. This strategic choice may be affected by context, for example people will favor accuracy in when safety matters critically~\cite{guiard2011b}.
+Most people will regularly over or under utilize the target width W~\cite{soukoreff2004}, creating, according to \citeauthor{zhai2004nominal} an additional subjective layer of speed-accuracy tradeoff~\cite{zhai2004nominal}. This strategic choice may be affected by context, for example people will favor accuracy when safety matters critically~\cite{guiard2011b}.
 Various works have thus investigated the effect of strategy on pointing performance. This includes work on the invariance of throughput for different user strategies~\cite{mackenzie2008,olafsdottir2012,batmaz2022} and the comparison of evaluations of different interaction techniques~\cite{yamanaka2023}, but has also lead researchers to define variations on Fitts' protocols, further described \autoref{subs:background::protocols}. Here we focus on existing models that account explicitly for strategy.
 \subsubsection{The effective index of difficulty \ide}
 Because participants do not always follow the accuracy constraint as enforced by W, Crossman~\cite{crossman1957} suggested a correction that was popularized in HCI by Mackenzie~\cite{soukoreff2004, gori2018tochi}, called the effective index of difficulty\footnote{The index generalizes to multiple dimensions, but not without controversies, see \eg~\cite{wobbrock2011,mackenzie1992,gori2023}.}
@@ -203,7 +207,7 @@ Because participants do not always follow the accuracy constraint as enforced by
 \begin{align}
 	\mt & = a + b\,\log_2 \left(1 + \frac{D}{4.133\sigma}\right)                       \equiv a + b \log_2 \left(1 + \frac{D}{W_e}\right)= a + b\,\text{ID}_e        . \label{eq:ide}
 \end{align}
-ID$_e$, as a function of $\sigma$, is a direct measure of accuracy, and may only be computed a posteriori on observed data.
+ID$_e$, as a function of $\sigma$, can be interpreted as a measure of accuracy that may only be computed a posteriori from observed data.
 
 \subsubsection{The index of target utilization\label{subs:background::target_util}}
 Zhai~\etal~\cite{zhai2004nominal} investigated the effect of strategy on pointing by introducing an index of target utilization
@@ -211,7 +215,7 @@ Zhai~\etal~\cite{zhai2004nominal} investigated the effect of strategy on pointin
 	I_U = \log \frac{W_e}{W}.
 \end{align}
 $I_u$ measures the effect of strategy, because, as shown in \cite[Appendix 3]{gori2018tochi}, when the spatial distribution of endpoints is Gaussian\footnote{which is a reasonable assumption that holds well in practice~\cite{soukoreff2004, gori2020}} $W_e = \frac{2.066}{\sqrt{2}\text{erf}^{-1}(1-\varepsilon)} W$, where $\varepsilon$ is the rate at which participants miss the target. Thus, $I_u$ is a non-linear transformation of the miss rate $\varepsilon$. 
-The key finding from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal} for our purposes is that the post-hoc correction $W_e$ of \autoref{eq:ide} does not fully eliminate the influence of participant strategy: even when using \ide, the parameters of Fitts' law vary with strategic choices. Moreover, they showed that D and W have effects on movement time beyond their ratio D/W. These results imply that \ide should not be treated as a pure one-dimensional proxy for task difficulty, but rather as a quantity shaped jointly by ID, D, W, and participant strategy. This observation motivates our modeling of its distribution, see \autoref{sec:outline}.
+The key finding from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal} for our purposes is that the post-hoc correction \ide depends on user strategies. Moreover, they showed that D and W have effects on movement time beyond through their ratio D/W. These results imply that \ide should be treated as a quantity shaped jointly by ID, D, W, and participant strategy. This observation motivates our modeling of its distribution, see \autoref{sec:outline}.
 
 
 
@@ -239,16 +243,15 @@ which is operationalized by fitting not on all data points but only on the conve
 
 \subsection{Pointing models that describe the distribution of MT}
 \subsubsection{Fitts' law, regression, and the implicit noise model \label{subs:rw::fitts}}
-The expression for Fitts' law \autoref{eq:ide} masks an underlying statistical model that assumes additive, centered noise\footnote{Because most researchers applying Fitts' law rely on ordinary least squares (OLS), they also implicitly assume the noise is uncorrelated and homoscedastic (has equal variance), as OLS is only optimal under these conditions.}:
+The expression for Fitts' law \autoref{eq:ide} masks an underlying statistical model that assumes additive, centered noise~\cite{soukoreff2004}\footnote{Because most researchers applying Fitts' law rely on ordinary least squares (OLS), they also implicitly assume the noise is uncorrelated and homoscedastic (has equal variance), as OLS is only optimal under these conditions.}:
 \begin{align} \mt = a + b\ide + \text{noise (additive)}, \quad \mathbb{E}[\text{noise}] = 0 \text{ (centered)}. \label{eq:mt} \end{align}
-Pearson's $r$ is commonly used as a goodness-of-fit measure. % because for linear models with OLS $r^2 = R^2$, where $R^2$ is the so-called coefficient of determination which reflects the proportion of variance in the dependent variable that is explained by the model while simultaneously assessing the model’s linearity~\cite{lee1988}. 
+Pearson's $r$\footnote{Some researchers consider the coefficient of determination $R^2$, which reflects the proportion of variance in the dependent variable that is explained by the model while simultaneously assessing the model’s linearity~\cite{lee1988}. For linear regression, it is well known that $R^2 = r^2$} is commonly used as a goodness-of-fit measure. % because for linear models with OLS $r^2 = R^2$, where $R^2$ is the so-called coefficient of determination which reflects the proportion of variance in the dependent variable that is explained by the model while simultaneously assessing the model’s linearity~\cite{lee1988}. 
 However, as shown by Drewes~\cite{drewes2013} and Gori~\etal~\cite{gori2018chi}, the Pearson correlation between MT and \ide, $r(\mt, \ide)$, often yields moderate to low values in practice on pointing datasets, with some cases showing correlations close to zero~\cite{gori2018tochi}.
-
-In fact, to mitigate variability in MT and increase the goodness-of-fit measure, researchers typically compute the sample average of MT, denoted in the remainder of the work as \mmt\footnote{See~\cite{gori2017two} for further discussion on considering the sample average.}, before calculating $r$. Consequently, the model actually considered by many researchers is:
+In fact, to mitigate variability in MT and increase the goodness-of-fit measure, researchers typically compute $r$ on the \textit{sample average} of MT, denoted in the remainder of the work as \mmt\footnote{See~\cite{gori2017two} for further discussion on considering the sample average.}. Consequently, the model actually considered by many researchers is:
 \begin{align}
 	\mmt = a + b\ide + \text{noise (additive)}, \quad \mathbb{E}[\text{noise}] = 0 \text{ (centered)}, \label{eq:mmt}
 \end{align}
-with the goodness-of-fit measure being $r(\mmt, \ide)$. Fitts' law is thus essentially a Gaussian model for average pointing time \mmt.
+with the goodness-of-fit measure being $r(\mmt, \ide)$. Thus Fitts' law is a model for average pointing time \mmt.
 
 
 \subsubsection{Asymmetric MT distributions and the Exponentially Modified Gaussian (EMG) noise model \label{subs:rw::emg}}
@@ -278,7 +281,9 @@ The probability density function of the EMG model with linear increasing standar
 \begin{align}
 	f_{\mt}(mt) = \frac{1}{2\lambda\mathbf{x}} \exp\left(\frac{1}{2\lambda\mathbf{x}}(2\beta\mathbf{x} + \frac{s^2}{\lambda\mathbf{x}} - 2mt)\right) \mathrm{erfc}\left(\frac{\beta\mathbf{x} + \frac{s^2}{\lambda\mathbf{x}} - mt}{\sqrt{2} s}\right),
 \end{align}
-where erfc is the complimentary error function, $\mathbf{x} = \left[1, \ide \right]^T$, $\lambda = \left[ \lambda_0, \lambda_1 \right]$ and $\beta = \left[ a, b\right]$. Although this density is analytically quite complex, it has a simple conditional mean, where \mmt increases linearly with \ide
+where erfc is the complimentary error function, $\mathbf{x} = \left[1, \ide \right]^T$, $\lambda = \left[ \lambda_0, \lambda_1 \right]$ and $\beta = \left[ a, b\right]$. 
+The EMG model continuously interpolates between a Gaussian distribution ($s >> \mathbf{\lambda} \cdot \mathbf{x} $) and an exponential distribution ($s <<  \mathbf{\lambda} \cdot \mathbf{x}$).
+Although this density is analytically quite complex, it has a simple conditional mean, where \mmt increases linearly with \ide
 \begin{align}
 	\mathbb{E}[\mt|\ide] = \beta \mathbf{x} + \lambda \mathbf{x} = a + \lambda_0 + (b + \lambda_1) \ide, \label{eq:emg_mean}
 \end{align}
@@ -286,7 +291,7 @@ and a quadratic conditional variance, where the variance of MT increases quadrat
 \begin{align}
 	\text{Var}(\mt|\ide) = s^2 + (\lambda \mathbf{x})^2 = s^2 + \lambda_0^2 + 2\lambda_0\lambda_1\ide + \lambda_1^2\ide^2. \label{eq:emg_conditional_variance}
 \end{align}
-Throughout this work, we fitted the EMG distributions when needed with maximum likelihood estimation. 
+Thus, for the EMG distribution, the shape is determined by the relative contributions of $s$ and $ \mathbf{\lambda}$, the location is determined by $\mathbf{\beta}$ and $\mathbf{\lambda}$, and the scale by $s$ and $ \mathbf{\lambda}$. Throughout this work, we fitted the EMG distributions when needed with maximum likelihood estimation. 
 
 
 
@@ -297,17 +302,14 @@ Throughout this work, we fitted the EMG distributions when needed with maximum l
 
 
 \subsection{Models that simulate entire trajectories\label{rw:simulators}}
-\subsubsection{Optimal feedback control models}
-Several optimal feedback control (OFC) models for pointing have been applied in HCI~\cite{klar2023,fischer2022}, following from the seminal work by Todorov and Jordan~\cite{todorov2002}. These predict complete movement trajectories as well as their spatial variability.
-Unfortunately, these models are not well suited to predict movement time and its associated variability, since OFC doesn't have an intrinsic mechanism to stop controlling, and thus it requires defining a stoping condition (see \eg \cite[Section 3.4]{qian2013}). \footnote{There are two possibilities: either a fixed horizon is used, which requires specifying in advance the movement duration, or an infinite or receding horizon is used. In that case, movements are perpetual, except if a stopping condition (usually arbitrary) is formulated.}
+Optimal feedback control (OFC) as described originally by Todorov and Jordan~\cite{todorov2002} in the context of human movements have seen large popularity in motor control, and have been applied in HCI contexts recently~\cite{klar2023,fischer2022}. These predict complete movement trajectories as well as their spatial variability.
+Unfortunately, these models are not well suited to predict MT and MT variability: since OFC doesn't have an intrinsic mechanism to ``stop controlling'', it requires introducing a stopping condition (see \eg \cite[Section 3.4]{qian2013}). \footnote{There are two possibilities: either a fixed horizon is used, which requires specifying in advance the movement duration, or an infinite or receding horizon is used. In that case, movements are perpetual, except if a stopping condition (usually arbitrary) is formulated.}
 Solutions to this problem include integrating an explicit cost for time, as in~\cite{berret2016}, but to our knowledge there is currently no OFC model that has predicted realistic MT distributions.
-Reinforcement learning approaches, which can be viewed as methods to solve optimal control problems when the dynamics of the controled system are unknown, share the same limitation: although they can learn policies that lead to realistic movement trajectories and can produce data compatible with Fitts' law~\cite{ikkala2022, charaja2024}, they similarly require stopping criteria or cost of time~\cite{fischer2022}, and to our knowledge, have never been shown to generate realistic distributions of movement times.
 
+\smallskip
 
-\subsubsection{Simulation models}
-Optimal control models typically have closed-form solutions or can be computed numerically with sufficient speed to enable real-time implementation. In contrast, more complex approaches, to which we refer as simulation models, have also been proposed. For instance, Do et al.~\cite{do2021} present an intermittent control model for pointing that incorporates various sources of variability, including motor and perceptual noise. However, this model does not report movement time (MT) variability, and the role of user strategy in its framework remains unclear. Additionally, the model required six days of training.
-Similarly, Moon et al.~\cite{moon2024} introduce a movement model trained using proximal policy optimization, a deep reinforcement learning technique, but the study does not report on MT variability and required approximately 40 hours of training.
-Thus, while simulation models can be used to generate movement time trial data, to our knowledge, no such results have been reported, nor on the variability of MT. Moreover, while it should be possible, it remains unclear at this point how these models could be adapted to account for user strategy. Finally, their lengthy training times and the efforts required for their implementation undermine their utility as simple, parametric models, which are the focus of this work.
+Reinforcement learning approaches to modeling pointing~\cite{ikkala2022, charaja2024, fischer2021,do2021,moon2024}, which can be viewed as methods to solve optimal control problems when the dynamics of the controled system are unknown, can produce data compatible with Fitts' law~\cite{ikkala2022, charaja2024, fischer2021}, but to our knowledge, they have not shown to be able to generate realistic MT distributions,\footnote{Of the three mentioned references, \citeauthor{fischer2021}~\cite{fischer2021} come closest; they display a boxplot for MT, which shows that the medians are a linear function of ID, and shows MT distribution that are right skewed, both in line with known patterns of MT distributions. However, the variance of MT does not seem to increase with ID, in fact the smallest ID levels seems to have the highest levels of variance, which is not in line with empirical observations.} and are less flexible and interpretable than parametric models. In particular, they require extensive training time (\eg 6 days for~\cite{do2021}, 40 hours for~\cite{moon2024}) and it is unclear how well they transfer to new tasks (although see~\cite{moon2024}).
+Thus, while simulation models can be used to generate movement time trial data, to our knowledge, it is unclear whether they can generate realistic MT distributions. Moreover, while it should be possible, it remains a question how these models could be adapted to account for user strategy. Finally, their lengthy training times and the efforts required for their implementation undermine their utility as simple, parametric models, which are the focus of this work.
 
 
 
@@ -318,7 +320,7 @@ Thus, while simulation models can be used to generate movement time trial data, 
 \subsection{Theoretical analysis of the $r^2(\mmt, \ide)$ correlation \label{subs:theory_rsq}}
 
 
-The goodness of fit of Fitts' law is usually justified via Pearson correlation $r^2(\mmt, \ide)$, which is close to 1 in many experiments where accuracy is manipulated by W~\cite{soukoreff2004}.
+The goodness of fit of Fitts' law is usually justified via the square of the Pearson correlation $r^2(\mmt, \ide)$, which is close to 1 in many experiments where accuracy is manipulated by W~\cite{soukoreff2004}.
 However, we show that many different MT distributions can achieve $r^2(\mmt, \ide)$ close to 1. Thus, using alignement with Fitts' law is a weak criterion to assess the fit of a model for distribution of movement times.
 
 \begin{proposition}\label{prop}
@@ -327,13 +329,13 @@ However, we show that many different MT distributions can achieve $r^2(\mmt, \id
 
 The proof is given in \autoref{app:proofs}, and relies on the fact that Pearson correlation is a function of the covariance, which measures linear deviations from the mean. Several distributions that have been previously used for modeling pointing times satisfy this condition
 \begin{itemize}
-	\item The EMG model with quadratic variance~\cite{gori2018these,gori2019, li2024,zhao2022} (\autoref{eq:emg_mean}) has linear conditional mean.
+	\item The EMG model with quadratic variance~\cite{gori2018these,gori2019, li2024,zhao2022} has linear conditional mean (\autoref{eq:emg_mean}).
 	\item A gamma~\cite{jude2016} distribution with shape $k$ and scale $\theta$ has mean value $k\theta$. Having $k$ or $\theta$ increase linearly with \ide would fulfill the condition.
 	\item A generalized extreme value~\cite{chapuis2007} distribution GEV$(\mu, \sigma, s)$ has a mean value that increases linearly with $\mu$. Having $\mu$ as a linear function of \ide would thus also fulfil the condition.
 \end{itemize}
 There are many more distributions possible, since one can force a conditional linear mean into any continuous distribution whose mean can be set freely.
-Two important takeaways follow: First, models of movement time must have a conditional mean linear in \ide to satisfy Fitts' law.
-Second, it motivates the need to turn to measures of dependences that are more sophisticated than Pearson correlation.
+Two important takeaways follow: First, models of movement time must have a conditional mean linear in \ide to satisfy Fitts' law. For example, if one has reasons to consider a gamma distribution for MT with both k and $\theta$ that increase with \ide, then a possibility is to consider a square root model such as $\theta = \omega_1 \sqrt{\ide}$, $k = \omega_2 \sqrt{\ide}$, so that the product $k\theta$ increases linearly with \ide.
+Second, it motivates the need to turn to measures of dependences that are more sophisticated than Pearson correlation, which is where the copulas will come into play.
 
 In practice, \mmt may refer to different aggregated quantities, depending on how data are collapsed across conditions, participants, and repetitions~\cite{olafsdottir2012}. For example: (i) averaging across all (D,W) pairs~\cite{soukoreff2004}, (ii) averaging over ID levels (noting that multiple (D,W) pairs can map to the same ID~\cite{gori2018chi}), or (iii) aggregating across participants~\cite{accot1997,mackenzie2008}. When blocks are repeated, aggregation may again be performed over repetitions~\cite{jude2016,guiard2011}. Each additional aggregation step tends to inflate 
 $r^2(\mmt,\ide)$ by the same mechanism outlined in the proof of the Proposition.
@@ -365,7 +367,7 @@ A simple, yet flawed, approach to generating realistic human data would be to tr
 Copulas not only allow us to imply a dependence structure between weight and height; but different copulas specify different forms of dependencies between weight and height.
 
 
-\autoref{fig:copulas_explained} illustrates how the Gaussian copula shapes a joint distribution: In (d), the two marginals (a) and (b) are independently combined. In (e), the two marginals are coupled with a Gaussian copula (c). For this illustration, we have used realistic marginal distributions for MT (a) and ID (b). Note that in both jointplots (d) and (e), the estimated marginals are identical, but notice how the datasets differ. In particular, we see that the dataset obtained with the Gaussian copula has variance that increases with ID levels, which is characteristic of pointing data~\cite{gori2018these}.
+\autoref{fig:copulas_explained} illustrates how the Gaussian copula shapes a joint distribution: In (d), the two marginals (a) and (b) are independently combined. In (e), the two marginals are coupled with a Gaussian copula (c). For this illustration, we have used realistic marginal distributions for MT (a) and ID (b). Note that in both jointplots (d) and (e), the estimated marginals are identical, but notice how the actual datasets differ. In particular, we see that the dataset obtained with the Gaussian copula has variance that increases with ID levels, which is characteristic of pointing data~\cite{gori2018these}.
 
 
 
@@ -450,9 +452,9 @@ Copulas not only allow us to imply a dependence structure between weight and hei
 
 
 Copulas are parametric and describe how the two variables are associated, for example imposing a prescribed (rank) correlation, everywhere, or only at their tails.
-For example a Gumbel copula introduces so-called upper tail dependence~\cite{nelsen2006}, where if one variable takes on an ``extreme'' high value, the other is also likely to take on an ``extreme'' high value. These copulas are used for variables that ``reinforce'' themselves \eg when modeling extreme financial events~\cite{dewick2022}.
+For example a Gumbel copula introduces so-called upper tail dependence~\cite{nelsen2006}, where if one variable takes on an ``extreme'' high value, the other is also likely to take on an ``extreme'' high value. These copulas are used for variables that ``reinforce'' themselves \eg they have been used to model extreme financial events~\cite{dewick2022}.
 Because each copula family captures different types of dependences (linear, non-linear, tail-heavy \etc.) we fit several candidates and retain the one that best approximates the observed data. Copulas are fitted with likelihood-based procedures available in statistical libraries that support copulas.
-The way we identify copulas in this work is further described \autoref{app:copula:fit}. All copulas used in this work are displayed for two sets of marginal distributions in \autoref{fig:copula_visualization}: standard normal marginals, which is a classical way of representing copulas, and marginals estimated from a pointing dataset. 
+The way we identify copulas in this work is further described \autoref{app:copula:fit}. All copulas used in this work are displayed for two sets of marginal distributions in \autoref{fig:copula_visualization}: standard normal marginals, which is a classical way of representing copulas, and marginals estimated from a pointing dataset. The latter in particular allows one to appreciate the different shapes of the datasets produced by the selected copulas.
 
 
 % As an example, consider the marginal distributions of human height and weight. While taller individuals tend to be heavier on average, sampling independently of the height and weight marginals would disregard this relationship, leading to unrealistic combinations, where taller and smaller people would have the same chance of being associated with a particular weight. Copulas address this issue by introducing a dependence structure between the variables, allowing for a more realistic joint distribution that reflects the correlation between height and weight; that dependence can be steered by the copula's parameters. Later in this work, we will use the one parameter Gumbel copula, which has cumulative density function $C_{\theta}(u,v) = \exp \left( -\left[ (-\log u) ^{\theta} + (-\log v)^{\theta} \right]^{1/\theta} \right)$.
@@ -460,7 +462,7 @@ The way we identify copulas in this work is further described \autoref{app:copul
 
 
 \section{Overview of the Empirical Analyses of Local and Global Speed-Accuracy Dependencies\label{sec:outline}}
-In this work, we model the joint distribution of movement time (MT) and effective index of difficulty \ide at two levels of analysis, by re-analyzing data from three previously conducted experiments.
+In this first part of the work, we model the joint distribution of movement time (MT) and effective index of difficulty \ide at two levels of analysis, by re-analyzing data from three previously conducted experiments.
 At the \emph{global} level, we consider the distribution aggregated across all task conditions:
 \begin{align}
 	p(\mt, \ide). \label{eq:joint_global}
@@ -472,8 +474,7 @@ At the \emph{local} level, we condition on task parameters D and W, and strategy
 
 The local distribution captures how MT and \ide relate within a single experimental condition, for given values of D, W, and s\footnote{Depending on the protocol, not all of D, W and s may be available. For example, in a standard Fitts protocol, we will look at $p(\mt, \ide | \D, \W)$.}. 
 The global distribution pools data across conditions and strategies, capturing overall patterns in the dataset. 
-These two perspectives lead to different conclusions: within individual conditions, MT and \ide often appear weakly dependent. 
-When conditions are aggregated however a global trade-off consistent with the SAT emerges. 
+As we will show in the remainder, these two perspectives lead to different conclusions: within individual conditions, MT and \ide often appear weakly dependent, but when conditions are aggregated, a global trade-off consistent with the SAT emerges. 
 \autoref{fig:global_local_dep} illustrates this effect: locally, dependencies are weak, but globally, high values of MT align with high values of \ide. 
 
 
@@ -541,21 +542,21 @@ To estimate these joint distributions, we consider two complementary approaches.
 	We use the chain rule of probability:
 	\begin{align}
 		p(\mt, \ide | \D, \W, s) 
-		&= p(\mt | \ide, \D, \W, s) \cdot{} p(\ide | \D, \W, s).
+		&= p(\mt | \ide, \D, \W, s) \cdot{} p(\ide | \D, \W, s).\label{eq:chain_rule}
 	\end{align}
 	We then make the simplifying assumption that MT depends on task parameters only through \ide:
 	\begin{align}
 		p(\mt | \ide, \D, \W, s) = p(\mt | \ide).
 	\end{align}
-	This reduction avoids considering too many variables and uses the fact that \ide already summarizes task geometry and strategy \ie the remaining effect of s, \D and \W on MT are likely second order. 
+	This reduction avoids considering too many variables and we justify it by the fact that \ide already summarizes task geometry and strategy \ie the remaining effect of s, \D and \W on MT beyond those due to \ide are likely second order. 
 	The conditional distribution of MT given \ide is modeled with the exponentially modified Gaussian (EMG) model described in \autoref{subs:rw::emg}. 
-	We also model \(p(\ide | D, W, s)\) enabling the model to be used not just descriptively, but \textit{predictively}.
-	Because the EMG has already been validated in prior work, our goal here is not to re-compare candidate models for $p(\mt|\ide)$. Instead, we focus on showing how the distinctive features that make the EMG model successful (asymmetry and quadratic variance) contribute to better fits, while placing greater emphasis on modeling $p(\ide| \D,\W,s)$ which has received less attention and is central to understanding SAT.
+	We also model \(p(\ide | D, W, s)\) enabling the model to be used not just descriptively, but \textit{predictively}\footnote{Indeed, one needs a generative model for \ide in this case, to ``supply'' \ide values to the conditional MT distribution.}.
+	Because the EMG has already been validated in prior work, our goal here is not to re-compare candidate models for $p(\mt|\ide)$. Instead, we focus on showing how the distinctive features that make the EMG model successful (asymmetry and quadratic variance) contribute to better fits, while placing greater emphasis on modeling $p(\ide| \D,\W,s)$, the other, lesser studied part of the equation. The EMG model will be exploited later in the second, predictive part of the work.
 	
 	\item \textbf{Copula-based approach.}  
 	The EMG approach fixes the dependency structure between MT and \(ID_e\) through its quadratic variance model. 
 	To allow more general forms of dependence, and thus study the SAT from a perspective that is agnostic to any form of dependence, we instead model the joint distribution using copulas, which capture the dependency between two variables independently of their marginals. 
-	This approach removes the restriction imposed by the EMG variance model and provides a more flexible description of MT and \ide.
+	This approach removes the restriction imposed by the EMG variance model and provides a more flexible description of MT and \ide; thus our first approach to measure dependence is based mostly on copula fitting.
 \end{enumerate}
 \noindent Learning the global dependency \(p(\mt, \ide)\) proceeds analogously by dropping the conditioning on \D, \W, and $s$.
 We apply these two modeling approaches to three datasets collected under progressively richer experimental protocols, moving from a classic Fitts' law task and a strategy-based task to a combined Fitts-with-strategy task.
@@ -575,13 +576,12 @@ As a first step, we examine the joint distribution of \mmt and \ide,  and propos
 This simplified, aggregated view, highlights systematic effects of strategy on speed and accuracy without the additional variability present in single trials. This is important since unlike task parameters D and W, the influence of strategy alone on the speed-accuracy trade-off is less well modeled.
 Thus, this preliminary analysis provides a new, simple model and provides a broad trend and some intuition for the more detailed analysis that follows.
 Next, we show that the EMG model with quadratic variance also fits this dataset, extending its applicability. 
-Finally, we find that the Gaussian and t-copulas provide the best fit for $p(\mt, \ide | s)$ and $p(\mt, \ide)$.
-This study shows that user strategy directly shapes the dependency structure, highlighting the importance of modeling strategy explicitly.
+Finally, we find that the Gaussian and t-copulas provide the best fit for $p(\mt, \ide | s)$ and $p(\mt, \ide)$, although with much stronger correlation for the global dependence $p(\mt, \ide)$.
 
 \paragraph*{Study 3: Fitts-with-strategy protocol} 
 In the third study (\autoref{sec:yamanaka}), we combine both approaches to manipulate accuracy, by analyzing data from a Fitts-with-strategy protocol (\autoref{background:protocols:full_protocol}), where accuracy is influenced by both target width \W and strategic instructions $s$. 
 We model the local distribution $p(\mt, \ide | s, \D, \W)$, and confirm that the EMG with quadratic variance and asymmetric distribution provides good fits. 
-As in the previous study, Gaussian and t-copulas yield the best joint models. 
+As in the previous study, Gaussian and t-copulas yield the best joint models, again with stronger correlation for the global level. 
 We also extend the linear model relating \ide to ID by including a term for strategy. This extension makes explicit how strategy interacts with task difficulty to shape user accuracy, as captured through \ide.
 
 
@@ -590,7 +590,7 @@ We also extend the linear model relating \ide to ID by including a term for stra
 
 \subsection{Dataset presentation}
 We used an existing dataset by \citeauthor{jude2016}~\cite{jude2016} (JGP). The JGP dataset was generated using a 2D multi-directional tapping task~\cite{soukoreff2004} using the FittsStudy software~\cite{wobbrock2011}, with gestural interaction as input method. The experiment was replicated six times over three days, twice a day, for 15 participants with factors \W (64, 96, 128 (px)) and \D (256, 512, 1024, 1408 (px)) fully crossed, which makes 10 unique ID levels ranging from 1.52 to 4.58 bit. At 20 trials per block, the entire dataset consists of 21600 movements.
-We noticed a bug in the dataset we downloaded, where the 2 last replications are identical to the two first, so we discarded the 2 last replications from the dataset, leaving us with 4 replications (14400 trials remaining). The JGP dataset is pre-processed; \ide and MT are already calculated. 
+We noticed a bug in the dataset we downloaded, where the 2 last replications are identical to the two first, so we discarded the 2 last replications from the dataset, leaving us with 4 replications (14400 trials remaining). The JGP dataset is pre-processed: \ide and MT are already calculated. 
 
 
 
@@ -607,7 +607,7 @@ We noticed a bug in the dataset we downloaded, where the 2 last replications are
 % \end{figure}
 
 \subsection{Fitting EMG on MT given \ide values \label{subs:jgp:emg}}
-We fitted the EMG model for each participant and for each replication. In line with existing works on this dataset~\cite{gori2018these,zhao2022}, the EMG fit was largely superior to the Gaussian fit obtained via linear regression. We namely found AIC differences routinely above 300; typically a difference of 10 is already considered strongly discriminative. A pair-plot of the fitted parameters can be found in the supplementary materials.
+We fitted the EMG model for each participant and for each replication. In line with existing works on this dataset~\cite{gori2018these,zhao2022}, the EMG fit was largely superior to the Gaussian fit obtained via linear regression. We namely found AIC\footnote{Akaike Information Criterion, a standard metric for model comparison~\cite{anderson2004}, see also \autoref{app:copula:compare}.} differences routinely above 300; typically a difference of 10 is already considered strongly discriminative~\cite{anderson2004}. A pair-plot of the fitted parameters can be found in the supplementary materials.
 
 % are displayed \autoref{fig:pairplot_emg_jgp}. We notice that
 % \begin{itemize}
@@ -629,13 +629,14 @@ We fitted the EMG model for each participant and for each replication. In line w
 \subsubsection{Local dependency structure}
 To test whether the SAT appears within individual task conditions, we examined the local dependency between MT and \ide through $p(\mt, \ide | \D, \W)$. If the SAT held locally, one would expect systematic dependence between the two variables when D and W are fixed. 
 
-We compared candidate copula models using the model evidence ratio $\mathcal{R}$ as explained in \autoref{app:copula:compare}. This ratio expresses how likely one model is relative to the best-fitting model: for example, $\mathcal{R}=0.1$ means the model is about 10 times less likely to be the true model than the current best fitting. This allows us to compare copulas on a common scale.
+We compared candidate copula models using the model evidence ratio $\mathcal{R}$ as explained in \autoref{app:copula:compare}. 
+When comparing two models, an evidence ratio of $x$ means the better-supported model has $x$:1 odds of being closer to the true data-generating process than the other. This allows us to compare copulas on a common scale.
+Combined\footnote{Copulas were fit to each participant and condition, and then combined to compute a model evidence ratio as explained in \autoref{app:copula:compare}. Throughout this work, we refer to this method as \textit{combined}.} over participants and across D$\times$W pairs, the independent copula was most often selected as the best-fitting model (see %\autoref{fig:copula_fit_jgp_dwp}, 
+\autoref{fig:copula_fit_jgp_dw}).
+Other copulas have close model evidence ratios; this is because many copulas tend to the independent copula as their parameters reach a certain limit \eg the Gaussian copula tends to the independent copula when the correlation parameter $\rho$\footnote{We use $\rho$ to distinguish the linear correlation parameter of the Gaussian copula, from Pearson correlation $r$. Both are in general not equivalent, but are often qualitatively very similar; they are only equivalent if the marginals of the copula are Gaussian.} tends to 0.
+This indicates that within a given condition, longer movement times were not reliably associated with higher effective difficulty. In other words, the local dependency between MT and \ide was weak or absent. 
 
-
-Pooled over participants and across D$\times$W pairs, the independent copula was most often selected as the best-fitting model (see %\autoref{fig:copula_fit_jgp_dwp}, 
-\autoref{fig:copula_fit_jgp_dw}). This indicates that within a given condition, longer movement times were not reliably associated with higher effective difficulty. In other words, the local dependency between MT and \ide was weak or absent. 
-
-An exception occurred for the smallest target condition ($\W=64$), where both Spearman's $\rho$ and Kendall's $\tau$ correlations were slightly negative. This suggests that in this extreme case, faster movements could even be associated with greater accuracy, the opposite of the expected SAT. While weak, this paradoxical result highlights that the large trial-to-trial variability can obscure or even invert the trade-off locally.
+An exception occurred for the smallest target condition ($\W=64$), where both Spearman's $\rho$ and Kendall's $\tau$ correlations were slightly negative. This suggests that in this extreme case, faster movements could even be associated with greater accuracy, the opposite of the expected SAT. While weak, this paradoxical result suggests that the large trial-to-trial variability can obscure or even invert the trade-off locally.
 
 These findings suggest that the SAT is not strongly expressed at the local level, where performance appears largely independent once task parameters are fixed.
 
@@ -677,9 +678,9 @@ These findings suggest that the SAT is not strongly expressed at the local level
 \subsubsection{Global dependency structure}
 We then turned to the global dependency $p(\mt, \ide)$, pooling data across task conditions. In contrast to the local case, and as expected, we found clear evidence of dependence between MT and \ide. 
 
-The rotated Gumbel copula consistently provided the best fit across participants (\autoref{fig:copulas_jgp}). This model captures strong lower-tail dependence, meaning that low MT values align closely with low \ide values. This means that when tasks are easier, movements are faster and much more consistent; as tasks become more difficult, variability in MT increases and the relationship between \ide and MT weakens. The rotated Galambos copula was the second-best model, this can likely be explained by the fact that for some parameter values it is extremely similar to the rotated Gumbel~\cite{genest2017},
+The rotated Gumbel copula, visualized \autoref{fig:copula_visualization}, consistently provided the best fit across participants (\autoref{fig:copulas_jgp}). This model captures strong lower-tail dependence, meaning that low MT values align closely with low \ide values. This means that when tasks are easier, movements are faster and much more consistent; as tasks become more difficult, variability in MT increases and the relationship between \ide and MT weakens. The rotated Galambos copula was the second-best model, this can likely be explained by the fact that for some parameter values it is extremely similar to the rotated Gumbel~\cite{genest2017},
 
-Together, these results show a contrast: while the SAT is weak at the local level, it emerges clearly in the global distribution once conditions are aggregated.
+Together, these results show a contrast: while the SAT is weak at the local level, it emerges clearly in the global distribution once data is pooled over D and W.
 
 % \begin{figure}[htbp]
 % 	\centering
@@ -740,14 +741,14 @@ Together, these results show a contrast: while the SAT is weak at the local leve
 
 
 \subsection{Model between \ide and D, W, ID\label{sub:jgp_id}} 
-To test whether W and D influence \ide beyond their joint contribution through ID, we fitted four linear mixed-effects models (LMM) with random intercepts for participants (see \autoref{app:lmm} for an explanation of LMM and how they were fitted and compared): a full model with ID, W, D, and all interactions, two simpler models with only ID+W or ID+D, and a baseline with ID alone.
+To test whether the individual effects of W and D influence \ide beyond their joint contribution through the ratio D/W (ID), we fitted four linear mixed-effects models (LMM) with random intercepts for participants (see \autoref{app:lmm} for an explanation of LMM and how they were fitted and compared): a full model with ID, W, D, and all interactions, two simpler models with only ID+W or ID+D, and a baseline with ID alone.
 A summary of the results are displayed \autoref{tab:fit_jgp_ide_id}, while the full fits are available in the supplementary materials.
 
 
 The full model is difficult to interpret due to collinearity between ID, W, and D, and model comparison shows that it was not supported relative to simpler alternatives, so it was excluded. The simpler models revealed a clear effect of D: both its main effect and its interaction with ID were significant ($\alpha=0.05$), while W showed no significant contribution. Log-likelihoods for the D and W models were essentially equivalent. The ID-only model was rejected based on significantly lower log-likelihood.
-The two simple model fits are shown in \autoref{fig:ide_id_jpg}, which illustrates that D significantly shifts the \ide - ID relationship upwards. This is concistent with general results in psychophysics where longer distances lead to overall larger variability in movement trajectories. 
-This result diverges from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal}, who reported W effects\footnote{\autoref{fig:ide_id_jpg} suggests an effect of W on the slope of the \ide-ID relation, but this effect did not turn out significant}. Two factors may explain the discrepancy. First, our W values (64--128 px) were larger than theirs (12--72 px), and W-ID interactions likely manifest more strongly at smaller target sizes.\footnote{However, comparisons must be taken cautiously, since pixels alone do not tell the full story, we also have to consider display density and input device characteristics \cite{casiez2011}.} Second, fully disentangling W or D from ID requires a shape-scale design \cite{gori2018chi, guiard2009}, which was the case of this dataset.
-Overall, the additional effects of D and especially W beyond ID, while they can be of theoretical interest under specific experimental designs, are likely negligible in most practical contexts.
+The two simple model fits are shown in \autoref{fig:ide_id_jpg}, which illustrates that D significantly shifts the \ide - ID relationship upwards. This is consistent with classical results from motor control where longer distances lead to larger variability in movement trajectories~\cite{gori2020}. 
+This result diverges from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal}, who reported W effects\footnote{\autoref{fig:ide_id_jpg} suggests an effect of W on the slope of the \ide-ID relation, but this effect did not turn out significant}. Two factors may explain the discrepancy. First, our W values (64--128 px) were larger than theirs (12--72 px), and W-ID interactions likely manifest more strongly at smaller target sizes.\footnote{However, comparisons must be taken cautiously, since pixels alone do not tell the full story, we also have to consider display density and input device characteristics \cite{casiez2011}, for which we do not have the complete information.} Second, fully disentangling W or D from ID requires a shape-scale design \cite{gori2018chi, guiard2009}, where D or W is crossed with ID, which is not the case of this dataset.
+Overall, the additional effects of D and especially W beyond ID, while they can be of theoretical interest under specific experimental designs, are likely negligible in most practical contexts. For example, D changes \ide by about 0.3 bits for each 1000 pixels, but this is counteracted by the interaction term as \ide increases: at \ide = 3, D changes only 0.296 - 0.12 = 0.176 bit per 1000 pixels, which represents a minor shift, especially when compared to the MT variability.
 
 
 
@@ -852,9 +853,9 @@ Overall, the additional effects of D and especially W beyond ID, while they can 
 					
 
 \subsection{Interpretation of the first study \label{study_one:interpretation}}
-This study examined dependencies between \ide and MT under Fitts' protocol, where accuracy is imposed by target width W. At the local level, copula fits showed little to no correlation between \ide and MT within a given condition, with the smallest target size even yielding a slight negative correlation. This suggests that, when accuracy is specified a priori, movements within a fixed (D,W) pair are essentially equivalent with respect to the SAT: variability in execution reflects motor noise more than systematic planning trade-offs.
+This study examined dependencies between \ide and MT under Fitts' protocol, where accuracy is imposed by target width W. At the local level, copula fits showed little to no correlation between \ide and MT within a given condition, with the smallest target size even yielding a slight negative correlation. This suggests that, when accuracy is specified a priori, movements within a fixed (D,W) pair are essentially equivalent with respect to the SAT: variability in execution seems to reflect motor noise more than systematic planning.
 The analysis at the global level revealed a clear dependence, showing that the SAT only emerges across task conditions. The dependence was best captured by the rotated Gumbel copula, which emphasizes lower-tail dependence. This implies a strong correlation between low values of \ide and MT \ie a small spread of the MT data for low values of \ide, which is consistent with the quadratic variance model used in the EMG model.
-Finally, we analyzed the relationship between \ide and ID. Possible D and W effects were weak, and not always significant, but could have been misestimated due to collinearity between D, W and ID. Thus, to adress these collinearity issues, we fit the linear models with ridge regression with cross-validation\footnote{Ridge regression is a technique for fitting linear models when collinearity exists among predictors, as it produces more stable and reliable estimates of effects~\cite{gruber2017}. The method introduces a regularization term controlled by a hyperparameter known as the ridge parameter. When the ridge parameter is set to 0, ridge regression reduces to the traditional ordinary least squares approach. As the ridge parameter increases, the method progressively shrinks the variance of the coefficient estimates, improving stability and reducing sensitivity to multicollinearity. The optimal value of the ridge parameter is determined through cross-validation.}. Although detailed results are not reported here, the estimated coefficient for ID was 0.94 \ie closer to 1 than the estimates from the presented linear models. This suggests that the presented effects of D and W are actually slightly inflated by collinearity. Thus, this further supports that ID is the dominant predictor for \ide, and that additional effects of D and W are negligible.
+Finally, we analyzed the relationship between \ide and ID. Effects D and W effects were weak, and not always significant. Because they could have been misestimated due to collinearity between D, W and ID, we fit the linear models with ridge regression with cross-validation\footnote{Ridge regression is a technique for fitting linear models when collinearity exists among predictors, as it produces more stable and reliable estimates of effects~\cite{gruber2017}. The method introduces a regularization term controlled by a hyperparameter known as the ridge parameter. When the ridge parameter is set to 0, ridge regression reduces to the traditional ordinary least squares approach. As the ridge parameter increases, the method progressively shrinks the variance of the coefficient estimates, improving stability and reducing sensitivity to multicollinearity. The optimal value of the ridge parameter is determined through cross-validation.}. Although detailed results are not reported here, the estimated coefficient for ID was 0.94 \ie closer to 1 than the estimates from the presented linear models. This suggests that the presented effects of D and W are actually slightly inflated by collinearity. Thus, this further supports that ID is the dominant predictor for \ide, and that additional effects of D and W are negligible.
 
 
 \section{Second study: Dependence between \ide and MT in the pure strategy protocol \label{sec:gop}}
@@ -862,7 +863,7 @@ In the pure strategy protocol (see \autoref{background:protocols:guiard_protocol
 
 \subsection{The GO dataset}
 We investigate the effect of participant strategy on movement time and \ide, using the Guiard-Olafsdottir (GO) dataset~\cite{guiard2011}.
-Participants had to aim at a line (1D task), with five different strategies, from speed emphasis allowing a large spread of endpoints, to precision emphasis where the goal is to target the 1-pixel-wide line. 
+Participants had to aim at a line, with five different strategies, from speed emphasis allowing a large spread of endpoints, to precision emphasis where the goal is to target the 1-pixel-wide line. 
 %The balanced condition represents a somewhat natural strategy \ie how the participant would operate had no instructions been given. 
 For comparison, the instruction in a standard Fitts experiment is usually between the \textit{speed} and \textit{balanced} condition, depending on the experimenter.
 The 16 participants performed 5 strategies, each replicated 5 times. We thus have 25 blocks per participant, each of about 15 to 20 movements each. 
@@ -877,8 +878,8 @@ We used a pre-processed version of the dataset used in~\cite{gori2020}. One part
 
 \paragraph{Correlation between \ide and \mmt and conformity with Fitts' law}
 A summary of the GO dataset, shown in \autoref{fig:fittslaw_guiard} confirms that data from the pure strategy protocol conforms with Fitts' law (\autoref{eq:ide}). Participants covered a wide range of \ide (1 to 9 bits), depending on the strategy.
-While aggregating data per strategy yields a very high correlation between \mmt and \ide ($R^2=0.97$), block-level averages show more variability ($R^2=0.58$)\footnote{It is usual to report very high values of $R^2$ in Fitts law evaluations, but this is for a large part due to the practice of aggregating and averaging data, which masks the actual data's variability~\cite{gori2018chi,drewes2013}.}.
-To capture how strategy affects behavior without overly masking this variability, we first model \mmt conditional on strategy. This provides a simple model of strategic effects, useful for simulation and prediction, and helps to build intuition for the subsequent trial-by-trial analysis.
+While aggregating data per strategy yields a very high correlation between \mmt and \ide ($R^2=0.97$), block-level averages show more variability ($R^2=0.58$).
+To capture how strategy affects behavior without overly masking this variability, we first model \mmt conditional on strategy. This provides a simple model of strategic effects, useful for simulation and prediction, and helps to build a basis for the subsequent trial-level analysis.
 
 
 \paragraph{A bivariate Gaussian model for \mmt and \ide for each strategy}
@@ -896,17 +897,17 @@ To characterize how each strategy affects MT and accuracy, we fit a bivariate Ga
 		                                                     \end{bmatrix} \right) \label{eq:gaussian_ide_mt}
 \end{align}
 where $\mu_i$, $\sigma_i^2$ are the mean and variance of \ide, $\mu_t$ and $\sigma_t^2$ those of \mmt, and $r$ the Pearson correlation. 
-We chose the bivariate Gaussian model because it is simple, easy to interpret, symmetric, and it makes the dependence between \mmt and \ide completely specified via a single parameter (Pearson's $r$), which facilitates analysis.
-The conditional mean of MT given \ide is linear:
+We considered the bivariate Gaussian model because it is simple, easy to interpret, captures well data that is symmetrically clustered, and it makes the dependence between \mmt and \ide completely specified via a single parameter (Pearson's $r$), which facilitates analysis.
+In the bivariate Gaussian, the conditional mean of MT given \ide is linear:
 \begin{align}
 	\mathbb{E}[\mmt | \ide] = \mu_t + r \frac{\sigma_i}{\sigma_t}(\ide - \mu_i).  \label{eq:mmt_ide_gauss}
 \end{align}
-which, in line with Proposition~\ref{prop}, ensures that, at the level of strategy, the model is consistent with Fitts' law while still capturing variability in both MT and \ide.
+which, in line with Proposition~\ref{prop}, ensures that, at the level of strategy, the model is consistent with Fitts' law while still capturing some of the variability in both MT and \ide.
 
 
 
 
-The bivariate Gaussian fits for each strategy in the GO dataset are displayed in \autoref{fig:go_ide}. Each ellipse shows the $95\%$ prediction region of a bivariate Gaussian fitted to (\ide,\mmt). The separation of ellipses reflects overall differences between strategies, while their orientation shows the local correlation between \ide and \mmt\footnote{The covariance matrix of a Gaussian bivariate is the rightmost term of \autoref{eq:gaussian_ide_mt} where $\rho$ is the correlation between the two components. The angle of the prediction ellipsis is given by $\frac{1}{2} \arctan \left( \frac{2\rho \sigma_i\sigma_t}{\sigma_i^2 - \sigma_t^2} \right) $.}. Strategies produce higher means and larger spreads with consistent positive correlation, whereas the \textit{speed emphasis} condition shows little to no correlation.%: when participants emphasize speed above anything else, accuracy actually becomes independent of local changes in speed, which is consistent with purely feedforward movements~\cite{gan1988, crossman1957}.
+The bivariate Gaussian fits for each strategy in the GO dataset are displayed in \autoref{fig:go_ide}. Each ellipse shows the $95\%$ prediction region of a bivariate Gaussian fitted to (\ide,\mmt). The separation of ellipses reflects overall differences between strategies, while their orientation shows the local correlation between \ide and \mmt\footnote{The covariance matrix of a Gaussian bivariate is the rightmost term of \autoref{eq:gaussian_ide_mt} where $\rho$ is the correlation between the two components. The angle of the prediction ellipsis is given by $\frac{1}{2} \arctan \left( \frac{2\rho \sigma_i\sigma_t}{\sigma_i^2 - \sigma_t^2} \right) $.}. Strategies favoring accuracy produce higher means and larger spreads with consistent positive correlation, whereas the \textit{speed emphasis} condition shows little to no correlation.%: when participants emphasize speed above anything else, accuracy actually becomes independent of local changes in speed, which is consistent with purely feedforward movements~\cite{gan1988, crossman1957}.
 
 
 \begin{figure}[htbp]
@@ -945,11 +946,13 @@ The bivariate Gaussian fits for each strategy in the GO dataset are displayed in
 
 
 \paragraph{Strategy Dependent Bivariate Gaussian model for \mmt and \ide}
-We combined the five strategy-specific Gaussian fits into a single model by assigning each strategy a numerical score on [-1,1] where -1 stands for complete speed emphasis, 0 for balanced, and +1 for complete precision emphasis. This simple symmetric coding allows us to examine how the Gaussian parameters vary with strategy, without relying on post-hoc measures such as \ide. The model parameters are represented as function of coded strategy in \autoref{fig:meancov_strat}. We further compared linear models of each Gaussian parameter against constant (no-effect) models using AIC (\autoref{tab:aic_gop}). It results in three distinct cases:
+We combined the five strategy-specific Gaussian fits into a single model by assigning each strategy a numerical score on [-1,1] where -1 stands for complete speed emphasis, 0 for balanced, and +1 for complete precision emphasis. This simple symmetric coding allows us to examine how the Gaussian parameters vary with strategy, without relying on post-hoc measures such as \ide.
+At first glance, treating an ordinal measure such as strategy as numerical may seem inappropriate; however, as we will demonstrate, this transformation leads to a simple and interpretable linear model parameterized by the numerical strategy.
+The model parameters are represented as function of coded strategy in \autoref{fig:meancov_strat}. We further compared linear models of each Gaussian parameter against constant (no-effect) models using AIC (\autoref{tab:aic_gop}); the best models are displayed in \autoref{fig:meancov_strat}. It results in three distinct cases:
 \begin{enumerate}
 	\item Both $\mu_i$ and $\mu_t$ increase linearly with strategy, with strong statistical support. This captures the intuitive shift from faster but less precise movements under speed emphasis to slower, more precise movements under precision emphasis.
 	\item The spreads ($\sigma_i$, $\sigma_t$) show weaker trends. For $\sigma_i$, the constant model was favored overall, but the speed condition was a clear outlier. For $\sigma_t$ evidence slightly favored a linear increase.
-	\item The correlation $r$ is best described as constant across strategies, except for the speed emphasis condition where it collapsed toward zero. In other words, under speed emphasis, accuracy decouples from mean movement time.
+	\item The correlation $r$ is best described as constant across strategies, except for the speed emphasis condition where it collapsed toward zero. In other words, under speed emphasis, accuracy decouples from mean movement time. Although isolating this condition may appear arbitrary, it is well-motivated from a motor control standpoint: speed-focused movements are primarily ballistic~\cite{elliott2017}. The smaller variance in $\sigma_i$ further supports this separation, suggesting greater uniformity in this condition and reinforcing the idea that precision demands introduce additional complexity in movement production.
 \end{enumerate}
 
 % We can unite the five models into a single one by representing strategy numerically rather than ordinally. We thus map the five instructions to equally spaced points on the interval [-1,1]\footnote{The choice here may seem naïve, and we could have mapped strategy to the set of real values via \ide. However, our choice has two advantages: the mapping can be defined before movements are performed, and does not depend on each participant.}, with 0 as the balanced strategy, -1 for speed emphasis, and 1 for precision emphasis. We then assessed how the five parameters of the bivariate Gaussian model \autoref{eq:gaussian_ide_mt} aligned with this numerical strategy, by fitting a linear model on each parameter. 
@@ -988,7 +991,7 @@ Crucially, the linear dependence of $\mu_i$ and $\mu_t$ on strategy implies that
 	\mu_t & = \alpha + \beta\,s = \alpha + \frac{\beta}{\beta'} (\mu_i - \alpha')  = \alpha - \frac{\beta}{\beta'}\alpha' + \frac{\beta}{\beta'}\mu_i,
 \end{align}
 
-Thus, the Gaussian model is compatible both with local Fitts' law (within a given strategy, via \autoref{eq:mmt_ide_gauss}) and with global Fitts' law (across strategies, via the linear trend in means). The model therefore provides a bridge between individual strategies and Fitts' law.
+Thus, the Gaussian model and the mapping of strategy to [-1,1] are compatible both with local Fitts' law (within a given strategy, via \autoref{eq:mmt_ide_gauss}) and with global Fitts' law (across strategies, via the linear trend in means). The model therefore provides a bridge between individual strategies and Fitts' law.
 % The linear relationship of $\mu_i$ and $\mu_t$ on $s$ makes the obtained model consistent with Fitts' law (globally) across strategies since
 % \begin{align}
 % 	\mu_i & = \alpha' + \beta'\,s  \longrightarrow s =  \frac{\mu_i - \alpha'}{\beta'} \\
@@ -1047,12 +1050,12 @@ Finally, a pairplot of EMG parameter estimates (see Supplementary Materials) rev
 
 Next, we examined the dependence between \ide and MT using copulas. As in \autoref{sub:jgp::fit_copula}, we compared several candidate copulas based on their model evidence ratio $\mathcal{R}$, fitting them separately for each participant and strategy ($5\times 15=75$ fits).
 
-The results, displayed in \autoref{fig:r_cop_gop_s}, show that the Gaussian copula provided the best local fit, except for the balanced strategy, where the Galambos copula was slightly favored. Although the Galambos family is typically associated with strong upper-tail dependence, the estimated parameter values here ($\theta \approx 0.5$\footnote{A violin plot of the estimated Galambos copula parameters is provided in the Supplementary Materials.}) make it similar to the independent copula, as can be seen \autoref{fig:copula_visualization}. 
+The results, displayed in \autoref{fig:r_cop_gop_s}, show that the Gaussian copula provided the best local fit, except for the balanced strategy, where the Galambos copula was slightly favored. Although the Galambos family is typically associated with strong upper-tail dependence, the estimated parameter values here ($\theta \approx 0.5$) make it similar to the independent copula, as can be seen \autoref{fig:copula_visualization}. A violin plot of the estimated Galambos copula parameters is provided in the Supplementary Materials, showing low $\theta$ values for most fits.
 
 For the Gaussian copula, the fitted correlation parameters were small but positive (see Supplementary materials for details), in close agreement with the corresponding Pearson correlations obtained in the (\mmt, \ide) bivariate model; in particular the correlation for Gaussian copula was close to null for the speed emphasis conditions, as in the bivariate Gaussian model on \mmt.
 % . Two strategies (balanced and accuracy emphasis) yielded correlations significantly greater than zero, with the balanced condition showing the strongest dependence.
 
-We also pooled strategies to assess the \textit{global} dependence structure at the participant level. As shown in \autoref{fig:ll_cop_gop_p}, the Gaussian and $t$-copulas provided the best fits for 10 of 15 participants, with an average correlation of $\rho \approx 0.71$. The $t$-copula degrees of freedom $\nu$ varied widely across participants, suggesting some heterogeneous tail behavior. For 4 of the remaining participants, the Galambos copula was selected, again with $\theta$ values close to 0 (independence).
+We also pooled strategies to assess the \textit{global} dependence structure at the participant level. As shown in \autoref{fig:ll_cop_gop_p}, the Gaussian and $t$-copulas provided the best fits for 10 of 15 participants, with an average correlation of $\rho \approx 0.71$. The $t$-copula degrees of freedom $\nu$ varied widely across participants, suggesting some heterogeneous tail behavior; the complete values are available in the supplementary materials. For 4 of the remaining participants, the Galambos copula was selected, again with $\theta$ values close to 0 (independence).
 
 
 
@@ -1096,11 +1099,12 @@ We also pooled strategies to assess the \textit{global} dependence structure at 
 
 \subsection{Interpretation of the second study}
 This second study examined the dependence between \ide and MT within the pure strategy protocol, where accuracy is specified by instructions rather than target width. 
-As in the first study, we found strong \textit{global} dependence between \ide and MT when data is pooled across conditions (here, strategy), while within conditions, \textit{local} dependence remains weak.
+As in the first study, we found strong \textit{global} dependence between \ide and MT when data is pooled across conditions (here, strategy), while within conditions, \textit{local} dependence remains weaker.
 
 
 
-We first confirmed that the data from the pure strategy protocol are compatible with Fitts' law. When aggregated by strategy, \ide and \mmt were almost perfectly correlated ($\rho = 0.97$). To capture the effect of strategy, we introduced a bivariate Gaussian model parameterized by strategy. This model is both simple and interpretable: it reproduces Fitts' law globally, and shows positive within-strategy correlations between \ide and \mmt, except in the speed-emphasis condition. The latter exception aligns with the idea of ballistic, feedforward movements~\cite{gan1988,crossman1957}, where accuracy no longer relates to movement time.
+We first confirmed that the data from the pure strategy protocol are compatible with Fitts' law. When aggregated by strategy, \ide and \mmt were almost perfectly correlated ($\rho = 0.97$). To capture the effect of strategy, we introduced a bivariate Gaussian model parameterized by strategy, a model that is both simple and interpretable.  The ordinal-to-numerical coding was successful in producing a simple but useful representation, since ``uniform'' differences in strategies lead to a linear repartition of mean \mmt and \ide values, therefore reproducing Fitts' law globally. Since $\ide = \log(1 + \tfrac{D}{4.133\sigma}) \simeq \alpha \log \sigma$ for small $\sigma$, the coding is consistent with a log-linear increase between instructions and $\sigma$, which is in line with a motor-like Weber's law~\cite{kandel}, where not perception but produced accuracies are interpreted on a logarithmic scale.
+We found mostly weak but positive within-strategy correlations between \ide and \mmt, with the highest correlation in the balanced condition $(\rho \simeq 0.3$), except in the speed-emphasis condition. The latter exception aligns with the idea of ballistic, feedforward movements~\cite{gan1988,crossman1957}, where accuracy no longer relates to movement time.
 
 Concerning distributional modeling of MT, as expected, the EMG model outperformed simpler Gaussian alternatives, thanks to its ability to capture both long-tailed distributions and variance that increases with difficulty. This replicates the findings from the Fitts protocol, suggesting that the properties making the EMG model effective are general characteristics of movement, and not protocol-specific.
 
@@ -1116,8 +1120,8 @@ The third study builds directly on the first two by combining their respective m
 The original study's objective was to compare two existing interaction techniques (bubble cursor and bayesian touch criterion) against regular pointing, across strategies.
 The study used an ISO circle-of-circles tasks with distractors.
 The experiment fully crossed 4 factors: D (400, 770)px, W (8, 24, 70)px, strategy (fast, balanced, accurate) and a parameter for the distractor density (3 levels), which provides an ideal design to examine how task geometry and strategy together shape the joint distribution of MT and \ide.
-For comparison with the two previous studies, we only used regular (mouse-based) pointing data, and aggregated data across distractor density levels.
-Twelve participants completed 23 trials per condition, which makes $12 \text{ participants} \times 3 \text{ W} \times 2 \text{ D} \times 3 \text{ strategy} \times 69 \text{ movements} = 216 \text{ sets} \times 69 \text{ movements} = 14904$ trials. The first 3 trial of each set were discarded (648) with some outliers (244), leaving us with 14012 data points.
+For comparison with the two previous studies, we only used regular (mouse-based) pointing data, and aggregated data across distractor density levels, since the sensitivity of MT in regular pointing to distractor density if low~\cite[Table 2]{blanch2011}.
+Twelve participants completed 23 trials per condition, which makes $12 \text{ participants} \times 3 \text{ W} \times 2 \text{ D} \times 3 \text{ strategy} \times 69 \text{ movements} = 216 \text{ sets} \times 69 \text{ movements} = 14904$ trials. The first 3 trial of each set were discarded (648) with some outliers (244), resulting in 14012 data points.
 
 \subsection{Conformity with Fitts' law}
 We first verified (see \autoref{fig:fitts_yamanaka}) that the YKORM data is consistent with Fitts' law, as in the previous studies. To do so, we fit Fitts' effective law using a mixed-effects linear model with fixed effects for \ide, strategy, and their interaction, and random intercepts for participants
@@ -1131,14 +1135,14 @@ We first verified (see \autoref{fig:fitts_yamanaka}) that the YKORM data is cons
 
 
 %For both models, one unit of strategy augments the slope by approximately 75 ms/bit. 
-We found that one unit of strategy augments the slope by approximately 73 ms/bit. Since one unit of strategy separates the speed and accuracy conditions, this amounts to a change of about 35\,ms/bit between each consecutive condition, consistent with the study from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal} who found differences of about 30ms/bit in a similar study.
+We found that one unit of strategy augments the slope by approximately 73 ms/bit. Since one unit of strategy separates the \textit{Speed} and \textit{Accuracy} conditions, this amounts to a change of about 35\,ms/bit between each consecutive condition, consistent with the study from \citeauthor{zhai2004nominal}~\cite{zhai2004nominal} who found differences of about 30ms/bit in a similar study.
 
 
 \begin{figure}[htbp]
    \centering
    \begin{subfigure}[t]{0.43\textwidth}
 	  \includegraphics[width=\linewidth, trim = {11cm 0 0 0}, clip]{img/fitts_yamanaka.pdf}
-	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on \mmt with \ide and strategy as predictor. The fitted model without noise is \mmt = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
+	\caption{Data of the YKORM dataset and adjusted Fitts' law obtained by computing linear regression on MT with \ide and strategy as predictor. The fitted model without noise is MT = -0.24 + 0.266$\cdot{}\ide$ -0.244$\cdot{}s$ + 0.073$\cdot{}s\cdot{}\ide$.}
 	\label{fig:fitts_yamanaka}
    \end{subfigure}
    \hfill
@@ -1186,7 +1190,7 @@ Compared with the pure strategy dataset (\autoref{sec:gop}), the spreads of the 
 
 To examine how Gaussian parameters vary with ID and strategy, we compared nested models of decreasing complexity:
 \begin{align}
-	\text{X} & \sim \text{ID} + \text{strategy (full model)}  \\
+	\text{X} & \sim \text{ID} + \text{strategy (ID+S model)}  \\
 	\text{X} &\sim \text{ID (ID model)} \\
 	\text{X} &\sim \text{strategy (strategy model)} \\
 	\text{X} &\sim 1 \text{ (constant model)} 
@@ -1194,7 +1198,7 @@ To examine how Gaussian parameters vary with ID and strategy, we compared nested
 where X is one of $\mu_i$, $\mu_t$, $\sigma_i$, $\sigma_t$, $\rho$ as defined \autoref{eq:gaussian_ide_mt}. 
 
 
-The model comparisons results, based on AIC, are given in \autoref{tab:aic_yamanaka}. Two findings merge:
+The model comparisons results, based on AIC, are given in \autoref{tab:aic_yamanaka}:
 \begin{itemize}
 	\item For the means, the full model with ID and strategy was preferred, ($\Delta\text{AIC} > 10$). This confirms that both factors shift the joint distribution.
 	\item For the variance and correlation terms, simpler models were more appropriate. $\sigma_t$ was best modeled by the ID model, while $\sigma_i$ and $\rho$ were best modeled by a constant model.
@@ -1246,7 +1250,7 @@ To keep the analysis tractable, we compared a set of simplified mixed-effect mod
 \ide & \sim \text{strategy} + \text{ID}*\W + \text{ID}*\D + (1|\text{Participant}) \label{eq:ide_id_yamanaka_full} 
 \end{align}
 
-Model comparison results are given in \autoref{tab:ide_id_yamanaka}. As expected, both ID and strategy had strong and highly significant effects on \ide. The more complex models, which added main or interaction effects of W or D, provided no meaningful improvement in fit: the small improvement in log-likelihood was insufficient compared with the increase in parameter number ($\Delta \text{AIC} < 2$). 
+Model comparison results are given in \autoref{tab:ide_id_yamanaka}. As expected, both ID and strategy had strong and highly significant effects on \ide. The more complex models, which added main or interaction effects of W or D, provided no meaningful improvement in fit: the small improvement in log-likelihood was insufficient compared with the increase in parameter number to create meaningful differences in AIC.
 The baseline model is plotted in \autoref{fig:id_ide_yamanaka}. It shows the additive effect of strategy: accuracy-oriented strategies shift \ide upward, while speed-oriented strategies shift it downward. 
 %The slopes with respect to ID are nearly parallel across strategies, with a small but nonsignificant interaction ($p = 0.101$).
 
@@ -1272,6 +1276,7 @@ In short, the results mirror those from the JGP dataset: \ide is primarily drive
 	strategy\_num:W & & -0.181 (p=0.150) & & \\
 	strategy\_num:D & &   & -0.072 (p=0.686) & \\
 	log-likelihood & -236 & -239 & -241 & -246 \\
+	AIC & 486 & 490 & 494 & 488\\
 	\hline
 	\end{tabular}
 	\end{center}
@@ -1294,7 +1299,7 @@ A simple and well-supported model is therefore
 \ide = \alpha + \beta\cdot{}\text{ID} + \gamma\cdot{}\text{strategy}, \label{eq:model_ide_simple}
 \end{align}
 with $\beta \approx 0.9$ across datasets, positive intercepts $\alpha$, and a strategy term $\gamma$ that moves the \ide line up or down. 
-Interestingly, because the intercept is positive and $\beta < 1$, the \ide line will cross the $\ide = \text{ID}$ line. Thus, combined with the fact high IDs are overwhelmingly obtained with small values of W~\cite{gori2018chi,guiard2009}, this model explains both the over- and under-utilization of targets noted by \citeauthor{zhai2004nominal}, while also accounting for strategic modulation, without having to explicitly include an effect of W.
+Interestingly, because the intercept is positive and $\beta < 1$, the \ide line will cross the $\ide = \text{ID}$ line. Thus, combined with the fact high IDs are overwhelmingly obtained with small values of W~\cite{gori2018chi,guiard2009}, this model explains both the over- and under-utilization of targets noted by \citeauthor{zhai2004nominal}, while also accounting for strategic modulation, without having to explicitly include a main effect of W.
 
 
 
@@ -1326,7 +1331,7 @@ The AIC differences (\autoref{fig:violin_yamanaka}) again show strong support fo
 To evaluate whether the joint dependency between \ide and MT in the YKORM dataset was consistent with the results of the previous studies, copulas were fitted per participant and per condition, with model evidence ratio $\mathcal{R}$ used for comparison.
 
 \paragraph{Effect of (D,W) condition}
-Pooling across strategies, we obtained 72 datasets. The results (\autoref{fig:R_yamanaka_DW}) show that Gaussian copulas again provide the best overall fit, with a an exception for the smallest width target (W = 8), where rotated Galambos or HR copulas could score higher. The average Gaussian copula correlation was $\rho = 0.41$, indicating a moderate \textit{local} dependency. Unlike in the previous datasets, this larger $\rho$ likely reflects the fact data was pooled over strategies. No significant effects of D or W on $\rho$ were found.\footnote{A barplot of the $\rho$ values and the fit details can be found in the supplementary materials.}
+Pooling across strategies, we obtained 72 datasets. The results (\autoref{fig:R_yamanaka_DW}) show that Gaussian copulas again provide the best overall fit, with a an exception for the smallest width target (W = 8), where rotated Galambos or HR copulas could score higher. The average Gaussian copula correlation was $\rho = 0.41$, indicating a moderate \textit{local} dependency. Unlike in the dataset of the first study, this larger $\rho$ likely reflects the fact data was pooled over strategies. No significant effects of D or W on $\rho$ were found.\footnote{A barplot of the $\rho$ values and the fit details can be found in the supplementary materials.}
 
 
 \begin{figure}[htbp]
@@ -1338,8 +1343,7 @@ Pooling across strategies, we obtained 72 datasets. The results (\autoref{fig:R_
 
 
 \paragraph{Effect of strategy}
-When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas largely dominated (\autoref{fig:R_yamanaka_SP}). Copula parameter estimates for the t-copula, available in the supplementary materials, showed no systematic dependence on strategy. This complements the earlier results: strategy shifts the marginal distributions of MT and \ide, but does not alter the dependency structure between them.
-
+When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas largely dominated (\autoref{fig:R_yamanaka_SP}). Copula parameter estimates for the t-copula, available in the supplementary materials, showed no systematic dependence on strategy. This complements the earlier results: here strategy shifts the marginal distributions of MT and \ide, but does not alter the shape of the dependency structure between them. 
 
 
 \begin{figure}[htbp]
@@ -1357,25 +1361,26 @@ When pooling across (D,W) conditions (36 datasets), Gaussian and t-copulas large
 
 
 \subsection{Copula fits}
-Across the three studies, copulas consistently revealed a weak local dependence between \ide and MT. This suggests that faster movements can also be more precise, and that this may actually be relatively common. Strategy introduces somewhat stronger dependence. This suggests that when accuracy is enforced by W, movement are largely ``equivalent'', whereas when accuracy is enforced by strategy, the participants seem to exerce more control, we believe \eg by adjusting the strategy based on the previous trial.
+Across the three studies, copulas consistently revealed a weak local dependence between \ide and MT. This suggests that faster movements can also be more precise, and that this may actually be relatively common. The pure strategy protocol introduced a somewhat stronger local dependence; this suggests that when accuracy is enforced by W, movement are largely ``equivalent'', whereas when accuracy is enforced by strategy, the participants seem to exerce more control, we believe \eg by re-adjusting the strategy based on the previous trial. 
 
-In contrast, the global dependence across conditions is strong and robust, in line with the classical speed-accuracy tradeoff. The first study favored the rotated Gumbel copula (mean $\theta \simeq 2$), while the second and third studies favored Gaussian/t-copulas (average $\rho \approx 0.8$). Importantly, these copulas yield visually similar joint distributions (see \autoref{fig:copula_visualization}, where the top right panel and right panel of the third row are hardly dinstinguishable), so the discrepancy does not undermine the main finding: \ide and MT are tightly coupled at the global level.
+In contrast, the global dependence across conditions is strong and robust, in line with the classical speed-accuracy tradeoff. The first study favored the rotated Gumbel copula (mean $\theta \simeq 2$), while the second and third studies favored Gaussian/t-copulas (average $\rho \approx 0.8$). Importantly, these copulas yield visually similar joint distributions (see \autoref{fig:copula_visualization}, where the top right panel and right panel of the third row are hardly dinstinguishable), so the discrepancy does not undermine the main finding: \ide and MT are tightly coupled at the global level, with a MT variance that increases with \ide levels. In the Fitts-with-strategy protocol, the correlations between \ide and MT increases compared to the pure strategy or the classical Fitts protocols whenever data was pooled across (D,W) pairs within a strategy, or pooled across strategies within a (D,W) pair, which is also consistent.
 
-Could the difference between Gumbel and Gaussian fits be an artifact of model identifiability~\cite{gori2024, wilson2019}? To test this, we simulated datasets with realistic marginals and sample sizes comparable to our studies (\autoref{app:identifiability}). The analysis shows that the rotated Gumbel should be identifiable given our data, ruling out a spurious explanation. We therefore attribute the difference to the experimental protocols and input modalities: gesture input in study 1, physical arm movements in study 2, and mouse pointing in study 3. We return to this interpretation in \autoref{subs:synthesis:pdd}.
+
+Considering the resulting distributions are very similar visually, could the difference between Gumbel and Gaussian fits be an artifact of model identifiability~\cite{gori2024, wilson2019}? In other words, perhaps the two copulas are hard to distinguish, and small variations may push more towards one or the other copula. To test this, we simulated datasets with realistic marginals and sample sizes comparable to our studies (\autoref{app:identifiability}). The analysis shows that the rotated Gumbel should be identifiable given our data, ruling out a spurious explanation. We therefore attribute the difference to the experimental protocols and input modalities: gesture input in study 1, physical arm movements in study 2, and mouse pointing in study 3. We return to this interpretation in \autoref{subs:synthesis:pdd}.
 
 
 % The Gaussian copula seems thus on the whole a simple yet sufficient model to describe the dependence between \ide and MT, that works both at the local (\ie for a given conditions, such as a D,W pair or a strategy) and global levels (across D,W pairs or strategies). There were some discrepancies that we could not explain between the studies; in particular in the balanced condition in study 2 and the fact that the rotated Gumbel copula was the best fit in study 1 for almost all participants. 
 
 
 \subsection{Model between \ide and ID}
-Across studies 1 and 3, we found no consistent evidence that D or W influence \ide beyond their ratio in ID. This is not surprising: in standard full-factorial designs, D and W are strongly correlated with ID~\cite{gori2018chi}, which makes disentangling their effects statistically fragile. A shape $\times$ scale design would be needed to test these effects more decisively~\cite{guiard2009}.
+Across studies 1 and 3, we found no consistent evidence that D or W influence \ide beyond their ratio in ID. In standard full-factorial designs, D and W are strongly correlated with ID~\cite{gori2018chi}, which makes disentangling their effects statistically fragile. A shape $\times$ scale design would be needed to test these effects more decisively~\cite{guiard2009}, which we investigate in \autoref{subs:synthesis:pdd}.
 
 
-Importantly, the simple linear model proposed in \autoref{eq:model_ide_simple} already captures the main phenomenon of interest described by \citeauthor{zhai2004nominal} of target over- and under-utilization. We therefore advocate this model as a parsimonious and practically useful account. Expressed probabilistically with a standard Gaussian noise formulation, it reads:
+Importantly, a model with main effects for W on top of the ratio D/W is not needed, since the linear model proposed in \autoref{eq:model_ide_simple} already captures the main phenomenon of interest described by \citeauthor{zhai2004nominal} of target over- and under-utilization. We therefore advocate this model as a parsimonious and practically useful account. Expressed probabilistically with a standard Gaussian noise formulation, it reads:
 \begin{align}
 	\ide  \sim \mathcal{N}\left( \alpha + \beta\,\text{ID} + \gamma\,\text{strategy}, \sigma^2 \right).\label{eq:probabilistic_ide}
 \end{align}
-We assessed the variability of \ide by estimating $\sigma \approx 0.3$ for the YKORM dataset and $\sigma \approx 0.15$ for the JGP dataset. We return to the interpretation of these values in \autoref{subs:synthesis:pdd}.
+We assessed the variability of \ide, and found $\sigma \approx 0.3$ for the YKORM dataset and $\sigma \approx 0.15$ for the JGP dataset. We return to the interpretation of these values in \autoref{subs:synthesis:pdd}.
 
 
 
@@ -1384,8 +1389,7 @@ Across all three studies, the EMG model consistently provided a better account o
 
 
 \subsection{Revisiting results with the PDD dataset\label{subs:synthesis:pdd}}
-
-To further validate and generalize our findings, we analyzed the Pointing Dynamics Dataset (PDD) \cite{mueller2017}. This dataset is particularly informative because it uses a shape $\times$ scale design (\D = 212, 353 mm; ID = 2, 4, 6, 8 ), which allows to decorrelate D from ID, includes a condition with a very small target size (less than 1\,mm), employs a standard mouse with constant CD gain, and includes a large number of trials per condition (12 participants $\times$ 8 blocks $\times$ 102 trials).
+To further validate and generalize our findings, we applied our analysis to the Pointing Dynamics Dataset (PDD) \cite{mueller2017}. This dataset is particularly informative because it uses a shape $\times$ scale design (\D = 212, 353 mm; ID = 2, 4, 6, 8 ), which allows to decorrelate D from ID, includes a condition with a very small target size (less than 1\,mm), which we hypothesized was missing from our datasets to compare to \citeauthor{zhai2004nominal}'s results, employs a standard mouse with constant CD gain, and includes a large number of trials per condition (12 participants $\times$ 8 blocks $\times$ 102 trials).
 
 
 % We revisit some of the previous results under the light of another dataset, called the Pointing Dynamics Dataset (PDD) by Müller \etal{} \cite{mueller2017}. This dataset is interesting since:
@@ -1400,8 +1404,8 @@ To further validate and generalize our findings, we analyzed the Pointing Dynami
 We only considered movements in the left-to-right direction. The first 20 trials for each condition were also removed in the version of the PDD dataset that is publicly available. After removing spatial outliers (endpoint position more than 2 standard deviations away from the mean per condition), we ended up with a dataset of 3744 movements. For some blocks in the ID=2 conditions, we found \ide levels below 1, which is abnormally low\footnote{Typically, \ide will be above ID for low levels of ID, since participants will use less than the available width of the target. Finding such low \ide values is thus very surprising and likely indicates a problem in the data or its processing.}. We thus removed these blocks and in the end we were left with 3160 movements across 87 different conditions. 
 
 \subsubsection{Model between \ide and D, W, ID}
-We fitted similar mixed-effect linear models as in the first study, with parameter estimates summarized in \autoref{tab:fit_pdd_ide_id}.
-Importantly, the models reproduces the classic target under and over-utilization phenomenon: positive intercepts and slopes slightly below 1 indicate under-utilization for small IDs and over-utilization for large IDs. This confirms that the simple linear model in \autoref{eq:model_ide_simple} can also in this case explain \citeauthor{zhai2004nominal}'s observations. The shape x scale design used for the PDD dataset decorrelated D from ID; thus the data provides strong support for a small but significant effect of D. The likelihoods associated with each model highlight the importance of including W in the models, but estimated parameters that include W are however unreliable, since W and ID remain strongly correlated, so we will not further comment on them.
+We fitted similar mixed-effect linear models as in the first study, with parameter estimates summarized in \autoref{tab:fit_pdd_ide_id}. Compared with the previous studies, the large sample size means the log-likelihood differences are more pronounced, and the effects are all found significant. However, the effect sizes for D and W or their interaction with ID are all small. For example, the effect of W, which is the largest, induces a change of about .4 bits every 100 pixels and the interaction effect of D or W with ID is systematically in the other direction as the main effect, which further reduces the impact of the variable. Thus, in general, these effects can be neglected.
+Importantly, the models reproduces the classic target under and over-utilization phenomenon: positive intercepts and slopes slightly below 1 indicate under-utilization for small IDs and over-utilization for large IDs. This confirms that the simple linear model in \autoref{eq:model_ide_simple} can also in this case explain \citeauthor{zhai2004nominal}'s observations. 
 
 \begin{table}
 	\caption{Mixed effect model fit results four \ide models. Each line (except the last, which displays the log-likelihood associated with each model) displays the estimated coefficient associated with the variable in the left column as well its associated p-value (in bold if p$<$0.05).}
@@ -1425,11 +1429,9 @@ Importantly, the models reproduces the classic target under and over-utilization
 
 
 \subsubsection{Fitting copulas}
-We next assessed local and global dependencies between \ide and MT using copulas. For local dependencies (within each W condition), no single copula stood out consistently. The Galambos copula provided the best fit for 4 of 8 W conditions and remains plausible for 2 others, with its parameter $\theta$ increasing steadily with W (from about 0.4 for the smallest target to about 1.2 for the largest, plot available in the supplementary materials), indicating a progressive increase in local dependence.
-
+We next assessed local and global dependencies between \ide and MT using copulas. For local dependencies (within each W condition), no single copula stood out consistently. The Galambos copula provided the best fit for 4 of 8 W conditions and remains plausible for 2 others, with its parameter $\theta$ increasing steadily with W (from about 0.4 for the smallest target to about 1.2 for the largest, plot available in the supplementary materials), indicating a progressive increase in local dependence as the Galambos with parameter $\theta \to 0$ is equivalent to the independent copula. 
 For global dependencies (pooling across W conditions per participant), results are consistent with previous studies: the strongest dependencies are captured either by the Gaussian/t-copula pair ($\rho \simeq 0.87$) or the rotated Gumbel copula ($\theta \simeq 3.1$), indicating very strong correlation between 
-\ide and MT (\autoref{fig:mer_pdd}). This confirms that while local dependencies are weak and variable across small targets, global dependencies reflecting the speed-accuracy tradeoff are robust across datasets and experimental designs.
-
+\ide and MT (\autoref{fig:mer_pdd}). 
 
 \begin{figure}[htbp]
    \centering
@@ -1475,29 +1477,29 @@ For global dependencies (pooling across W conditions per participant), results a
 
 
 \section{Generating pointing data for different strategies: Rationale and methods for the different models \label{sec:gen}}
-As Shmueli~\cite{shmueli2010} argues, statistical models can serve two distinct purposes: to \textit{explain} observed data or to \textit{predict} new data. Success in one of these goals does not guarantee success in the other. In the preceding sections, our focus was on explanation: we used models to probe theoretical questions about the effects of ID, \ide, strategy, and MT, and to understand the structure of pointing behavior. In this section, we shift to the predictive role. We ask whether the same models, when used generatively, can produce realistic pointing data, that can be used \eg in simulations or in optimal design processes~\cite{oulasvirta2018,murray2022}.
+As Shmueli~\cite{shmueli2010} argues, statistical models can serve two distinct purposes: to \textit{explain} observed data or to \textit{predict} new data. Success in one of these goals does not guarantee success in the other. In the preceding sections, our focus was on explanation: we used models to probe theoretical questions about the effects of ID, \ide, strategy, and MT, and to understand the structure of pointing behavior. In this section, we shift to the predictive role. We ask whether the same models, when used generatively, can produce realistic pointing data, for use \eg in simulations or in optimal design processes~\cite{oulasvirta2018,murray2022}.
 
 
 
 
 We exploit the parametric models developed before (Gaussian bivariate model for (\mmt, \ide), the EMG model for MT and the copula models) to generate synthetic data under different strategy conditions. A key feature of these models is their explicit parametrization of strategy, which allows us to simulate data for both pure-strategy and Fitts-with-strategy protocols. Note that we present only methods for the pure strategy protocol, but these methods generalize easily to the Fitts-with-strategy protocol.
-As with any generative approach, there is a trade-off between simplicity and realism. Simpler models tend to be more robust and easier to generalize, but may miss ``second-order'' effects; here, we prefer simplicity.
+As with any generative approach, there is a trade-off between simplicity and realism. Simpler models tend to be more robust and easier to generalize, but may miss ``second-order'' effects and thus be slightly less predictive on the dataset on which it has been trained; here, we prefer simplicity.
 
 
-Throughout this section, $\Theta$ denotes a vector of model parameters, including strategy $s$. $p_{\Theta}(\ide, \mt)$ refers to the joint distribution between \ide and MT parametrized by $\Theta$, and $p_{\Theta}(\mt|\ide)$ refers to the conditional distribution of MT given \ide. The three methods we present illustrate different ways to generate realistic synthetic pointing data, while highlighting trade-offs in flexibility, interpretability, and computational tractability.
-We use parameter values estimated from the three studies as concrete examples, giving researchers a realistic starting point; if the context differs, they can easily re-estimate them on their own dataset.
+Throughout this section, $\theta$ denotes a vector of model parameters, including strategy $s$. $p_{\theta}(\ide, \mt)$ refers to the joint distribution between \ide and MT , and $p_{\theta}(\mt|\ide)$ refers to the conditional distribution of MT given \ide, both parametrized by $\theta$. We present three methods to generate realistic synthetic pointing data, while highlighting their trade-offs in flexibility and interpretability.
+We use parameter values estimated from the three studies as a concrete example. Researchers interested in applying these models could likely use the same parameter values, considering the experiments that we considered are rather standard. However, if their context differs, they can easily re-estimate these parameters on their own dataset.
 
 
-\subsection{Model 1: Joint distributions using Copulas.}
+\subsection{Model 1: Joint distributions using Copulas.\label{sub:model1}}
 
-\paragraph{The model.} The first method defines the global dependency $p_{\Theta}(\ide, \mt)$ in terms of copulas. As explained in \autoref{sec:copula}, the copula $C_{\Theta}$ links the marginals $F_{\Theta}(\ide)$ and $G_{\Theta}(\mt)$ into the joint $p_{\Theta}(\ide, \mt)$
+\paragraph{The model.} The first method defines the global dependency $p_{\theta}(\ide, \mt)$ in terms of copulas. As explained in \autoref{sec:copula}, the copula $C_{\theta}$ links the marginals $F_{\theta}(\ide)$ and $G_{\theta}(\mt)$ into the joint $p_{\theta}(\ide, \mt)$
 \begin{align}
-	p_{\Theta}(\ide, \mt) = C_{\Theta}(F_{\Theta}(\ide), G_{\Theta}(\mt)).
+	p_{\theta}(\ide, \mt) = C_{\theta}(F_{\theta}(\ide), G_{\theta}(\mt)).
 \end{align}
-Pointing data can then be obtained by sampling directly from the joint. This method assumes access to the marginals, which can be estimated from empirical data, or given/assumed.
+Pairs of (MT,\ide) values can then be obtained by sampling directly from the joint. If the goal is to replicate blocked data \ide have several values of MT associated with a single \ide value, then one can first select \ide values by sampling from the $p(\ide|s)$ model, and them sampling MT from the \textit{conditional} copula, which can be computed directly from the relevant copula~\cite{nelsen2006}.
 
-\paragraph{Accounting for different strategies.} To have the resulting joint distribution depend on s even though the copula does not, we sample \ide values from the $p(\ide | s)$ model and use them together with the \textit{conditional} version of the aforementioned copula.
-For the $\ide|s$ model, we can directly consider the marginal distribution of the bivariate gaussian model \autoref{eq:gaussian_ide_mt}, which reads
+\paragraph{Accounting for different strategies.} To have the resulting joint distribution depend on s even though the copula does not, we sample \ide values from the $p(\ide | s)$ model and sample from the conditional copula.
+For the $\ide|s$ model, we consider the marginal distribution of the bivariate gaussian model \autoref{eq:gaussian_ide_mt}, which reads, with the parameters found in \autoref{sec:gop}:
 \begin{align}
 	\ide \sim \mathcal{N}(4.72 + 2.3\,s, (1.06 + 0.29\,s)^2). \label{eq:gauss_strategy_marginal}
 \end{align}
@@ -1506,27 +1508,27 @@ For the $\ide|s$ model, we can directly consider the marginal distribution of th
 \paragraph{Inputs of the model.} To operationalize this model, one needs
 \begin{enumerate}
 	\item The parameters of the t-copula. We found $\rho_1 = .69$, $\nu = 16.9$ by estimating the t-copula on the entire GO dataset; the simpler Gaussian copula model would also be appropriate.
-	\item The parameters of the marginal distributions for MT and \ide, which can be estimated using any popular statistical package. For MT, several asymmetric distributions may be valid; we prefer the EMG distribution as explained \autoref{subs:rw::emg}. For the GO dataset, we found $\beta = 0.53$, $\sigma = 0.19$, and $\lambda= .75$. Note that we use the ``pure'' EMG distribution here, and not the EMG model with linear conditional mean \autoref{eq:emg_mean}.
+	\item The parameters of the marginal distributions for MT and \ide, which can be estimated using any popular statistical package. For MT, several asymmetric distributions may be valid; we prefer the EMG distribution as explained \autoref{subs:rw::emg}. For the GO dataset, we found $\beta = 0.53$, $\sigma = 0.19$, and $\lambda= .75$. Note that we use the ``pure'' EMG distribution here, and not the EMG model with linear conditional mean \autoref{eq:emg_mean}, since copulas do not support a marginal conditional on the other.
 	% \item The levels and number of repetitions may also be given to generate repeated measures.
 \end{enumerate}
 
 
-\paragraph{Pro's and con's.} Copulas offer a clean way to specify the dependency between \ide and MT independently of their marginals. This means one can mix and match marginals for \ide (\eg to fit a specific task) and MT (\eg using another asymmetric distribution) while keeping the same t-copula to specify their dependence. Thus, copulas provide a flexible framework for generating dependent pointing data.
-On the downside, copulas have been used mostly to capture tail dependencies, but in pointing tasks, the lower tail of MT is linked to the entire range of \ide values, not just its extremes~\cite{gori2018tochi}, so their generative performance needs evaluation. 
+\paragraph{Pro's and con's.} Copulas offer a clean way to specify the dependency between \ide and MT independently of their marginals. This means one can mix and match marginals for \ide (\eg to fit a specific task, for example a realistic \ide distribution may be bimodal or trimodal, as potential targets in an interface are usually clustered in two or three zones such as sidebars, topbars, contextual menus) and MT (\eg using another asymmetric distribution) while keeping the same t-copula to specify their dependence. Thus, copulas provide a flexible framework for generating dependent pointing data.
+A potential flaw of copulas is that they have been used mostly to capture tail dependencies, but in pointing tasks, the lower tail of MT is linked to the entire range of \ide values (see the ``minimum'' Fitts' law in \autoref{subs:consistency}), so their generative performance needs evaluation. 
 
 
 
 \subsection{Model 2: Conditional distribution using EMG.}
-\paragraph{The model.} The second method directly leverages the EMG model with quadratic variance. For each point, a value of $\ide$ is selected by sampling from the marginal $F_{\theta}(\ide)$; then a value of MT is selected by sampling from the conditional distribution
+\paragraph{The model.} The second method directly leverages the chain rule decomosition from \autoref{eq:chain_rule} and the EMG model with quadratic variance. For each point, a value of $\ide$ is selected by sampling from the marginal $F_{\theta}(\ide)$; then a value of MT is selected by sampling from the conditional distribution
 \begin{align}
-	p_{\Theta}(\mt|\ide) = \text{EMG}(\mt; \ide, \Theta).
+	p_{\theta}(\mt|\ide) = \text{EMG}(\mt; \ide, \theta).
 \end{align}
 
 \paragraph{Accounting for different strategies.} Similar to the previous model, we can directly draw \ide values from the Gaussian \autoref{eq:gauss_strategy_marginal}.%, and sample MT from the conditional EMG distribution.
 
 \paragraph{Inputs of the model.} To operationalize this model, one needs the parameters of the EMG distribution described \autoref{eq:emg_mean}. We estimated these values with MLE for the GO dataset as $a = 0.08$, $b = .14$, $\sigma=0.18$, $\lambda_0 = .17$, $\lambda_1 = .08$. 
 
-\paragraph{Pro's and con's} This method will produce data that resembles empirical data by construction, since it relies directly on the EMG distribution which was repeatedly validated. One of the main weaknesses of this method is that it does not allow controlling the association between \ide and MT independently of the EMG parameters. For example, as demonstrated in \autoref{app:proofs}, the Pearson correlation $r$ is fully determined by the EMG model's parameters. Additionally, as a result of Proposition~\ref{subs:theory_rsq} it will produce values of $r(\mmt, \ide)$ much closer to 1 than what we found empirically in \autoref{fig:go_ide} and in\autoref{fig:meancov_strat}.
+\paragraph{Pro's and con's} This method will produce data that resembles empirical data by construction, since it relies directly on the EMG distribution which was repeatedly validated. One of the main weaknesses of this method is that it does not allow controlling the association between \ide and MT independently of the EMG parameters. For example, as demonstrated in \autoref{app:proofs}, the Pearson correlation $r$ is fully determined by the EMG model's parameters. Additionally, as a result of Proposition~\ref{subs:theory_rsq} it will produce values of $r(\mmt, \ide)$ close to 1, much higher than what we found empirically in \autoref{fig:fittslaw_guiard}.
 
 \subsection{Model 3: Joint distribution of (\ide, \mmt).}
 \paragraph{The model.} This third model directly controls the association between \mmt and \ide by sampling a pair of (\mmt, \ide) values from the Gaussian bivariate model (\autoref{eq:gaussian_ide_mt}).
@@ -1534,9 +1536,9 @@ Then, because the EMG model parameters are related to \mmt by
 \begin{align}
 	\mmt & = \beta \mathbf{x} + \lambda \mathbf{x} = a + b \ide + \lambda_0 + \lambda_1 \ide,
 \end{align}
-we ``correct'' $\lambda_1$\footnote{We don't correct $\beta$ since this would alter the low movement time values, which we believe are an important feature of the dataset, and don't alter $\lambda_0$ to ensure a sufficiently large variance.}, while also ensuring it remains positive to keep conditional mean and variance that increase across \ide.
+we ``correct'' $\lambda_1$\footnote{We don't correct $\beta$ since this would alter the low movement time values, which we believe are an important feature of the dataset, and don't alter $\lambda_0$ to ensure a sufficiently large variance.}, while also ensuring it remains positive to keep conditional mean and variance that increase across \ide:
 \begin{align}
-	\lambda_1 = \text{max}(0, \frac{\mmt - a - b\,\ide}{\ide}). \label{eq:lambda_1}
+	\lambda_1 = \text{max}(0, \frac{\mmt - a - b\,\ide - \lambda_0}{\ide}). \label{eq:lambda_1}
 \end{align}
 % Movement times are then sampled from the EMG with corrected parameters. Notice in \autoref{eq:lambda_1} that we force $\lambda_1$ positive to keep an increasing variance, which comes at the cost of occasional departures from the correction.
 
@@ -1561,7 +1563,7 @@ Like the previous method, this approach generates realistic data by relying on t
 
 
 \section{Model comparison}
-We now evaluate the three generative models, asking how well they reproduce the empirical distributions and features relevant to researchers who work with Fitts' law. Two criteria are considered: (i) \textit{data consistency}, the stability of common data metrics when re-estimated from generated data; and (ii) \textit{consistency with the bivariate Gaussian model}, since it provides a simple way to assess the effect of strategy. To reduce random sampling effects, we generated large datasets\footnote{The data were generated with a fixed seed (1234). Replications with two other seeds (777, 999) are available in the supplementary materials. The conclusions for these replications remain the same as for the results reported in the paper, indicating the sample size of the dataset was indeed large enough.} using the exact \ide values from the original data\footnote{That is, \ide was fixed to empirical values and only MT was generated. This is feasible in all three models: via conditional copula sampling (Model 1), conditional Gaussian sampling (Model 3), or trivially in Model 2.}, but the generative models can generate \ide values as described before.
+We now evaluate the three generative models, asking how well they reproduce the empirical distributions and features relevant to researchers who work with Fitts' law\footnote{One could also use a general statistical criterion, such as the energy distance test~\cite{szekely2004}, to evaluate how closely the generated data resemble the original dataset. While this would enable a comparison among methods, it would not indicate the absolute degree of similarity in a way that is meaningful for researchers working with pointing data. We therefore favor the domain-specific metrics that have a more direct interpretation.}. Two criteria are considered: (i) \textit{data consistency}, the stability of common data metrics when re-estimated from generated data; and (ii) \textit{consistency with the bivariate Gaussian model}, since it provides a simple way to assess the effect of strategy. To reduce random sampling effects, we generated large datasets\footnote{The data were generated with a fixed seed (1234). Replications with two other seeds (777, 999) are available in the supplementary materials. The conclusions for these replications remain the same as for the results reported in the paper, indicating the sample size of the dataset was indeed large enough.} using the exact \ide values from the original data\footnote{That is, \ide was fixed to empirical values and only MT was generated. This is feasible in all three models: via conditional copula sampling (Model 1), conditional Gaussian sampling (Model 3), or trivially in Model 2.}.
 
 
 
@@ -1573,15 +1575,17 @@ We compared the three generated and the ground truth datasets on four type of fe
 	\item The $\beta$ parameter of the EMG model, and Fitts' law parameters $a$ and $b$. Indeed, Gori and colleagues~\cite{gori2017,gori2018tochi} have argued that there exist two version of Fitts' law: an average Fitts' law, computed via linear regression on \mmt and a minimum Fitts' law, which represents the best performance possible, and corresponds to $\beta$ in the EMG model~\cite{gori2019}.
 	% 
 	\item The ``classical'' criterion $r(\overline{\mt}, \ide)$,
-	\item computation of ISO-throughput, also known as the ``mean-of-means'' throughput~\cite{soukoreff2004}.
+	\item ISO-throughput, also known as the ``mean-of-means'' throughput~\cite{soukoreff2004}, which compresses the entire dataset into a single value in bit/second supposed to capture overall pointing performance.
 \end{enumerate}
 
-The results are shown in \autoref{fig:consistency}. Overall, differences between the models are modest and pass the ``eye test'' when compared to the ground truth data; The association measures also show little to no differences. Regarding the other features:
+We found that models 2 and 3 could sometimes produce negative MT for very low levels of \ide. Indeed, modeling movement times in the small ID regime is often problematic, since aimed movement for very large targets is more ballistic than corrected~\cite{elliott2017,gori2020}. Using the MacKenzie formulation for ID~\cite{gori2018chi} somewhat relieves that problem. Some researchers prefer to model movement times below ID = 2 as constant duration~\cite{crossman1957}, or only dependent on movement amplitude~\cite{gan1988}. 
+To solve this problem, we applied a simple post-processing step, where we  discard data points where MT is below 200\,ms, considering that such short movements are not plausible, and without any compensation. The outputs of the models without this post-processing can be found in the supplementary materials, with minimal changes induced by the post-processing.
+
+The generated datasets are shown in \autoref{fig:consistency}. Overall, differences between the models are modest and pass the ``eye test'' when compared to the ground truth data; The association measures also show little to no differences. Regarding the other features:
 \begin{itemize}
-	\item All models slightly underestimate ISO throughput, with Model 1 deviating the most (by up to 0.25 bit/s). 
+	\item All models slightly underestimate ISO throughput, with Model 1 deviating the most (by up to 0.27 bit/s). 
 	\item Model 1 preserves the average Fitts' law (OLS) but distorts the minimum law (EMG), producing a higher intercept and shallower slope, while Model 2 shows the opposite pattern. Model 3 most faithfully reproduces the original data, with only a small intercept bias in the EMG fit.
 	\item $\overline{r} = r(\mmt, \ide)$ is inflated for all models. For Model 2, this is structural and due to EMG. For Model 1, it likely reflects the symmetry of the t-copula. Model 3 reduces $\overline{r}$, but not up to ground truth levels, presumably because of the enforced positive $\lambda_1$.\footnote{Analyses reported in the supplementary materials confirm that correcting $a$ instead of $\lambda_1$ recovers the target $\overline{r}$, but at the cost of much worse performance on other metrics.}
-	\item All models tend to underestimate MT at low \ide values, with Models 2 and 3 even (rarely) producing negative MTs for very low \ide values.
 \end{itemize}
 
 
@@ -1589,26 +1593,27 @@ The results are shown in \autoref{fig:consistency}. Overall, differences between
 \begin{figure}[htbp]
 	\centering
 	\makebox[\textwidth]{
-		\includegraphics[width=1.2\columnwidth]{img/method_consistency.pdf}
+		\includegraphics[width=1.2\columnwidth]{img/method_consistency_post_process.pdf}
 	}
 	\caption{Consistency as evaluated by the criterion of \autoref{subs:consistency}. The original, ground truth dataset (left panel) is compared to data produced by Model 1 (middle left panel), Model 2 (middle right panel) and Model 3 (right panel). The scores considered for consistency are displayed on each panel.}
 	\label{fig:consistency}
 \end{figure}
 
 \subsection{Consistency of the bivariate Gaussian model}
-Because our goal is to fit a Gaussian model parametrized by strategy, we next asked whether the generated datasets are also consistent with this model. For each method, we generated data under five strategy levels and refit the Gaussian model as in \autoref{fig:meancov_strat}.
+Because our goal is to provide a model that is parametrized by strategy, we next asked whether the generated datasets are consistent with the bivariate Gaussian model when grouped by strategy levels. For each method, we generated data under five strategy levels and refit the bivariate Gaussian model as in \autoref{fig:meancov_strat}.
 
-Results are shown in \autoref{fig:comp_gen_strat}. Model 1 reproduces the \ide dimension well but fails on \mmt and the correlation structure. Models 2 and 3 are much closer overall, with Model 3 providing the best alignment with the Gaussian parametrization.
+The results are shown in \autoref{fig:comp_gen_strat}. Model 1 matches well with the bivariate Gaussian model on the \ide dimension, but fails on \mmt, where it does not predict the right correlation with \ide levels, and the correlation parameter, which is much too large. 
+Models 2 and 3 are much closer overall, with Model 3 providing the best alignment with the Gaussian parametrization. This is not so surprising since it is the only model directly leveraging the Gaussian bivariate model.
 
 
 \begin{figure}[htbp]
 	\centering
 	\makebox[\textwidth]{
-		\includegraphics[width=1.2\textwidth]{img/tcop_strat.pdf}}
+		\includegraphics[width=1.2\textwidth]{img/tcop_strat_post_process.pdf}}
 	\makebox[\textwidth]{
-		\includegraphics[width=1.2\textwidth]{img/emg_strat.pdf }}
+		\includegraphics[width=1.2\textwidth]{img/emg_strat_post_process.pdf }}
 	\makebox[\textwidth]{
-		\includegraphics[width=1.2\textwidth]{img/emg_control_strat.pdf }}
+		\includegraphics[width=1.2\textwidth]{img/emg_control_strat_post_process.pdf }}
 
 	\caption{An evaluation of the linear parametrization of the bivariate Gaussian model of \autoref{eq:gaussian_ide_mt}. Each subpanel reads like those of \autoref{fig:meancov_strat}. Top panel: evaluation for Model 1. Middle panel: evaluation for Model 2. Bottom panel: evaluation for Model 3.}
 	\label{fig:comp_gen_strat}
@@ -1647,23 +1652,25 @@ Results are shown in \autoref{fig:comp_gen_strat}. Model 1 reproduces the \ide d
 Across this work, we introduced several models, which can complement or extend the traditional use of Fitts' law.
 \begin{itemize}
 	\item The probabilistic model for \ide in \autoref{eq:probabilistic_ide} can be used to generate \ide values from nominal values of ID and strategy.
-	\item The bivariate Gaussian model, described in \autoref{eq:gaussian_ide_mt} together with its parameters relationships to ID and strategy described in \autoref{fig:biv_strategy_fit_yamanaka}, allows generating \ide and \mmt values from nominal values. It provides a relatively simple description, while still capturing effects of strategy and task geometry and part of the variability of human movements.
+	\item The bivariate Gaussian model, described in \autoref{eq:gaussian_ide_mt} together with its parameters relationships to ID and strategy described in \autoref{fig:biv_strategy_fit_yamanaka}, allows generating \ide and \mmt values from nominal values. It provides a relatively simple description, while still capturing effects of strategy and task geometry and part of the variability of human movements. It may thus represent a sweet spot for some researchers.
 	\item The three generative models described \autoref{sec:gen}, with their strengths and weaknesses previously discussed.
 \end{itemize}
 Often, researchers can start with our reported parameters values if the goal is to predict movement times \eg to design an intelligent system where movement times play a role. As we have used datasets acquired over a variety of conditions (pointing with a mouse, with the limb, or with gestures), we expecet our results to be quite robust. However, if the context differs substantially, or to obtain more accurate predictions, these parameters can be re-estimated from new data using standard statistical methods.
 
 \subsection{On the local and global dependency}
-In this work, we examined both local and global dependencies between \ide and MT, corresponding to two levels of the speed-accuracy tradeoff (SAT): a local SAT operating within conditions and a global SAT across conditions. Our finding of minimal to no local dependency suggests two possible explanations. One is that movement time variability due to internal processes such as internal motor noise~\cite{vanbeers2004,faisal2008} dwarfs the variability induced by changes in \ide within a single condition. Another is that movements executed under a fixed condition are functionally equivalent, leaving little room for systematic tradeoffs to appear locally.
+In this work, we examined both local and global dependencies between \ide and MT, corresponding to two levels of the speed-accuracy tradeoff (SAT): a local SAT operating within conditions and a global SAT across conditions. Our finding of minimal to no local dependency suggests two possible explanations. One is that movement time variability due to internal processes such as internal motor noise~\cite{vanbeers2004,faisal2008} dwarfs the variability induced by changes in \ide within a single condition. Another is that movements executed under a fixed condition are functionally equivalent. For example, it could be hypothesized that, within a given D-W pair in a classical Fitts' law experiment, people adopt a single motor plan. This hypothesis is supported by the results of the Fitts-with-strategy study, which shows that the tradeoff becomes substantially stronger within a single D-W pair when participants use different strategies. 
+Thus, the absence of a local speed-accuracy tradeoff could be used as an indicator of the ``stability'' of movements: is a users movements display a local speed-accuracy tradeoff, then this could indicate a speed-accuracy ``rebalancing'', where the user shifts strategies between trials. It could reflect whether the user is still learning (\eg when using a novel device, or during rehabilitation~\cite{sungeelee2024}) or signal fatigue or overload. 
 
-To our knowledge, this local-global distinction has not been recognized in pointing models before. Yet, SAT effects operating at multiple scales have been examined in other domains, most notably reaction time research, where they are referred to as micro and macro SATs~\cite{dennis1996,domingue2022}. Interestingly, but perhaps only coïncidentally, the asymmetric, long-tailed distributions we found to be critical for modeling movement times are also a hallmark of reaction times~\cite{luce1991}. A proposed explanation for the micro SAT is that individuals adjust their speed-accuracy tradeoffs while responding on a trial-by-trial basis~\cite{domingue2022}, which suggests that the local tradeoff may have been obscured by large movement time variability. Whether such mechanisms translate from tasks that are used to evaluate reaction times to motor control remains an open question. What our results do show clearly is that the observed dependence between MT and \ide is much stronger at the global scale, across conditions.
-
+To our knowledge, this local-global distinction has not been recognized in pointing models before. SAT effects operating at multiple scales have been examined in other domains, most notably reaction time research, where they are referred to as micro and macro SATs~\cite{dennis1996,domingue2022}. 
+It is notably found that often increases in response time do not lead to increases in accuracy, but that time pressure do consistently reduce accuracy~\cite{domingue2022}. This seems in line with our findings, where an explicit strategy, partly operationalized as a time pressure (be as fast as possible, take your time) leads to a stronger local tradeoff (pure strategy and Fitts-with-strategy protocols) than the one found in the classic Fitts protocol.
+Interestingly, but perhaps only coïncidentally, the asymmetric, long-tailed distributions we found to be critical for modeling movement times are also a hallmark of reaction times~\cite{luce1991}. 
 
 
 
 \subsection{Applicability of copulas}
-We introduced copulas as a way to model the joint distribution of \ide and MT. To our knowledge, this is the first application of copulas in HCI. The main advantage of copulas is that they separate the dependency structure from the marginals: one can represent the dependency with a compact parametric form (often just one or two parameters) without having to impose restrictive assumptions about the marginal distributions.
+We introduced copulas as a way to model the joint distribution of \ide and MT, but also as a way to generate new data. To our knowledge, this is the first application of copulas in HCI. The main advantage of copulas is that they separate the dependency structure from the marginals: one can represent the dependency with a compact parametric form (often just one or two parameters) without having to impose restrictive assumptions about the marginal distributions. This is useful when the task changes; we provided an example for bi/tri-modal distributions for \ide in \autoref{sub:model1}.
 
-Admittedly, the case we studied is not the most compelling for copulas; the dependency is already well captured by the EMG model, and our goal was not to position copulas as a central contribution of this paper, but rather to use it as a tool to study dependencies with the least amount of assumptions. Nonetheless, we see strong potential for their use in HCI. Interaction, at its core, is about dependencies between variables\footnote{Two variables that are independent can not describe a useful interaction scenario, since they can be understood one without the other.}, and in many situations these dependencies may be nonlinear or dominated by tail behavior (\eg breakdowns). Copulas are designed for precisely such cases. We namely see promising opportunities % in classical movement paradigms such as drawing (\eg the 2/3 power law~\cite{lacquaniti1983}) or steering~\cite{accot1997}, and more generally 
+Admittedly, the case we studied is not the most compelling for copulas; the dependency is already quite well captured by the EMG model, and our goal was not to position copulas as a central contribution of this paper, but rather to use it as a tool to study dependencies with the least amount of assumptions. Nonetheless, we see strong potential for their use in HCI. Interaction, at its core, is about dependencies between variables\footnote{Two variables that are independent can not describe a useful interaction scenario, since they can be understood one without the other.}, and in many situations these dependencies may be nonlinear or dominated by tail behavior (\eg breakdowns). Copulas are designed for precisely such cases. We namely see promising opportunities % in classical movement paradigms such as drawing (\eg the 2/3 power law~\cite{lacquaniti1983}) or steering~\cite{accot1997}, and more generally 
 in any setting where tail dependencies are expected \ie where variable effects become mutually reinforcing or diminishing at the extremes of their ranges.
 
 
@@ -1676,6 +1683,7 @@ In many cases however, the most common copulas are widely available; many copula
 In this work, we presented models of pointing that serve two distinct but complementary roles. As explanatory tools, they highlight the existence of two levels of the speed-accuracy tradeoff. As predictive tools, they allow realistic data generation. 
 Together, these findings clarify the nature of the speed-accuracy tradeoff of pointing, and provide new models for researchers who wish to use them in simulation and optimisation contexts.
 For future research, we recommend exploring hierarchical pointing models as proposed in~\cite{zhao2022}. Notably, the GO dataset reveals considerable inter-participant differences in \ide distributions across strategies (see supplementary materials): some participants display highly consistent distributions, indicating strong internal strategy adherence, while others perform faster conditions more precisely than accurate ones. Similarly, there are notable differences among participants in the variability of MT.
+These models also open a path toward modeling how pointing distributions vary with the perceived cost of errors, as previous work has demonstrated that users modify their pointing strategies in response to perceived error costs~\cite{bertucco2015}.
 
 
 
@@ -1792,7 +1800,7 @@ We recall the following results:
 		\begin{align}
 			\mathbb{E}[XY] & = \mathbb{E}[Y\mathbb{E}[X|Y]].
 		\end{align}
-	\item The law of total variance
+	\item The law of total variance\footnote{This formula splits the total variance Y into the variance of group (X) means and the average residual within group (X) variance. It is conceptually similar to a one-way ANOVA, where the total sum of squares is partitioned into within and between group sum of squares.}
 		\begin{align}
 			\text{Var}(Y) = \mathbb{E}[\text{Var}(Y|X)] + \text{Var}(\mathbb{E}[Y|X]).
 		\end{align}
@@ -1814,7 +1822,7 @@ One notices from \autoref{eq:proof_1} and \autoref{eq:proof_2} that interestingl
 \begin{align}
 	\sigma_{\overline{X}}^2 = \text{Var}(\mathbb{E}[X|Y]) = \text{Var}(f(Y)).
 \end{align}
-When compared with \autoref{eq:proof_3}, one thus sees that the only difference between $r(X,Y)$ and $r(\overline{X},Y)$ is that $\mathbb{E}[\text{Var}(X|Y)]$ is not present in the denominator. This shows $r(\overline{X},Y)$ is always larger than $r(X,Y)$, and explains why considering block averages will lead to ``better'' results.
+When compared with \autoref{eq:proof_3}, one thus sees that the only difference between $r(X,Y)$ and $r(\overline{X},Y)$ is that $\mathbb{E}[\text{Var}(X|Y)]$ is not present in the denominator. This shows $r(\overline{X},Y)$ is always at least as large as $r(X,Y)$, and explains why considering block averages will lead to ``better'' results.
 
 \paragraph{Linear conditional expectation leads to perfect correlation.}
 It is known that pointing data reaches very high values of $r(\overline{X},Y)$, often above $.9$, and sometimes even above $.99$. Here, we show that a linear model of conditional expectation will reach $r(\overline{X},Y) = 1$.
@@ -1832,7 +1840,7 @@ The correlation coefficients, following the definition in \autoref{eq:pearson_de
 	r(X,Y)  = \frac{\mathbb{E}[Y(a + bY)] - \mathbb{E}[a + bY]\mathbb{E}[Y] }{\sqrt{(\mathbb{E}[g(Y)] + \text{Var}(a + bY))}\sigma_Y} \label{eq:r_1} \\
 	r(\overline{X}, Y) = \frac{\mathbb{E}[Y(a + bY)] - \mathbb{E}[a + bY]\mathbb{E}[Y] }{\sqrt{\text{Var}(a + bY)}\sigma_Y}. \label{eq:r_2}
 \end{align}
-The covariance parts (\ie the denominators in \autoref{eq:r_1} and \autoref{eq:r_2}) simplify as
+The covariance parts (\ie the numerators in \autoref{eq:r_1} and \autoref{eq:r_2}) simplify as
 \begin{align}
 	\mathbb{E}[Y(a + bY)] - \mathbb{E}[a + bY]\mathbb{E}[Y] & = a \mu_Y + b\mathbb{E}[Y^2] - a\mu_Y - b\mathbb{E}[Y]^2 \\
 	                                                        & = b\sigma_Y^2.
@@ -1843,9 +1851,9 @@ Because
 \end{align}
 we obtain $r(\overline{X}, Y) = 1$. On the other hand, we obtain a smaller value for $r(X,Y)$:
 \begin{align}
-	r(X,Y) = \frac{b\sigma_y^2}{\sigma_y\sqrt{\mathbb{E}[g(y)] + b^2\sigma_y^2}} = \frac{1}{1 + \frac{\mathbb{E}[g(y)]}{b^2\sigma_y^2}}.
+	r(X,Y) = \frac{b\sigma_Y^2}{\sigma_Y\sqrt{\mathbb{E}[g(Y)] + b^2\sigma_Y^2}} = \frac{1}{\sqrt{1 + \frac{\mathbb{E}[g(Y)]}{b^2\sigma_Y^2}}}.
 \end{align}
-The reason that $g(Y)$ does not play a role in the $r^2$ value is that the variance of $X$ for a given $Y$ is nullified when considering $\overline{X}$. 
+The reason that $g(Y)$ does not play a role in the $r^2$ value is that the variance of $X$ for a given $Y=y$ is nullified when considering $\overline{X}$. 
 
 \paragraph{The correlation between \ide and \mt can not be specified independently of the EMG parameters in an EMG model.}
 The EMG model assumes a quadratic variance model (\autoref{eq:emg_conditional_variance})
@@ -1854,35 +1862,36 @@ The EMG model assumes a quadratic variance model (\autoref{eq:emg_conditional_va
 \end{align}
 which gives
 \begin{align}
-	\mathbb{E}[g(Y)] = s^2 + \lambda_0^2 + 2\lambda_0\lambda_1\mu_Y + \lambda_1^2(\text{Var}(Y) - \mu_Y^2)
+	\mathbb{E}[g(Y)] = s^2 + \lambda_0^2 + 2\lambda_0\lambda_1\mu_Y + \lambda_1^2(\text{Var}(Y) + \mu_Y^2)
 \end{align}
 which does not offer further simplification. This result shows that the dependence between \ide and MT can not be specified independently of the EMG parameters: for a given \ide distribution, the correlation between \mt and \ide are fully determined by the EMG parameters
 
 
 \section{Fitting and comparing copulas\label{app:copula_method}}
 \subsection{Fitting procedure\label{app:copula:fit}}
-We considered copulas from the most widely recognized families: elliptical (\eg the Gaussian and $t$ copulas), Archimedean (\eg Clayton, Gumbel), and extreme value (\eg HR, Galambos, $t$-EV), as well as their rotated variants\footnote{Copulas can exhibit dependencies in the lower tails (low values) or upper tails (high values) of distributions. Given that pointing data in our dataset displays high variance at higher ID levels, copulas with upper tail dependence, such as the Gumbel copula, tend to perform poorly. By rotating the copula, we switch the dependence from the upper tail to the lower tail, providing additional copula candidates for consideration.} and the independent copula.
-We utilized the R \texttt{copula} package~\cite{yan2007} to fit these candidate copulas; copulas are estimated based on maximum likelihood estimation, and the marginals are estimated with \textit{empirical} maximum likelihood estimation; estimations are available by directly calling library functions, as illustrated in the code that comes with this paper. 
+We considered copulas from the most popular families: elliptical (\eg the Gaussian and $t$ copulas), Archimedean (\eg Clayton, Gumbel), and extreme value (\eg HR, Galambos, $t$-EV), as well as their rotated variants\footnote{Copulas can exhibit dependencies in the lower tails (low values) or upper tails (high values) of distributions. Given that pointing data in our dataset displays high variance at higher ID levels, copulas with upper tail dependence, such as the Gumbel copula, tend to perform poorly. By rotating the copula, we switch the dependence from the upper tail to the lower tail, providing additional copula candidates for consideration.}, and the independent copula.
+We utilized the R \texttt{copula} package~\cite{yan2007} to fit these candidate copulas; copulas are estimated based on maximum likelihood estimation, and the marginals are estimated with \textit{empirical} maximum likelihood estimation, as illustrated in the code that comes with this paper. 
+Sometimes, fits were unsuccessful; this can happen when the copulas are fit to data whose dependence they can not represent, such as negative rank-correlated data with a copula that can only express positive rank-correlated data.
 
 \subsection{Comparison procedure\label{app:copula:compare}}
-To compare copulas, we use the model evidence ratio $\mathcal{R}$, which builds on AIC. A full exposition of model comparison based on AIC and $\mathcal{R}$ can be found in ~\cite{anderson2004} but is summarized here for convenience. In the maximum likelihood estimation approach, the combination of model and parameter values that reaches the maximum log-likelihood $\mathcal{L}$ is preferred. This leads to overfitting, as a nested model with fewer parameters can only do worse than the full model. One solution to that is AIC, a score that penalizes $\mathcal{L}$ with the number of parameters. A model's AIC reads 
+To compare copulas, we use the model evidence ratio $\mathcal{R}$, which builds on AIC. A full exposition of model comparison based on AIC and $\mathcal{R}$ can be found in ~\cite{anderson2004} but is summarized here for convenience. In the maximum likelihood estimation approach, the combination of model and parameter values that reaches the maximum log-likelihood $\mathcal{L}$ is preferred. This leads to overfitting, as a nested model with fewer parameters can only do worse than the full model. One solution to that is AIC, a score that penalizes $\mathcal{L}$ with the number of parameters $k$. A model's AIC reads 
 \begin{align}
 	AIC = 2(k - \mathcal{L});
 \end{align}
-a lower AIC indicates better fitting power. Models can then be compared based on their AIC difference, generally, an AIC difference of 10 is considered very strong support \ie the competing model is implausible. An interesting transformation of AIC differences is the relative likelihood ratio or model evidence ratio $\mathcal{R}$
+a lower AIC indicates better fitting power. Models can then be compared based on their AIC difference, generally, an AIC difference of 10 is considered very strong support~\cite{anderson2004} \ie the competing model is implausible. An interesting transformation of AIC differences is the relative likelihood ratio or model evidence ratio $\mathcal{R}$
 \begin{align}
 	\mathcal{R} = \exp \left(- \frac{\text{AIC}_1 - \text{AIC}_2}{2} \right)
 \end{align}
-which can directly be interpreted as odds (see also~\cite{wagenmakers2004}). For example an $R = 0.125$ means that model 2 is about 8 times as likely as model 1, given current data.
+which can directly be interpreted as odds (see also~\cite{wagenmakers2004}). 
 
-
-One difficulty is how to aggregate $\mathcal{R}$ from different datasets; for example, for different participants and replications. Existing literatures lists three strategies:
+One value of $\mathcal{R}$ is computed per fit \eg for one participant in one condition. Can we combine various $\mathcal{R}$ values to give a global comparison across the entire dataset?
+Yes, and the existing literatures lists three strategies:
 \begin{itemize}
-	\item Pool the data before, then compute the loglikelihood $\mathcal{L}$ and $\mathcal{R}$. This is justified when the data is considered homogeneous across the datasets.
-	\item Compute the loglikelihoods $\mathcal{L}$ for each dataset, and sum them to get a single $\mathcal{L}$. This is essentially equivalent to pooling the data $\mathcal{L}$, but we allow each dataset to be fitted by a model (copula) with different parameters. It is thus best suited if one expects some heterogeneity between datasets.
-	\item Compute the loglikelihoods $\mathcal{L}$ for each dataset, and average them to get a single $\mathcal{L}$. This is equivalent to the previous method, except that when summing $\mathcal{L}$, each dataset is ``weighted'' by its sample size, whereas when averaging $\mathcal{L}$ each dataset is equally weighted.
+	\item Pool the data before, then compute the loglikelihood $\mathcal{L}$ and $\mathcal{R}$. This is justified when the data is considered homogeneous across the datasets. 
+	\item Compute the loglikelihoods $\mathcal{L}$ for each dataset, and sum them to get a single $\mathcal{L}$. This is equivalent to pooling the data $\mathcal{L}$, but with the difference that we allow each sub-dataset to be fitted by a model (copula) with different parameters. It is thus best suited if one expects some heterogeneity between datasets.
+	\item Compute the loglikelihoods $\mathcal{L}$ for each dataset, and average them to get a single $\mathcal{L}$. This is equivalent to the previous method in terms of comparisons, except with the presence of NaNs when a fit failed (see \autoref{app:copula:fit}).
 \end{itemize}
-Since we expected differences between experimental conditions, we did not pool the data. We considered the sum of the likelihoods rather than the averages to deal with unsuccessful fits. Indeed, an unsuccessful fit results in a NaN (not a number). When averaging, NaNs are not taken into account, but they are when summed (in which case their value is 0). Therefore, averaging likelihoods does not penalize fits that did not succeed.
+Since we expected differences between experimental conditions, we did not pool the data. Instead, we considered the sum of the likelihoods, which penalizes models that fail the fits, compared with the averages, which by default, exclude the NaNs before averaging.
 
 \section{Visualization of Copulas used in this work}
 
@@ -1975,7 +1984,7 @@ One hypothesis to explain the discrepency between the best fitting copulas for t
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.6\textwidth]{img/identifiability.pdf}
-	\caption{Identifiavility of the rotated Gumbel copula. Data (size$=N$) was sampled from a rotated Gumbel copula and combined with typical marginals to form a realistic joint distribution for (\ide, MT). A Gaussian and a rotated Gumbel copula where then fit, and the model evidence ratio for the rotated Gumbel copula against the Gaussian copula was computed ($\mathcal{R}$). Values of $\log \mathcal{R}$ below 0 indicate support for the rotated Gumbel copula. This was repeated 100 times, and fit with a quadratic model. The procedure was performed by sampling randomly from \ide (continuous) or by simulating repeated measurements \ie several MT values for one \ide value (blocks).}
+	\caption{Identifiability of the rotated Gumbel copula. Data (size$=N$) was sampled from a rotated Gumbel copula and combined with typical marginals to form a realistic joint distribution for (\ide, MT). A Gaussian and a rotated Gumbel copula where then fit, and the model evidence ratio for the rotated Gumbel copula against the Gaussian copula was computed ($\mathcal{R}$). Values of $\log \mathcal{R}$ below 0 indicate support for the rotated Gumbel copula. This was repeated 100 times, and fit with a quadratic model. The procedure was performed by sampling randomly from \ide (continuous) or by simulating repeated measurements \ie several MT values for one \ide value (blocks).}
 	\label{fig:identifiability}
 \end{figure}
 

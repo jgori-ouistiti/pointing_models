@@ -35,6 +35,10 @@ colors = [
 ]
 
 
+def remove_data_points_below_thres(df, thresh=0.1):
+    return df.filter(polars.col("MT") >= thresh)
+
+
 def compute_associations(df):
     return [
         pearsonr(df["IDe"], df["MT"]).statistic,
@@ -158,18 +162,24 @@ if __name__ == "__main__":
 
     ## ==== Eval phase ====
     df_gen_copula = polars.DataFrame({"IDe": x_1, "MT": y_1})
+    df_gen_copula = remove_data_points_below_thres(df_gen_copula, thresh=0.2)
+    x_1, y_1 = df_gen_copula["IDe"], df_gen_copula["MT"]
     vec_gen_copula = compute_associations(df_gen_copula)
     gen_ols_fit_copula = compute_ols_means(df_gen_copula)
     gen_emg_git_copula = compute_emg_regression(df_gen_copula)
     tp_gen_copula = compute_ISO_throughput(df_gen_copula)
 
     df_gen_emg_1 = polars.DataFrame({"IDe": x_2, "MT": y_2})
+    df_gen_emg_1 = remove_data_points_below_thres(df_gen_emg_1, thresh=0.2)
+    x_2, y_2 = df_gen_emg_1["IDe"], df_gen_emg_1["MT"]
     vec_gen_emg_1 = compute_associations(df_gen_emg_1)
     gen_ols_fit_emg_1 = compute_ols_means(df_gen_emg_1)
     gen_emg_git_emg_1 = compute_emg_regression(df_gen_emg_1)
     tp_gen_emg_1 = compute_ISO_throughput(df_gen_emg_1)
 
     df_gen_emg_2 = polars.DataFrame({"IDe": x_3, "MT": y_3})
+    df_gen_emg_2 = remove_data_points_below_thres(df_gen_emg_2, thresh=0.2)
+    x_3, y_3 = df_gen_emg_2["IDe"], df_gen_emg_2["MT"]
     vec_gen_emg_2 = compute_associations(df_gen_emg_2)
     gen_ols_fit_emg_2 = compute_ols_means(df_gen_emg_2)
     gen_emg_git_emg_2 = compute_emg_regression(df_gen_emg_2)
@@ -316,5 +326,6 @@ if __name__ == "__main__":
 
     plt.ion()
     plt.tight_layout()
+    plt.show()
     # fig.savefig("img/method_consistency.pdf")
     # fig.savefig("supp_source/method_consistency_seed777.pdf")

@@ -100,6 +100,16 @@ colors = [
     "#ff33cc",
 ]
 
+colors = [
+    "#0072B2",  # blue
+    "#E69F00",  # orange
+    "#009E73",  # green
+    "#F0E442",  # yellow
+    "#D55E00",  # red
+    "#CC79A7",  # purple
+    "#000000",  # black
+]
+
 
 participants = df["Participant"].unique()
 label_mapping = {
@@ -441,7 +451,6 @@ seaborn.scatterplot(x=strat, y=vx, ax=axs_s[2], s=50)
 model = smf.ols(formula="sigma_i~strategy", data=df)  # AIC = 1
 model = smf.ols(formula="sigma_i~1", data=df)  # AIC = 3
 model = model.fit()
-exit()
 
 print(model.summary())
 axs_s[2].plot(strat, [model.params[0] for s in strat], "-")
@@ -478,7 +487,7 @@ axs_s[4].set_title(
     f"{model.params[0]:.2f}",
     fontdict=fontdict,
 )
-axs_s[4].set_ylabel("r")
+axs_s[4].set_ylabel(r"$\rho$")
 plt.ion()
 plt.show()
 plt.tight_layout()

@@ -95,6 +95,10 @@ def gen_strat_emg_control(
     return data, rows
 
 
+def remove_data_points_below_thres(df, thresh=0.2):
+    return df.filter(polars.col("MT") >= thresh)
+
+
 if __name__ == "__main__":
 
     seed = 999
@@ -131,6 +135,8 @@ if __name__ == "__main__":
     )
     df_cop = polars.DataFrame(rows, schema=["Participant", "strategy", "IDe", "MT"])
 
+    df_cop = remove_data_points_below_thres(df_cop, thresh=0.2)
+
     fig_cop, ax_cop = plt.subplots(1, 1)
     seaborn.scatterplot(df_cop, x="IDe", y="MT", hue="strategy", ax=ax_cop)
 
@@ -151,6 +157,8 @@ if __name__ == "__main__":
     )
 
     df_emg = polars.DataFrame(rows, schema=["Participant", "strategy", "IDe", "MT"])
+
+    df_emg = remove_data_points_below_thres(df_emg, thresh=0.2)
 
     fig_emg, ax_emg = plt.subplots(1, 1)
     seaborn.scatterplot(df_emg, x="IDe", y="MT", hue="strategy", ax=ax_emg)
@@ -184,6 +192,7 @@ if __name__ == "__main__":
     df_emg_control = polars.DataFrame(
         rows, schema=["Participant", "strategy", "IDe", "MT"]
     )
+    df_emg_control = remove_data_points_below_thres(df_emg_control, thresh=0.2)
 
     fig_emg_control, ax_emg_control = plt.subplots(1, 1)
     seaborn.scatterplot(
