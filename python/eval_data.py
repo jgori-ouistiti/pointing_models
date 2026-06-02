@@ -9,7 +9,7 @@ import polars
 cm = 1 / 2.54
 
 
-def gaussian_fit(x, y, ax=None):
+def gaussian_fit(x, y, ax=None, **kwargs):
     data = numpy.array(object=[numpy.asarray(x), numpy.asarray(y)]).T
     mean, cov = stats.multivariate_normal.fit(data)
     eigenvalues, eigenvectors = numpy.linalg.eigh(cov)
@@ -24,6 +24,7 @@ def gaussian_fit(x, y, ax=None):
             edgecolor="r",
             fc="None",
             lw=2,
+            **kwargs,
         )
         ax.add_patch(ellipse)
         ax.plot(x, y, "*")

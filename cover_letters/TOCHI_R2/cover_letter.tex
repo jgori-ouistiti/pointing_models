@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{here}
+\usepackage[all]{foreign}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\title{Cover Letter for: \textit{Pointing Beyond Fitts: Strategy, Movement Time Distributions, Local-Global Tradeoffs, and Generative Models} --- Minor revision}
+\author{Julien Gori}
+\begin{document}
+\maketitle
+
+Dear Dr. Pourang Irani,
+
+\vspace{2\baselineskip}
+
+I am happy to read that my revision was considered a significant improvement. I have addressed as best as possible the remaining issues (see below), and hope you will now find the paper ready for publication.
+In the remainder of this letter, I will only address explicitly the main points of contention, brought forward by R1 and R2, but I have tackled all other remarks as well, including typos, small reformulations \etc. which do not warrant discussion. I have also attached a latexdiff file which shows any change with respect to the prior submitted version of the manuscript.
+I remain available for further discussion.
+
+\begin{flushright}
+  Sincerely,\\
+  Julien Gori
+\end{flushright}
+
+\subsection*{R1's concern about focusing on ID$_e$, and predictive power}
+\textit{The main remaining concerns relate to the evaluation and claims of predictive power. The reliance on IDe remains questionable, particularly in the context of speed-accuracy tradeoffs, since it is itself an outcome of user strategy and task conditions. The current evaluation relies heavily on statistical model comparisons and does not sufficiently demonstrate how well the models reproduce unseen user data. In particular, R1 says that claims about generating realistic pointing data are not yet convincingly supported, as results appear to depend on empirical IDe rather than fully model-driven predictions.}
+
+R1 says: \textit{I am still not completely convinced that focussing on ID$_e$ is the right thing to do when analysing the SAT, since ID$_e$ will always be a result of, accuracy/strategy and task difficulty. Providing evidence that the models can predict MT for all of the different tasks without knowledge of ID$_e$ would support this point. I want to point out that although Fig. 16 shows generated MTs, as footnote 23 states, these results were generated using the empirical ID$_e$. Why is ID$_e$ not also generated using the proposed model?
+In this regard, I also want to clarify that with “missing direct evaluations against \dots real user data”, I meant that most of the evaluations are statistical model comparisons, without showing how well the resulting models really match a test set of the user data that was not used to fit model parameters. Showing more direct comparisons between real user data and data produced by the models would improve the confidence greatly that the presented models are capable of recreating realistic human pointing data. The claim made in the conclusion “As predictive tools, they allow realistic data generation”, is currently not sufficiently supported by the results in my eyes.}
+
+\subsection*{Answer}
+Rather than directly modeling the conditional probability $P(MT|D,W,s)$, I introduce an intermediate IDe representation. Specifically, I first model $P(IDe|D,W,s)$, and subsequently model $P(MT|IDe)$. This decomposition is motivated by several considerations:
+\begin{itemize}
+  \item It enables the reuse of prior work in the Fitts' law space that characterizes distributions over IDe, including the EMG-based approach employed here, as well as models that study IDe. In contrast, directly modeling $P(MT|D,W,s)$ would require learning a substantially more complex distribution, all the while ignoring years of work in the Fitts' law space, and for which no established models currently exists to my knowledge.
+  \item The formulation $P(IDe | D, W, s)$ is conceptually in line with the literature, where IDe is commonly interpreted as a correction of ID that reflects user strategy. Thus modeling this dependency is therefore theoretically well motivated and also aligns with previous work.
+  \item IDe is explicitly used as an intermediate representation. To take machine learning as an analogy: In machine learning, intermediate (latent) representations are commonly used to compress complex input spaces into more structured \textit{embeddings}, \ie a reduced set of internal variables that captures most of the information in the input. In this framework, IDe plays a similar role: it acts as the intermediate representation that captures the relevant variability of the task while simplifying the downstream modeling of MT.
+\end{itemize}
+Therefore, the dependence of MT on D, W, and s through IDe should not be viewed as a limitation of the approach; it is by design, and an integral part of the modeling framework, which affords the model to remain relatively simple. I believe that this is actually one of the reasons the model is appealing.
+
+Beyond these theoretical arguments, R1 is further concerned that the generative models were evaluated using empirical ground-truth IDe values rather than sampled IDes generated from $P(IDe|D,W,s)$. The reason is that the compared methods differ only in their modeling of $P(MT|IDe)$, thus only a fixed set of IDe values can ensure a fair comparison, isolating differences attributable to the different MT models, and not to IDe variability. This is why in the previous evaluations, I used the empirical IDe values. However, I have now added an extra figure for the best model (EMG with control) in the Appendix (Fig 19), which does not use the ground truth ID$_e$ values, but samples them, as requested by R1. The results are largely similar, and do not warrant discussion. In fact, the particular value of $\overline{r}$ is much closer to that of the ground truth dataset, than the ones generated using the known IDe values, but this is likely an artefact.
+
+\textit{The current evaluation relies heavily on statistical model comparisons and does not sufficiently demonstrate how well the models reproduce unseen user data.  In particular, R1 says that claims about generating realistic pointing data are not yet convincingly supported, as results appear to depend on empirical IDe rather than fully model-driven predictions.} Clearly, the models are flexible enough to capture realistic human data, as they have been fitted on a variety of datasets, from different authors, and which include different input modalities. R1's objects that \textit{most of the evaluations are statistical model comparisons, without showing how well the resulting models really match a test set of the user data that was not used to fit model parameters}. Concretely, what I understand is that the author is asking for leave-one-out cross validation (LOOCV) at the population level \ie Can the model predict the performance of a new person it has never seen? I don't think this makes particular sense in the context of this paper, whose point is to replicate a dataset, whether it is data from one participant or a population \ie can the model generate data with the same statistical structure as the observed one?
+Participant level LOOCV evaluates a different question, namely the ability of a model calibrated on one set of participants to predict the behavior of previously unseen participants. This quantity depends on between-participant heterogeneity and therefore conflates model adequacy with individual differences that are not the focus of the present work.
+It should be noted that model comparisons based on AIC as I performed are relatively standard methods, see \eg Burnham and Anderson, \textit{Model selection and multimodal inference}, 2002. Also, showing the fit between a model and data at the distribution level when there are multiple parameters being fit is not easy. Instead of showing metrics that are hard to interpret, such as mean squared error, I chose to compare generated data to ground truth data using metrics that are tangible to the HCI/Fitts' law researcher: value of the fitted Fitts' law parameters, value of ISO-throughput, value of the fitted EMG model \etc.
+\section*{Other comments}
+
+\subsection*{Reviewer 1}
+\begin{itemize}
+  \item \textit{It would be great if there were a concise discussion about the limitations of the proposed models, some of which are currently in the individual experiment chapters.} TODO
+\end{itemize}
+
+\subsection*{Reviewer 2}
+\begin{itemize}
+  \item \textit{The contribution still reads quite quite technical and could benefit from focussing on the higher-level insights gained from this work, similarly to how Sections 11 and 12 are structured.}
+  \item \textit{Providing a short overview of the paper structure in the beginning would help guide readers through the paper.}
+  \item \textit{Section 2.3 on the WHo model reads quite technically and is hard to understand without having read the paper. To avoid loosing readers' attention, I would suggest focussing on the main aspects here (how is WHo conceptually different from the proposed models?) and move technical comparisons to the discussion (if necessary).}
+  \item \textit{While Section 5.5 provides a great summary of the learnings from Study 1, the "ridge regression" part in this paragraph seems to include mostly new findings not mentioned before (as far as I understood it, 5.4 uses a different argumentation for why the significant effect of D on IDe is negligible in practice). I would thus suggest dropping the ridge regression footnote etc., or alternatively integrating these explanations into Section 5.4.} I removed the footnote entirely as suggested.
+  \item \textit{- l.191: "Rather than averaging out the noise as in Equation 6" -> Eq. (6) still includes a noise term; I assume dropping this term in Eq. (6), i.e., considering Eq. (6) as expectation of Eq. (5), would be more in line with the following paragraphs and Eq. (8)?} A noise term is still needed in Eq (6), because most authors are performing linear regression on average MT \ie a residual is still expected, but I agree the wording was confusing, and this has been fixed.
+\end{itemize}
+
+\end{document}
